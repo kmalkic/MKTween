@@ -10,23 +10,21 @@ public typealias MKTweenUpdateBlock = (period: MKTweenPeriod) -> ()
 public typealias MKTweenCompleteBlock = () -> ()
 
 public class MKTweenOperation: Equatable {
-
-    internal(set) public var period: MKTweenPeriod
-    public let timingFunction: MKTweenTimingFunction
-    let updateBlock: MKTweenUpdateBlock?
-    let completeBlock: MKTweenCompleteBlock?
-    
-    public init(period: MKTweenPeriod, updateBlock: MKTweenUpdateBlock? = nil, completeBlock: MKTweenCompleteBlock? = nil, timingFunction: MKTweenTimingFunction = MKTweenTiming.Linear) {
-    
-        self.period = period
-        self.timingFunction = timingFunction
-        self.updateBlock = updateBlock
-        self.completeBlock = completeBlock
-    }
+	
+	internal(set) public var period: MKTweenPeriod
+	public let timingFunction: MKTweenTimingFunction
+	let updateBlock: MKTweenUpdateBlock?
+	let completeBlock: MKTweenCompleteBlock?
+	
+	public init(period: MKTweenPeriod, updateBlock: MKTweenUpdateBlock? = nil, completeBlock: MKTweenCompleteBlock? = nil, timingFunction: MKTweenTimingFunction = MKTweenTiming.Linear) {
+		
+		self.period = period
+		self.timingFunction = timingFunction
+		self.updateBlock = updateBlock
+		self.completeBlock = completeBlock
+	}
 	
 	public func reverse() {
-
-		print("reverse")
 		
 		let startValue = period.startValue
 		let endValue = period.endValue
@@ -43,7 +41,7 @@ public class MKTweenOperation: Equatable {
 	}
 	
 	public func tweenValues(numberOfIntervals: UInt) -> [Double] {
-	
+		
 		var tweenValues = [Double]()
 		
 		for i in 1...Int(numberOfIntervals) {
@@ -60,6 +58,6 @@ public class MKTweenOperation: Equatable {
 }
 
 public func == (a: MKTweenOperation, b: MKTweenOperation) -> Bool {
-    
-    return a.dynamicType.self === b.dynamicType.self
+	
+	return a.dynamicType.self === b.dynamicType.self
 }
