@@ -25,15 +25,6 @@ public class MKTween: NSObject {
 	private var timer: NSTimer?
 	private var busy = false
 	
-	public var timerInterval: NSTimeInterval = 1/60 {
-		
-		didSet {
-			
-			stop()
-			start()
-		}
-	}
-	
 	public var timerStyle: MKTweenTimerStyle = .Default {
 		
 		didSet {
@@ -68,6 +59,15 @@ public class MKTween: NSObject {
 			start()
 		}
 	}
+    
+    public var timerInterval: NSTimeInterval = 1/60 {
+        
+        didSet {
+            
+            stop()
+            start()
+        }
+    }
 	
 	deinit {
 		
@@ -255,9 +255,7 @@ public class MKTween: NSObject {
 	}
 	
 	private func pause() {
-		
-		print("pause")
-		
+				
 		if paused && (timer != nil || displayLink != nil) {
 			
 			pausedTimeStamp = CACurrentMediaTime()

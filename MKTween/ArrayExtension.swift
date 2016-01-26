@@ -8,7 +8,7 @@
 
 extension Array {
 	
-	mutating func removeObject<U: Equatable>(object: U) -> Bool {
+	mutating internal func removeObject<U: Equatable>(object: U) -> Bool {
 		
 		for (idx, objectToCompare) in self.enumerate() {
 			

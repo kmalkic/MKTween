@@ -48,7 +48,7 @@ class TimingCell: UITableViewCell {
 		UIColor.whiteColor().setFill()
 		UIRectFill(rect)
 		
-		let period = MKTweenPeriod(duration:1, startValue: 0, endValue: 1)
+		let period = MKTweenPeriod(duration:1)
 		
 		let operation = MKTweenOperation(period: period, timingFunction: timingFunction)
 		
@@ -92,8 +92,7 @@ class TimingCell: UITableViewCell {
 		
 		UIColor(red: 255/255, green: 127/255, blue: 127/255, alpha: 1).setStroke()
 		path.stroke()
-		
+        
 
 	}
-
 }
