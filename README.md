@@ -182,3 +182,11 @@ $ git submodule add https://github.com/kmalkic/MKTween.git
 > The `MKTween.framework` is automagically added as a target dependency, linked framework and embedded framework in a copy files build phase which is all you need to build on the simulator and a device.
 
 ---
+
+## Credits
+
+Kevin Malkic
+
+## License
+
+MKTween is released under the MIT license. See LICENSE for details.
