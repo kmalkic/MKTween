@@ -100,16 +100,8 @@ public class MKTween: NSObject {
 		super.init()
 		
 		self.timerStyle = timerStyle
-		
-		if frameInterval != nil {
-			
-			self.frameInterval = frameInterval!
-		}
-		
-		if timerInterval != nil {
-			
-			self.timerInterval = timerInterval!
-		}
+		self.frameInterval = frameInterval ?? self.frameInterval
+		self.timerInterval = timerInterval ?? self.timerInterval
 	}
 	
 	public func addTweenOperation(operation: MKTweenOperation) {
