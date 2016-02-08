@@ -166,9 +166,19 @@ public class MKTween: NSObject {
 				
 				operation.period.updatedTimeStamp = timeStamp
 				
-				if operation.updateBlock != nil {
+				if let updateBlock = operation.updateBlock {
 					
-					operation.updateBlock!(period: period)
+					if let dispatchQueue = operation.dispatchQueue {
+						
+						dispatch_async(dispatchQueue, { () -> Void in
+							
+							updateBlock(period: period)
+						})
+						
+					} else {
+					
+						updateBlock(period: period)
+					}
 				}
 			}
 		}
@@ -177,9 +187,19 @@ public class MKTween: NSObject {
 		
 		for operation in expiredCopy {
 			
-			if operation.completeBlock != nil {
+			if let completeBlock = operation.completeBlock {
 				
-				operation.completeBlock!()
+				if let dispatchQueue = operation.dispatchQueue {
+					
+					dispatch_async(dispatchQueue, { () -> Void in
+						
+						completeBlock()
+					})
+					
+				} else {
+					
+					completeBlock()
+				}
 			}
 			
 			expiredTweenOperations.removeObject(operation)

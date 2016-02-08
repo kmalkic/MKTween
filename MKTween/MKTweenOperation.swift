@@ -15,13 +15,15 @@ public class MKTweenOperation: Equatable {
 	public let timingFunction: MKTweenTimingFunction
 	let updateBlock: MKTweenUpdateBlock?
 	let completeBlock: MKTweenCompleteBlock?
+	let dispatchQueue: dispatch_queue_t?
 	
-	public init(period: MKTweenPeriod, updateBlock: MKTweenUpdateBlock? = nil, completeBlock: MKTweenCompleteBlock? = nil, timingFunction: MKTweenTimingFunction = MKTweenTiming.Linear) {
+	public init(period: MKTweenPeriod, updateBlock: MKTweenUpdateBlock? = nil, completeBlock: MKTweenCompleteBlock? = nil, timingFunction: MKTweenTimingFunction = MKTweenTiming.Linear, dispatchQueue: dispatch_queue_t? = dispatch_get_main_queue()) {
 		
 		self.period = period
 		self.timingFunction = timingFunction
 		self.updateBlock = updateBlock
 		self.completeBlock = completeBlock
+		self.dispatchQueue = dispatchQueue
 	}
 	
 	public func reverse() {
