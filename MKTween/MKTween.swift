@@ -106,9 +106,12 @@ public class MKTween: NSObject {
 	
 	public func addTweenOperation(operation: MKTweenOperation) {
 		
-		tweenOperations.append(operation)
-		
-		start()
+		if operation.period.duration > 0 {
+			
+			tweenOperations.append(operation)
+			
+			start()
+		}
 	}
 	
 	public func removeTweenOperation(operation: MKTweenOperation) {
