@@ -7,22 +7,22 @@
 //
 
 extension Array {
-	
-	mutating internal func removeObject<U: Equatable>(object: U) -> Bool {
-		
-		for (idx, objectToCompare) in self.enumerate() {
-			
-			if let to = objectToCompare as? U {
-				
-				if object == to {
-					
-					self.removeAtIndex(idx)
-					
-					return true
-				}
-			}
-		}
-		
-		return false
-	}
+    
+    mutating internal func removeOperation<U: Equatable>(object: U) -> Bool {
+        
+        for (idx, objectToCompare) in self.enumerate() {
+            
+            if let to = objectToCompare as? U {
+                
+                if object == to {
+                    
+                    self.removeAtIndex(idx)
+                    
+                    return true
+                }
+            }
+        }
+        
+        return false
+    }
 }

@@ -60,6 +60,6 @@ public class MKTweenOperation: Equatable {
 }
 
 public func == (a: MKTweenOperation, b: MKTweenOperation) -> Bool {
-	
-	return a.dynamicType.self === b.dynamicType.self
+    
+    return a === b
 }
