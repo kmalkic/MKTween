@@ -131,7 +131,7 @@ operation.reverse() // This will basically exchange startValue and endValue, but
 $ gem install cocoapods
 ```
 
-> CocoaPods 0.39.0+ is required to build MKTween 1.0.1+.
+> CocoaPods 0.39.0+ is required to build MKTween 1.0.2+.
 
 To integrate MKTween into your Xcode project using CocoaPods, specify it in your `Podfile`:
 
@@ -142,7 +142,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.0'
 use_frameworks!
 
-pod 'MKTween', '~> 1.0.1'
+pod 'MKTween', '~> 1.0.2'
 ```
 
 Then, run the following command:
