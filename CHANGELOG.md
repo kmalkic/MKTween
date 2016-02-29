@@ -1,3 +1,9 @@
+## 1.0.3 (Feburary 29, 2016)
+
+Bug fixes:
+	
+	- CADisplay mode changed to NSRunLoopCommonModes, for better perfs
+
 ## 1.0.2 (Feburary 11, 2016)
 
 Bug fixes:

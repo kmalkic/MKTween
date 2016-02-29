@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'MKTween'
-  s.version = '1.0.2'
+  s.version = '1.0.3'
   s.license = 'MIT'
   s.summary = 'Very simple and lightweight tween framework in Swift 2.1.'
   s.description  = <<-DESC 

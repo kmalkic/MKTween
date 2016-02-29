@@ -248,9 +248,9 @@ public class MKTween: NSObject {
         
         if displayLink == nil && (timerStyle == .Default || timerStyle == .DisplayLink) {
             
-            displayLink = CADisplayLink(target: self, selector: "handleDisplayLink:")
+            displayLink = UIScreen.mainScreen().displayLinkWithTarget(self, selector: "handleDisplayLink:")
             displayLink!.frameInterval = frameInterval
-            displayLink!.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode)
+            displayLink!.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: NSRunLoopCommonModes)
             
         } else if timer == nil && timerStyle == .Timer {
             
@@ -264,7 +264,7 @@ public class MKTween: NSObject {
         if displayLink != nil {
             
             displayLink!.paused = true
-            displayLink!.removeFromRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode)
+            displayLink!.removeFromRunLoop(NSRunLoop.mainRunLoop(), forMode: NSRunLoopCommonModes)
             displayLink = nil
         }
         
