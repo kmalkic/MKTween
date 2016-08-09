@@ -16,9 +16,11 @@ public class MKTweenOperation: Equatable {
 	let updateBlock: MKTweenUpdateBlock?
 	let completeBlock: MKTweenCompleteBlock?
 	let dispatchQueue: dispatch_queue_t?
+	let name: String?
 	
-	public init(period: MKTweenPeriod, updateBlock: MKTweenUpdateBlock? = nil, completeBlock: MKTweenCompleteBlock? = nil, timingFunction: MKTweenTimingFunction = MKTweenTiming.Linear, dispatchQueue: dispatch_queue_t? = dispatch_get_main_queue()) {
+	public init(name: String? = nil, period: MKTweenPeriod, updateBlock: MKTweenUpdateBlock? = nil, completeBlock: MKTweenCompleteBlock? = nil, timingFunction: MKTweenTimingFunction = MKTweenTiming.Linear, dispatchQueue: dispatch_queue_t? = dispatch_get_main_queue()) {
 		
+		self.name = name
 		self.period = period
 		self.timingFunction = timingFunction
 		self.updateBlock = updateBlock
@@ -60,6 +62,6 @@ public class MKTweenOperation: Equatable {
 }
 
 public func == (a: MKTweenOperation, b: MKTweenOperation) -> Bool {
-    
-    return a === b
+	
+	return a === b
 }
