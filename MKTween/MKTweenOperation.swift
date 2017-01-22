@@ -6,19 +6,21 @@
 //  Copyright © 2016 Kevin Malkic. All rights reserved.
 //
 
-public typealias MKTweenUpdateBlock = (period: MKTweenPeriod) -> ()
+public typealias MKTweenUpdateBlock = (_ period: MKTweenPeriod) -> ()
 public typealias MKTweenCompleteBlock = () -> ()
 
-public class MKTweenOperation: Equatable {
+open class MKTweenOperation: Equatable {
 	
-	internal(set) public var period: MKTweenPeriod
-	public let timingFunction: MKTweenTimingFunction
+	internal(set) open var period: MKTweenPeriod
+	open let timingFunction: MKTweenTimingFunction
 	let updateBlock: MKTweenUpdateBlock?
 	let completeBlock: MKTweenCompleteBlock?
-	let dispatchQueue: dispatch_queue_t?
+
 	let name: String?
+
+	let dispatchQueue: DispatchQueue?
 	
-	public init(name: String? = nil, period: MKTweenPeriod, updateBlock: MKTweenUpdateBlock? = nil, completeBlock: MKTweenCompleteBlock? = nil, timingFunction: MKTweenTimingFunction = MKTweenTiming.Linear, dispatchQueue: dispatch_queue_t? = dispatch_get_main_queue()) {
+	public init(name: String? = nil, period: MKTweenPeriod, updateBlock: MKTweenUpdateBlock? = nil, completeBlock: MKTweenCompleteBlock? = nil, timingFunction: @escaping MKTweenTimingFunction = MKTweenTiming.Linear, dispatchQueue: DispatchQueue? = DispatchQueue.main) {
 		
 		self.name = name
 		self.period = period
@@ -28,7 +30,7 @@ public class MKTweenOperation: Equatable {
 		self.dispatchQueue = dispatchQueue
 	}
 	
-	public func reverse() {
+	open func reverse() {
 		
 		let startValue = period.startValue
 		let endValue = period.endValue
@@ -44,7 +46,7 @@ public class MKTweenOperation: Equatable {
 		}
 	}
 	
-	public func tweenValues(numberOfIntervals: UInt) -> [Double] {
+	open func tweenValues(_ numberOfIntervals: UInt) -> [Double] {
 		
 		var tweenValues = [Double]()
 		
@@ -52,7 +54,7 @@ public class MKTweenOperation: Equatable {
 			
 			let time: Double = Double(i) / Double(numberOfIntervals)
 			
-			let progress = timingFunction(time: time, begin: period.startValue, difference: period.endValue - period.startValue, duration: period.duration)
+			let progress = timingFunction(time, period.startValue, period.endValue - period.startValue, period.duration)
 			
 			tweenValues.append(progress)
 		}
@@ -62,6 +64,6 @@ public class MKTweenOperation: Equatable {
 }
 
 public func == (a: MKTweenOperation, b: MKTweenOperation) -> Bool {
-	
-	return a === b
+    
+    return a === b
 }

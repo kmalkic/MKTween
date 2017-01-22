@@ -35,8 +35,8 @@ class ViewController: UIViewController {
 		
 		constructArray()
 		
-		myView.tableView.registerClass(TimingCell.self, forCellReuseIdentifier: "cell")
-		myView.tableView.separatorStyle = .None
+		myView.tableView.register(TimingCell.self, forCellReuseIdentifier: "cell")
+		myView.tableView.separatorStyle = .none
 		
 		myView.tableView.delegate = self
 		myView.tableView.dataSource = self
@@ -81,33 +81,32 @@ class ViewController: UIViewController {
 
 extension ViewController : UITableViewDelegate {
 	
-	func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		
-		tableView.deselectRowAtIndexPath(indexPath, animated: true)
+		tableView.deselectRow(at: indexPath, animated: true)
 		
-		let newRect = CGRectMake(40, 0, tableView.frame.width - 80, headerHeight)
+		let newRect = CGRect(x: 40, y: 0, width: tableView.frame.width - 80, height: headerHeight)
 		
-		headerView.circleView.center = CGPointMake(newRect.origin.x, (headerHeight/2))
-	
-		let timingFunction = timingFunctions[indexPath.row]
-		
-		let period = MKTweenPeriod(duration: 2, delay: 0, startValue: 0, endValue: 1)
-	
-		let operation = MKTweenOperation(period: period, updateBlock: { (period) -> () in
-			
-			dispatch_async(dispatch_get_main_queue(), { () -> Void in
-				
-				self.headerView.circleView.center = CGPointMake(newRect.origin.x + (newRect.width * CGFloat(period.progress)), (headerHeight/2))
-			})
-			
-			}, completeBlock: { () -> () in
-			
-				
-				
-			}, timingFunction: timingFunction)
-		
-		MKTween.shared.removeAllOperations()
-		MKTween.shared.addTweenOperation(operation)
+		headerView.circleView.center = CGPoint(x: newRect.origin.x, y: (headerHeight/2))
+        
+        let timingFunction = timingFunctions[indexPath.row]
+        
+        let period = MKTweenPeriod(duration: 2, delay: 0, startValue: 0, endValue: 1)
+        
+        DispatchQueue.main.async(execute: { () -> Void in
+            
+            let operation = MKTweenOperation(period: period, updateBlock: { (period) -> () in
+                
+                self.headerView.circleView.center = CGPoint(x: newRect.origin.x + (newRect.width * CGFloat(period.progress)), y: (headerHeight/2))
+                
+            }, completeBlock: { () -> () in
+                
+                
+            }, timingFunction: timingFunction)
+            
+            MKTween.shared.removeAllOperations()
+            MKTween.shared.addTweenOperation(operation)
+        })
 	}
 }
 
@@ -116,41 +115,41 @@ private let headerHeight : CGFloat = 200
 
 extension ViewController : UITableViewDataSource {
 	
-	func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+	func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
 		
-		headerView.backgroundColor = .blueColor()
-		headerView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+		headerView.backgroundColor = .blue
+		headerView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
 
-		let newRect = CGRectMake(40, 0, tableView.frame.width - 80, headerHeight)
+		let newRect = CGRect(x: 40, y: 0, width: tableView.frame.width - 80, height: headerHeight)
 		
-		headerView.circleView.center = CGPointMake(newRect.origin.x, (headerHeight/2))
+		headerView.circleView.center = CGPoint(x: newRect.origin.x, y: (headerHeight/2))
 		
 		return headerView
 	}
 	
-	func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
 		
 		return headerHeight
 	}
 	
-	func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+	func numberOfSections(in tableView: UITableView) -> Int {
 		
 		return 1
 	}
 	
-	func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		
 		return timingFunctions.count
 	}
 	
-	func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 		
 		return cellHeight
 	}
 	
-	func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		
-		let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath:indexPath) as! TimingCell
+		let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for:indexPath) as! TimingCell
 		
 		cell.titleLabel.text = timingFunctionTitles[indexPath.row]
 		cell.timingFunction = timingFunctions[indexPath.row]

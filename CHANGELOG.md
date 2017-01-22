@@ -1,3 +1,9 @@
+## 2.0 (January 22, 2017)
+
+Features:
+
+  - Updated to Swift 3.0
+  
 ## 1.0.3 (Feburary 29, 2016)
 
 Bug fixes:

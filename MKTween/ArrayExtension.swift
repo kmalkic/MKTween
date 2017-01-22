@@ -8,15 +8,15 @@
 
 extension Array {
     
-    mutating internal func removeOperation<U: Equatable>(object: U) -> Bool {
+    mutating internal func removeOperation<U: Equatable>(_ object: U) -> Bool {
         
-        for (idx, objectToCompare) in self.enumerate() {
+        for (idx, objectToCompare) in self.enumerated() {
             
             if let to = objectToCompare as? U {
                 
                 if object == to {
                     
-                    self.removeAtIndex(idx)
+                    self.remove(at: idx)
                     
                     return true
                 }

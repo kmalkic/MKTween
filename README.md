@@ -1,6 +1,6 @@
 # MKTween
 
-Very simple and lightweight tween framework in Swift 2.1.
+Very simple and lightweight tween framework in Swift 3.0.
 No objects/views bindings for a more flexible use.
 Uses CADisplayLink or NSTimer with time interval parameters.
 
@@ -131,7 +131,7 @@ operation.reverse() // This will basically exchange startValue and endValue, but
 $ gem install cocoapods
 ```
 
-> CocoaPods 0.39.0+ is required to build MKTween 1.0.3+.
+> CocoaPods 0.39.0+ is required to build MKTween 2.0+.
 
 To integrate MKTween into your Xcode project using CocoaPods, specify it in your `Podfile`:
 
@@ -142,7 +142,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.0'
 use_frameworks!
 
-pod 'MKTween', '~> 1.0.3'
+pod 'MKTween', '~> 2.0'
 ```
 
 Then, run the following command:

@@ -12,8 +12,8 @@ class HeaderView: UIView {
 
 	lazy var circleView : UIView = {
 		
-		let circleView = UIView(frame: CGRectMake(0,0,40,40))
-		circleView.backgroundColor = .redColor()
+		let circleView = UIView(frame: CGRect(x: 0,y: 0,width: 40,height: 40))
+		circleView.backgroundColor = .red
 		circleView.layer.cornerRadius = 40/2
 		circleView.layer.masksToBounds = true
 		self.addSubview(circleView)

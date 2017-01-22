@@ -30,7 +30,7 @@ class View: UIView {
 	func setupViews() {
 	
 		tableView.frame = bounds
-		tableView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+		tableView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
 		addSubview(tableView)
 	}
 	

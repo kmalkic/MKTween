@@ -1,8 +1,8 @@
 Pod::Spec.new do |s|
   s.name = 'MKTween'
-  s.version = '1.0.3'
+  s.version = '2.0'
   s.license = 'MIT'
-  s.summary = 'Very simple and lightweight tween framework in Swift 2.1.'
+  s.summary = 'Very simple and lightweight tween framework in Swift 3.0'
   s.description  = <<-DESC 
                    No objects/views bindings for a more flexible use. Uses CADisplayLink or NSTimer with time interval parameters. 
                    DESC
