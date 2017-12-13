@@ -129,8 +129,8 @@ public struct MKTweenTiming {
 		if (t == 1) { return b + c }
 		let p: Double = d * 0.3
 		if (a < fabs(c)) { a = c; s = p / 4 }
-		else { s = p / (2 * M_PI) * asin(c / a) }
-		return a * pow(2, -10 * t) * sin((t * d - s) * (2 * M_PI) / p) + c + b
+		else { s = p / (2 * .pi) * asin(c / a) }
+		return a * pow(2, -10 * t) * sin((t * d - s) * (2 * .pi) / p) + c + b
 	}
 	
 	static public var ElasticIn: MKTweenTimingFunction = { (time: Double, b: Double, c: Double, d: Double) -> Double in
@@ -143,9 +143,9 @@ public struct MKTweenTiming {
 		t /= d
 		if (t == 1) { return b + c }
 		if (a < abs(c)) { a = c; s = p / 4 }
-		else { s = p / (2 * M_PI) * asin(c / a) }
+		else { s = p / (2 * .pi) * asin(c / a) }
 		t -= 1
-		return -(a * pow(2, 10 * t) * sin( (t * d - s) * (2 * M_PI) / p )) + b
+		return -(a * pow(2, 10 * t) * sin( (t * d - s) * (2 * .pi) / p )) + b
 	}
 	
 	static public var ElasticInOut: MKTweenTimingFunction = { (time: Double, b: Double, c: Double, d: Double) -> Double in
@@ -158,10 +158,10 @@ public struct MKTweenTiming {
 		t /= d / 2
 		if (t == 2) { return b + c }
 		if (a < abs(c)) { a = c; s = p / 4 }
-		else { s = p / (2 * M_PI) * asin(c / a) }
-		if (t < 1) { t -= 1; return -0.5 * (a * pow(2, 10 * t) * sin( (t * d - s) * (2 * M_PI) / p )) + b }
+		else { s = p / (2 * .pi) * asin(c / a) }
+		if (t < 1) { t -= 1; return -0.5 * (a * pow(2, 10 * t) * sin( (t * d - s) * (2 * .pi) / p )) + b }
 		t -= 1
-		return a * pow(2, -10 * t) * sin( (t * d - s) * (2 * M_PI) / p ) * 0.5 + c + b
+		return a * pow(2, -10 * t) * sin( (t * d - s) * (2 * .pi) / p ) * 0.5 + c + b
 	}
 	
 	static public var ExpoOut: MKTweenTimingFunction = { (time: Double, b: Double, c: Double, d: Double) -> Double in
@@ -256,17 +256,17 @@ public struct MKTweenTiming {
 	
 	static public var SineOut: MKTweenTimingFunction = { (time: Double, b: Double, c: Double, d: Double) -> Double in
 		
-		return c * sin(time / d * (M_PI / 2)) + b
+		return c * sin(time / d * (.pi / 2)) + b
 	}
 	
 	static public var SineIn: MKTweenTimingFunction = { (time: Double, b: Double, c: Double, d: Double) -> Double in
 		
-		return -c * cos(time / d * (M_PI / 2)) + c + b
+		return -c * cos(time / d * (.pi / 2)) + c + b
 	}
 	
 	static public var SineInOut: MKTweenTimingFunction = { (time: Double, b: Double, c: Double, d: Double) -> Double in
 		
-		return -c / 2 * (cos(M_PI * time / d) - 1) + b
+		return -c / 2 * (cos(.pi * time / d) - 1) + b
 	}
 }
 

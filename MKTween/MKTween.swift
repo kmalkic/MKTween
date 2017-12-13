@@ -203,12 +203,12 @@ open class MKTween: NSObject {
         }
     }
     
-    func handleDisplayLink(_ sender: CADisplayLink) {
+    @objc func handleDisplayLink(_ sender: CADisplayLink) {
         
         handleTick(sender.timestamp)
     }
     
-    func handleTimer(_ sender: Timer) {
+    @objc func handleTimer(_ sender: Timer) {
         
         handleTick(CACurrentMediaTime())
     }
