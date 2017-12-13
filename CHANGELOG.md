@@ -1,3 +1,9 @@
+## 2.1 (December 13, 2017)
+
+Features:
+
+- Updated to Swift 4.0
+
 ## 2.0 (January 22, 2017)
 
 Features:
