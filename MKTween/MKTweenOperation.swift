@@ -6,12 +6,12 @@
 //  Copyright © 2016 Kevin Malkic. All rights reserved.
 //
 
-public typealias MKTweenUpdateBlock = (_ period: MKTweenPeriod) -> ()
-public typealias MKTweenCompleteBlock = () -> ()
-
-open class MKTweenOperation: Equatable {
-	
-	internal(set) open var period: MKTweenPeriod
+open class MKTweenOperation<T>: Equatable where T: BinaryFloatingPoint {
+    
+    public typealias MKTweenUpdateBlock = (_ period: MKTweenPeriod<T>) -> ()
+    public typealias MKTweenCompleteBlock = () -> ()
+    
+	internal(set) open var period: MKTweenPeriod<T>
 	open let timingFunction: MKTweenTimingFunction
 	let updateBlock: MKTweenUpdateBlock?
 	let completeBlock: MKTweenCompleteBlock?
@@ -20,7 +20,7 @@ open class MKTweenOperation: Equatable {
 
 	let dispatchQueue: DispatchQueue?
 	
-	public init(name: String? = nil, period: MKTweenPeriod, updateBlock: MKTweenUpdateBlock? = nil, completeBlock: MKTweenCompleteBlock? = nil, timingFunction: @escaping MKTweenTimingFunction = MKTweenTiming.Linear, dispatchQueue: DispatchQueue? = DispatchQueue.main) {
+	public init(name: String? = nil, period: MKTweenPeriod<T>, updateBlock: MKTweenUpdateBlock? = nil, completeBlock: MKTweenCompleteBlock? = nil, timingFunction: @escaping MKTweenTimingFunction = MKTweenTiming.Linear, dispatchQueue: DispatchQueue? = DispatchQueue.main) {
 		
 		self.name = name
 		self.period = period
@@ -32,38 +32,47 @@ open class MKTweenOperation: Equatable {
 	
 	open func reverse() {
 		
-		let startValue = period.startValue
-		let endValue = period.endValue
+		let startValue = self.period.startValue
+		let endValue = self.period.endValue
 		
-		let timeDone = (period.progress > 0) ? (period.duration * period.progress) / endValue : 0
+		let timeDone = (self.period.progress > 0) ? (self.period.duration * TimeInterval(self.period.progress)) / TimeInterval(endValue) : 0
 		
-		period.startValue = endValue
-		period.endValue = startValue
+		self.period.startValue = endValue
+		self.period.endValue = startValue
 		
-		if let updatedTimeStamp = period.updatedTimeStamp {
+		if let updatedTimeStamp = self.period.updatedTimeStamp {
 			
-			period.startTimeStamp = updatedTimeStamp - (period.duration - timeDone + period.delay)
+			self.period.startTimeStamp = updatedTimeStamp - (self.period.duration - timeDone + self.period.delay)
 		}
 	}
 	
-	open func tweenValues(_ numberOfIntervals: UInt) -> [Double] {
+	open func tweenValues(_ numberOfIntervals: UInt) -> [T] {
 		
-		var tweenValues = [Double]()
+		var tweenValues = [T]()
 		
 		for i in 1...Int(numberOfIntervals) {
 			
-			let time: Double = Double(i) / Double(numberOfIntervals)
+			let time: T = T(i) / T(numberOfIntervals)
 			
-			let progress = timingFunction(time, period.startValue, period.endValue - period.startValue, period.duration)
-			
-			tweenValues.append(progress)
+            let progress = self.timingFunction(time.toDouble(), self.period.startValue.toDouble(), self.period.endValue.toDouble() - self.period.startValue.toDouble(), self.period.duration)
+            
+            let value = T(progress)
+            
+            tweenValues.append(value)
 		}
 		
 		return tweenValues
 	}
+    
+    public static func == (a: MKTweenOperation<T>, b: MKTweenOperation<T>) -> Bool {
+        
+        return a === b
+    }
+    
+    public static func != (a: MKTweenOperation<T>, b: MKTweenOperation<T>) -> Bool {
+        
+        return !(a == b)
+    }
 }
 
-public func == (a: MKTweenOperation, b: MKTweenOperation) -> Bool {
-    
-    return a === b
-}
+

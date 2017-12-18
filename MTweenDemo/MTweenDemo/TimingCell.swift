@@ -36,7 +36,7 @@ class TimingCell: UITableViewCell {
 		
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
 		
-		titleLabel.frame = CGRect(x: 10, y: 0, width: bounds.size.width, height: 25)
+		self.titleLabel.frame = CGRect(x: 10, y: 0, width: bounds.size.width, height: 25)
 	}
 
 	required init?(coder aDecoder: NSCoder) {
@@ -48,9 +48,9 @@ class TimingCell: UITableViewCell {
 		UIColor.white.setFill()
 		UIRectFill(rect)
 		
-		let period = MKTweenPeriod(duration:1)
+		let period = MKTweenPeriod<CGFloat>(duration:1.0)
 		
-		let operation = MKTweenOperation(period: period, timingFunction: timingFunction)
+		let operation = MKTweenOperation(period: period, timingFunction: self.timingFunction)
 		
 		UIColor(red: 230/255, green: 230/255, blue: 230/255, alpha: 1).setStroke()
 		
@@ -87,7 +87,7 @@ class TimingCell: UITableViewCell {
 			
 			let progress = tweenValues[i]
 			
-			path.addLine(to: CGPoint( x: xPos, y: newRect.origin.y + ( newRect.height - ( CGFloat(progress) * newRect.height ) ) ) )
+			path.addLine(to: CGPoint( x: xPos, y: newRect.origin.y + ( newRect.height - ( progress * newRect.height ) ) ) )
 		}
 		
 		UIColor(red: 255/255, green: 127/255, blue: 127/255, alpha: 1).setStroke()

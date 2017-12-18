@@ -16,10 +16,12 @@ public enum MKTweenTimerStyle : Int {
     case none
 }
 
+
+
 open class MKTween: NSObject {
     
-    fileprivate var tweenOperations = [MKTweenOperation]()
-    fileprivate var expiredTweenOperations = [MKTweenOperation]()
+    fileprivate var tweenOperations = [Any]()
+    fileprivate var expiredTweenOperations = [Any]()
     fileprivate var pausedTimeStamp : TimeInterval?
     fileprivate var displayLink : CADisplayLink?
     fileprivate var timer: Timer?
@@ -92,114 +94,143 @@ open class MKTween: NSObject {
         self.timerInterval = timerInterval ?? self.timerInterval
     }
     
-    open func addTweenOperation(_ operation: MKTweenOperation) {
+    open func addTweenOperation<T>(_ operation: MKTweenOperation<T>) {
         
         if operation.period.duration > 0 {
             
-            tweenOperations.append(operation)
+            self.tweenOperations.append(operation)
             
             start()
         }
     }
     
-    open func removeTweenOperation(_ operation: MKTweenOperation) {
+    open func removeTweenOperation<T>(_ operation: MKTweenOperation<T>) {
         
-        _ = tweenOperations.removeOperation(operation)
+        _ = self.tweenOperations.removeOperation(operation)
     }
     
     open func removeAllOperations() {
         
-        let copy = tweenOperations
-        
-        for operation in copy {
-            
-            removeTweenOperation(operation)
-        }
+        self.tweenOperations.removeAll()
     }
     
     open func hasOperations() -> Bool {
         
-        return tweenOperations.count > 0
+        return self.tweenOperations.count > 0
+    }
+    
+    fileprivate func progressOperation<T>(_ timeStamp: TimeInterval, operation: MKTweenOperation<T>) {
+        
+        let period = operation.period
+        
+        if let startTimeStamp = period.startTimeStamp {
+            
+            let timeToStart = startTimeStamp + period.delay
+            
+            if timeStamp >= timeToStart {
+                
+                let timeToEnd = startTimeStamp + period.delay + period.duration
+                
+                if timeStamp <= timeToEnd {
+                    
+                    let progress = operation.timingFunction(timeStamp - startTimeStamp - period.delay, period.startValue.toDouble(), period.endValue.toDouble() - period.startValue.toDouble(), period.duration)
+                    
+                    period.progress = T(progress)
+                    
+                } else {
+                    
+                    period.progress = period.endValue
+                    self.expiredTweenOperations.append(operation)
+                    removeTweenOperation(operation)
+                }
+                
+                period.updatedTimeStamp = timeStamp
+                
+                if let updateBlock = operation.updateBlock {
+                    
+                    if let dispatchQueue = operation.dispatchQueue {
+                        
+                        dispatchQueue.async(execute: { () -> Void in
+                            
+                            updateBlock(period)
+                        })
+                        
+                    } else {
+                        
+                        updateBlock(period)
+                    }
+                }
+            }
+            
+        } else {
+            
+            period.startTimeStamp = timeStamp
+        }
+    }
+    
+    fileprivate func expiryOperation<T>(_ operation: MKTweenOperation<T>) -> MKTweenOperation<T> {
+        
+        if let completeBlock = operation.completeBlock {
+            
+            if let dispatchQueue = operation.dispatchQueue {
+                
+                dispatchQueue.async(execute: { () -> Void in
+                    
+                    completeBlock()
+                })
+                
+            } else {
+                
+                completeBlock()
+            }
+        }
+        
+        return operation
     }
     
     open func update(_ timeStamp: TimeInterval) {
         
-        if tweenOperations.count == 0 {
+        if self.tweenOperations.count == 0 {
             
             stop()
             
             return
         }
         
-        let copy = tweenOperations
+        let copy = self.tweenOperations
         
         for operation in copy {
             
-            let period = operation.period
-            
-            if let startTimeStamp = period.startTimeStamp {
+            if let operation = operation as? MKTweenOperation<Double> {
                 
-                let timeToStart = startTimeStamp + period.delay
+                progressOperation(timeStamp, operation: operation)
                 
-                if timeStamp >= timeToStart {
-                    
-                    let timeToEnd = startTimeStamp + period.delay + period.duration
-                    
-                    if timeStamp <= timeToEnd {
-                        
-                        period.progress = operation.timingFunction(timeStamp - startTimeStamp - period.delay, period.startValue, period.endValue - period.startValue, period.duration)
-                        
-                    } else {
-                        
-                        period.progress = period.endValue
-                        expiredTweenOperations.append(operation)
-                        removeTweenOperation(operation)
-                    }
-                    
-                    period.updatedTimeStamp = timeStamp
-                    
-                    if let updateBlock = operation.updateBlock {
-                        
-                        if let dispatchQueue = operation.dispatchQueue {
-                            
-                            dispatchQueue.async(execute: { () -> Void in
-                                
-                                updateBlock(period)
-                            })
-                            
-                        } else {
-                            
-                            updateBlock(period)
-                        }
-                    }
-                }
+            } else if let operation = operation as? MKTweenOperation<Float> {
                 
-            } else {
+                progressOperation(timeStamp, operation: operation)
                 
-                period.startTimeStamp = timeStamp
+            } else if let operation = operation as? MKTweenOperation<Float80> {
+                
+                progressOperation(timeStamp, operation: operation)
             }
         }
         
-        let expiredCopy = expiredTweenOperations
+        let expiredCopy = self.expiredTweenOperations
         
         for operation in expiredCopy {
             
-            if let completeBlock = operation.completeBlock {
+            if let operation = operation as? MKTweenOperation<Double> {
                 
-                if let dispatchQueue = operation.dispatchQueue {
-                    
-                    dispatchQueue.async(execute: { () -> Void in
-                        
-                        completeBlock()
-                    })
-                    
-                } else {
-                    
-                    completeBlock()
-                }
+                 _ = self.expiredTweenOperations.removeOperation(expiryOperation(operation))
+                
+            } else if let operation = operation as? MKTweenOperation<Float> {
+                
+                _ = self.expiredTweenOperations.removeOperation(expiryOperation(operation))
+                
+            } else if let operation = operation as? MKTweenOperation<Float80> {
+                
+                _ = self.expiredTweenOperations.removeOperation(expiryOperation(operation))
             }
-            
-            _ = expiredTweenOperations.removeOperation(operation)
         }
     }
     
@@ -215,80 +246,86 @@ open class MKTween: NSObject {
     
     fileprivate func handleTick(_ timeStamp: TimeInterval) {
         
-        if busy {
+        if self.busy {
             
             return
         }
         
-        busy = true
+        self.busy = true
         
         update(timeStamp)
         
-        busy = false
+        self.busy = false
     }
     
     fileprivate func start() {
         
-        if tweenOperations.count == 0 || paused {
+        if self.tweenOperations.count == 0 || self.paused {
             
             return
         }
         
-        if displayLink == nil && (timerStyle == .default || timerStyle == .displayLink) {
+        if self.displayLink == nil && (self.timerStyle == .default || self.timerStyle == .displayLink) {
             
-            displayLink = UIScreen.main.displayLink(withTarget: self, selector: #selector(MKTween.handleDisplayLink(_:)))
-            displayLink!.frameInterval = frameInterval
-            displayLink!.add(to: RunLoop.main, forMode: RunLoopMode.commonModes)
+            self.displayLink = UIScreen.main.displayLink(withTarget: self, selector: #selector(MKTween.handleDisplayLink(_:)))
+            self.displayLink!.frameInterval = self.frameInterval
+            self.displayLink!.add(to: RunLoop.main, forMode: RunLoopMode.commonModes)
             
         } else if timer == nil && timerStyle == .timer {
             
-            timer = Timer.scheduledTimer(timeInterval: timerInterval, target: self, selector: #selector(MKTween.handleTimer(_:)), userInfo: nil, repeats: true)
-            timer!.fire()
+            self.timer = Timer.scheduledTimer(timeInterval: self.timerInterval, target: self, selector: #selector(MKTween.handleTimer(_:)), userInfo: nil, repeats: true)
+            self.timer!.fire()
         }
     }
     
     fileprivate func stop() {
         
-        if displayLink != nil {
+        if self.displayLink != nil {
             
-            displayLink!.isPaused = true
-            displayLink!.remove(from: RunLoop.main, forMode: RunLoopMode.commonModes)
-            displayLink = nil
+            self.displayLink!.isPaused = true
+            self.displayLink!.remove(from: RunLoop.main, forMode: RunLoopMode.commonModes)
+            self.displayLink = nil
         }
         
-        if timer != nil {
+        if self.timer != nil {
             
-            timer!.invalidate()
-            timer = nil
+            self.timer!.invalidate()
+            self.timer = nil
         }
     }
     
     fileprivate func pause() {
         
-        if paused && (timer != nil || displayLink != nil) {
+        if self.paused && (self.timer != nil || self.displayLink != nil) {
             
-            pausedTimeStamp = CACurrentMediaTime()
+            self.pausedTimeStamp = CACurrentMediaTime()
             
             stop()
             
-        } else if timer == nil && displayLink == nil {
+        } else if self.timer == nil && self.displayLink == nil {
             
-            if let pausedTimeStamp = pausedTimeStamp {
+            if let pausedTimeStamp = self.pausedTimeStamp {
                 
                 let diff = CACurrentMediaTime() - pausedTimeStamp
                 
-                let operationsStarted = tweenOperations.filter({ (operation) -> Bool in
+                for operation in self.tweenOperations {
                     
-                    return operation.period.startTimeStamp != nil
-                })
-                
-                for operation in operationsStarted {
-                    
-                    operation.period.startTimeStamp! += diff
+                    if let operation = operation as? MKTweenOperation<Double>, operation.period.startTimeStamp != nil {
+                        
+                        operation.period.startTimeStamp! += diff
+                        
+                    } else if let operation = operation as? MKTweenOperation<Float>, operation.period.startTimeStamp != nil {
+                        
+                        operation.period.startTimeStamp! += diff
+                        
+                    } else if let operation = operation as? MKTweenOperation<Float80>, operation.period.startTimeStamp != nil {
+                        
+                        operation.period.startTimeStamp! += diff
+                    }
                 }
             }
             
-            pausedTimeStamp = nil
+            self.pausedTimeStamp = nil
             
             start()
         }

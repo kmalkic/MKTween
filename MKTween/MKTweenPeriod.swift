@@ -6,18 +6,18 @@
 //  Copyright © 2016 Malkic Kevin. All rights reserved.
 //
 
-open class MKTweenPeriod {
+open class MKTweenPeriod<T: BinaryFloatingPoint> {
 	
 	open let duration: TimeInterval
 	open let delay: TimeInterval
-	internal(set) open var startValue: Double
-	internal(set) open var endValue: Double
-	internal(set) open var progress: Double = 0
+	internal(set) open var startValue: T
+	internal(set) open var endValue: T
+	internal(set) open var progress: T = 0
 	
 	internal var startTimeStamp: TimeInterval?
 	internal var updatedTimeStamp: TimeInterval?
 	
-	public init(duration: TimeInterval, delay: TimeInterval = 0, startValue: Double = 0, endValue: Double = 1) {
+    public init(duration: TimeInterval, delay: TimeInterval = 0.0, startValue: T = 0, endValue: T = 1) {
 		
 		self.duration = duration
 		self.delay = delay
