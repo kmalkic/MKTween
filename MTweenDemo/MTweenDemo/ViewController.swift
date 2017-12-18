@@ -91,21 +91,17 @@ extension ViewController : UITableViewDelegate {
         
         let timingFunction = self.timingFunctions[indexPath.row]
         
-        let period = MKTweenPeriod(duration: 2, delay: 0, startValue: 0, endValue: 1)
-        
         DispatchQueue.main.async(execute: { () -> Void in
+
+            let tweenName = "tween action"
             
-            let operation = MKTweenOperation(period: period, updateBlock: { (period) -> () in
+            _ = MKTween.shared.removeTweenOperationByName(tweenName)
+
+            _ = MKTween.shared.value(duration: 2, startValue: 0, endValue: 1).setUpdateBlock({ (period) in
                 
-                self.headerView.circleView.center = CGPoint(x: newRect.origin.x + (newRect.width * CGFloat(period.progress)), y: (headerHeight/2))
+                self.headerView.circleView.center = CGPoint(x: newRect.origin.x + (newRect.width * period.progress), y: (headerHeight/2))
                 
-            }, completeBlock: { () -> () in
-                
-                
-            }, timingFunction: timingFunction)
-            
-            MKTween.shared.removeAllOperations()
-            MKTween.shared.addTweenOperation(operation)
+            }).setTimingFunction(timingFunction).setName(tweenName)
         })
 	}
 }

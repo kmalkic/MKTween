@@ -11,15 +11,15 @@ open class MKTweenOperation<T>: Equatable where T: BinaryFloatingPoint {
     public typealias MKTweenUpdateBlock = (_ period: MKTweenPeriod<T>) -> ()
     public typealias MKTweenCompleteBlock = () -> ()
     
-	internal(set) open var period: MKTweenPeriod<T>
-	open let timingFunction: MKTweenTimingFunction
-	let updateBlock: MKTweenUpdateBlock?
-	let completeBlock: MKTweenCompleteBlock?
+	private(set) public var period: MKTweenPeriod<T>
+	private(set) public var timingFunction: MKTweenTimingFunction
+	private(set) public var updateBlock: MKTweenUpdateBlock?
+	private(set) public var completeBlock: MKTweenCompleteBlock?
 
-	let name: String?
+	private(set) public var name: String?
 
-	let dispatchQueue: DispatchQueue?
-	
+	private(set) public var dispatchQueue: DispatchQueue?
+    
 	public init(name: String? = nil, period: MKTweenPeriod<T>, updateBlock: MKTweenUpdateBlock? = nil, completeBlock: MKTweenCompleteBlock? = nil, timingFunction: @escaping MKTweenTimingFunction = MKTweenTiming.Linear, dispatchQueue: DispatchQueue? = DispatchQueue.main) {
 		
 		self.name = name
@@ -35,14 +35,14 @@ open class MKTweenOperation<T>: Equatable where T: BinaryFloatingPoint {
 		let startValue = self.period.startValue
 		let endValue = self.period.endValue
 		
-		let timeDone = (self.period.progress > 0) ? (self.period.duration * TimeInterval(self.period.progress)) / TimeInterval(endValue) : 0
+		let timeDone = (self.period.duration * TimeInterval(self.period.progress)) / TimeInterval(endValue)
 		
-		self.period.startValue = endValue
-		self.period.endValue = startValue
+		self.period.setStartValue(endValue)
+		self.period.setEndValue(startValue)
 		
 		if let updatedTimeStamp = self.period.updatedTimeStamp {
 			
-			self.period.startTimeStamp = updatedTimeStamp - (self.period.duration - timeDone + self.period.delay)
+			self.period.setStartTimeStamp(updatedTimeStamp - (self.period.duration - timeDone + self.period.delay))
 		}
 	}
 	
@@ -72,6 +72,43 @@ open class MKTweenOperation<T>: Equatable where T: BinaryFloatingPoint {
     public static func != (a: MKTweenOperation<T>, b: MKTweenOperation<T>) -> Bool {
         
         return !(a == b)
+    }
+    
+    //Public Setters
+    
+    public func setName(_ name: String) -> MKTweenOperation<T> {
+        
+        self.name = name
+        
+        return self
+    }
+    
+    public func setDelay(_ delay: TimeInterval) -> MKTweenOperation<T> {
+        
+        self.period.setDelay(delay)
+        
+        return self
+    }
+    
+    public func setTimingFunction(_ timingFunction: @escaping MKTweenTimingFunction) -> MKTweenOperation<T> {
+        
+        self.timingFunction = timingFunction
+        
+        return self
+    }
+    
+    public func setUpdateBlock(_ updateBlock: @escaping MKTweenUpdateBlock) -> MKTweenOperation<T> {
+        
+        self.updateBlock = updateBlock
+        
+        return self
+    }
+    
+    public func setCompleteBlock(_ completeBlock: @escaping MKTweenCompleteBlock) -> MKTweenOperation<T> {
+        
+        self.completeBlock = completeBlock
+        
+        return self
     }
 }
 

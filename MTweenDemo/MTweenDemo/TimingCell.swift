@@ -50,8 +50,8 @@ class TimingCell: UITableViewCell {
 		
 		let period = MKTweenPeriod<CGFloat>(duration:1.0)
 		
-		let operation = MKTweenOperation(period: period, timingFunction: self.timingFunction)
-		
+		let operation = MKTweenOperation(period: period, timingFunction: self.timingFunction).setName("cell curve drawing")
+        
 		UIColor(red: 230/255, green: 230/255, blue: 230/255, alpha: 1).setStroke()
 		
 		let topMargins: CGFloat = 25

@@ -101,12 +101,51 @@ open class MKTween: NSObject {
             self.tweenOperations.append(operation)
             
             start()
+            
+        } else {
+            
+            print("please set a duration")
         }
     }
     
     open func removeTweenOperation<T>(_ operation: MKTweenOperation<T>) {
         
         _ = self.tweenOperations.removeOperation(operation)
+    }
+    
+    open func removeTweenOperationByName(_ name: String) -> Bool {
+        
+        let copy = self.tweenOperations
+                
+        for operation in copy {
+            
+            if let operation = operation as? MKTweenOperation<Double>, operation.name == name {
+                
+                removeTweenOperation(operation)
+                
+                return true
+                
+            } else if let operation = operation as? MKTweenOperation<CGFloat>, operation.name == name {
+                
+                removeTweenOperation(operation)
+                
+                return true
+                
+            } else if let operation = operation as? MKTweenOperation<Float>, operation.name == name {
+                
+                removeTweenOperation(operation)
+                
+                return true
+                
+            } else if let operation = operation as? MKTweenOperation<Float80>, operation.name == name {
+                
+                removeTweenOperation(operation)
+                
+                return true
+            }
+        }
+        
+        return false
     }
     
     open func removeAllOperations() {
@@ -125,13 +164,9 @@ open class MKTween: NSObject {
         
         if let startTimeStamp = period.startTimeStamp {
             
-            let timeToStart = startTimeStamp + period.delay
-            
-            if timeStamp >= timeToStart {
+            if period.hasStarted(timeStamp) {
                 
-                let timeToEnd = startTimeStamp + period.delay + period.duration
-                
-                if timeStamp <= timeToEnd {
+                if !period.hasEnded(timeStamp) {
                     
                     let progress = operation.timingFunction(timeStamp - startTimeStamp - period.delay, period.startValue.toDouble(), period.endValue.toDouble() - period.startValue.toDouble(), period.duration)
                     
@@ -164,7 +199,7 @@ open class MKTween: NSObject {
             
         } else {
             
-            period.startTimeStamp = timeStamp
+            period.setStartTimeStamp(timeStamp)
         }
     }
     
@@ -205,6 +240,10 @@ open class MKTween: NSObject {
                 
                 progressOperation(timeStamp, operation: operation)
                 
+            } else if let operation = operation as? MKTweenOperation<CGFloat> {
+                
+                progressOperation(timeStamp, operation: operation)
+                
             } else if let operation = operation as? MKTweenOperation<Float> {
                 
                 progressOperation(timeStamp, operation: operation)
@@ -222,6 +261,10 @@ open class MKTween: NSObject {
             if let operation = operation as? MKTweenOperation<Double> {
                 
                  _ = self.expiredTweenOperations.removeOperation(expiryOperation(operation))
+                
+            } else if let operation = operation as? MKTweenOperation<CGFloat> {
+                
+                _ = self.expiredTweenOperations.removeOperation(expiryOperation(operation))
                 
             } else if let operation = operation as? MKTweenOperation<Float> {
                 
@@ -310,17 +353,21 @@ open class MKTween: NSObject {
                 
                 for operation in self.tweenOperations {
                     
-                    if let operation = operation as? MKTweenOperation<Double>, operation.period.startTimeStamp != nil {
+                    if let operation = operation as? MKTweenOperation<Double>, let startTimeStamp = operation.period.startTimeStamp {
                         
-                        operation.period.startTimeStamp! += diff
+                        operation.period.setStartTimeStamp(startTimeStamp + diff)
+                     
+                    } else if let operation = operation as? MKTweenOperation<CGFloat>, let startTimeStamp = operation.period.startTimeStamp {
                         
-                    } else if let operation = operation as? MKTweenOperation<Float>, operation.period.startTimeStamp != nil {
+                        operation.period.setStartTimeStamp(startTimeStamp + diff)
                         
-                        operation.period.startTimeStamp! += diff
+                    } else if let operation = operation as? MKTweenOperation<Float>, let startTimeStamp = operation.period.startTimeStamp {
                         
-                    } else if let operation = operation as? MKTweenOperation<Float80>, operation.period.startTimeStamp != nil {
+                        operation.period.setStartTimeStamp(startTimeStamp + diff)
                         
-                        operation.period.startTimeStamp! += diff
+                    } else if let operation = operation as? MKTweenOperation<Float80>, let startTimeStamp = operation.period.startTimeStamp{
+                        
+                        operation.period.setStartTimeStamp(startTimeStamp + diff)
                     }
                 }
             }
@@ -329,5 +376,18 @@ open class MKTween: NSObject {
             
             start()
         }
+    }
+    
+    //Convience functions
+    
+    public func value<T: BinaryFloatingPoint>(duration: TimeInterval, startValue: T = 0, endValue: T = 1) -> MKTweenOperation<T> {
+    
+        let period = MKTweenPeriod(duration: duration, delay: 0, startValue: startValue, endValue: endValue)
+        
+        let operation = MKTweenOperation(period: period)
+        
+        addTweenOperation(operation)
+        
+        return operation
     }
 }
