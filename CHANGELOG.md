@@ -1,3 +1,9 @@
+## 2.2 (December 18, 2017)
+
+Features:
+
+- Using generics to include BinaryFloatingPoint protocols, such as Double/Float/CGFloat/Float80.
+
 ## 2.1 (December 13, 2017)
 
 Features:

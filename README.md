@@ -48,7 +48,7 @@ MKTweenTiming.SineInOut
 
 ### Example of use:
 ```swift
-let period = MKTweenPeriod(duration: 2, delay: 0, startValue: 0, endValue: 1)
+let period = MKTweenPeriod<CGFloat>(duration: 2.0, delay: 0.0, startValue: 0.0, endValue: 1.0)
 
 let operation = MKTweenOperation(period: period, updateBlock: { (period) -> () in
     
@@ -90,7 +90,7 @@ public var timerInterval: NSTimeInterval = 1.0/60.0 // Base on a 60 fps rate by 
 
 **Get tween values without using ticks or MKTween**
 ```swift
-let period = MKTweenPeriod(duration:1) // will default to startValue 0 and endValue to 1
+let period = MKTweenPeriod<CGFloat>(duration:1) // will default to startValue 0 and endValue to 1
 let operation = MKTweenOperation(period: period, timingFunction: MKTweenTiming.BackInOut)
 let tweenValues = operation.tweenValues(UInt(count))
 
@@ -133,7 +133,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '9.0'
 use_frameworks!
 
-pod 'MKTween', '~> 2.1'
+pod 'MKTween', '~> 2.2'
 ```
 
 Then, run the following command:
