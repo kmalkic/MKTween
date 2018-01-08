@@ -1,3 +1,9 @@
+## 2.3 (January 8, 2018)
+
+Features:
+
+- Some refactoring and fixes
+
 ## 2.2 (December 18, 2017)
 
 Features:
