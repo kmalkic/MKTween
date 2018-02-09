@@ -1,3 +1,7 @@
+## 2.3.1 (February 9, 2018)
+
+- Removed Float80
+
 ## 2.3 (January 8, 2018)
 
 Features:

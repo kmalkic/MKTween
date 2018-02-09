@@ -136,12 +136,6 @@ open class MKTween: NSObject {
                 removeTweenOperation(operation)
                 
                 return true
-                
-            } else if let operation = operation as? MKTweenOperation<Float80>, operation.name == name {
-                
-                removeTweenOperation(operation)
-                
-                return true
             }
         }
         
@@ -247,10 +241,6 @@ open class MKTween: NSObject {
             } else if let operation = operation as? MKTweenOperation<Float> {
                 
                 progressOperation(timeStamp, operation: operation)
-                
-            } else if let operation = operation as? MKTweenOperation<Float80> {
-                
-                progressOperation(timeStamp, operation: operation)
             }
         }
         
@@ -267,10 +257,6 @@ open class MKTween: NSObject {
                 _ = self.expiredTweenOperations.removeOperation(expiryOperation(operation))
                 
             } else if let operation = operation as? MKTweenOperation<Float> {
-                
-                _ = self.expiredTweenOperations.removeOperation(expiryOperation(operation))
-                
-            } else if let operation = operation as? MKTweenOperation<Float80> {
                 
                 _ = self.expiredTweenOperations.removeOperation(expiryOperation(operation))
             }
@@ -362,10 +348,6 @@ open class MKTween: NSObject {
                         operation.period.setStartTimeStamp(startTimeStamp + diff)
                         
                     } else if let operation = operation as? MKTweenOperation<Float>, let startTimeStamp = operation.period.startTimeStamp {
-                        
-                        operation.period.setStartTimeStamp(startTimeStamp + diff)
-                        
-                    } else if let operation = operation as? MKTweenOperation<Float80>, let startTimeStamp = operation.period.startTimeStamp{
                         
                         operation.period.setStartTimeStamp(startTimeStamp + diff)
                     }

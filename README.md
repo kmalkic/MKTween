@@ -133,7 +133,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '9.0'
 use_frameworks!
 
-pod 'MKTween', '~> 2.3'
+pod 'MKTween', '~> 2.3.1'
 ```
 
 Then, run the following command:

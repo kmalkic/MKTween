@@ -30,10 +30,6 @@ extension Double {
             
             self.init(value)
             
-        } else if let value = other as? Float80 {
-            
-            self.init(value)
-            
         } else {
             
             self.init(0)
@@ -62,10 +58,6 @@ extension Float {
             
             self.init(value)
             
-        } else if let value = other as? Float80 {
-            
-            self.init(value)
-            
         } else {
             
             self.init(0)
@@ -86,37 +78,6 @@ extension CGFloat {
             self.init(value)
             
         } else if let value = other as? CGFloat {
-            
-            self.init(value)
-            
-        } else if let value = other as? Float80 {
-            
-            self.init(value)
-            
-        } else {
-            
-            self.init(0)
-        }
-    }
-}
-
-extension Float80 {
-    
-    public init<T: BinaryFloatingPoint>(_ other: T) {
-        
-        if let value = other as? Double {
-            
-            self.init(value)
-            
-        } else if let value = other as? Float {
-            
-            self.init(value)
-            
-        } else if let value = other as? CGFloat {
-            
-            self.init(value)
-            
-        } else if let value = other as? Float80 {
             
             self.init(value)
             
