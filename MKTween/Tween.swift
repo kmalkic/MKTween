@@ -133,7 +133,7 @@ public class Tween: NSObject {
         let period = operation.period
         
         guard let startTimeStamp = period.startTimeStamp else {
-            period.change(startTimeStamp: timeStamp)
+            period.set(startTimeStamp: timeStamp)
             return
         }
             
@@ -314,7 +314,7 @@ public class Tween: NSObject {
             
             if let startTimeStamp = operation.period.startTimeStamp {
                 
-                operation.period.change(startTimeStamp: startTimeStamp + time)
+                operation.period.set(startTimeStamp: startTimeStamp + time)
             }
         }
         

@@ -31,12 +31,12 @@ public class Operation<T>: Equatable where T: Tweenable {
 		
 		let timePassed = self.period.timePassed()
 		
-		self.period.change(end: end)
-		self.period.change(start: start)
+		self.period.set(end: end)
+		self.period.set(start: start)
 		
 		if let updatedTimeStamp = self.period.updatedTimeStamp {
 			
-            self.period.change(startTimeStamp: updatedTimeStamp - (self.period.duration - timePassed + self.period.delay))
+            self.period.set(startTimeStamp: updatedTimeStamp - (self.period.duration - timePassed + self.period.delay))
 		}
 	}
 	
@@ -72,35 +72,35 @@ public class Operation<T>: Equatable where T: Tweenable {
     
     //Public Setters
     
-    public func change(name: String) -> Operation<T> {
+    public func set(name: String) -> Operation<T> {
         
         self.name = name
         
         return self
     }
     
-    public func change(delay: TimeInterval) -> Operation<T> {
+    public func set(delay: TimeInterval) -> Operation<T> {
         
-        self.period.change(delay: delay)
+        self.period.set(delay: delay)
         
         return self
     }
     
-    public func change(timingFunction: @escaping TimingFunction) -> Operation<T> {
+    public func set(timingFunction: @escaping TimingFunction) -> Operation<T> {
         
         self.timingFunction = timingFunction
         
         return self
     }
     
-    public func change(update block: @escaping UpdateBlock) -> Operation<T> {
+    public func set(update block: @escaping UpdateBlock) -> Operation<T> {
         
         self.updateBlock = block
         
         return self
     }
     
-    public func change(complete block: @escaping CompleteBlock) -> Operation<T> {
+    public func set(complete block: @escaping CompleteBlock) -> Operation<T> {
         
         self.completeBlock = block
         

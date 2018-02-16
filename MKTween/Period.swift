@@ -18,19 +18,19 @@ public class Period<T> where T: Tweenable {
 		self.end = end
 	}
     
-    internal func change(startTimeStamp: TimeInterval) {
+    internal func set(startTimeStamp: TimeInterval) {
         self.startTimeStamp = startTimeStamp
     }
     
-    public func change(start: T) {
+    public func set(start: T) {
         self.start = start
     }
     
-    public func change(end: T) {
+    public func set(end: T) {
         self.end = end
     }
     
-    public func change(delay: TimeInterval) {
+    public func set(delay: TimeInterval) {
         self.delay = delay
     }
     
