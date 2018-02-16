@@ -10,7 +10,7 @@ public class Period<T> where T: Tweenable {
 	private(set) var startTimeStamp: TimeInterval?
 	internal var updatedTimeStamp: TimeInterval?
 	
-    public init(duration: TimeInterval, delay: TimeInterval = 0.0, start: T, end: T) {
+    public init(start: T, end: T, duration: TimeInterval = 1, delay: TimeInterval = 0.0) {
 		
 		self.duration = duration
 		self.delay = delay
@@ -35,7 +35,11 @@ public class Period<T> where T: Tweenable {
     }
     
     public func timePassed() -> TimeInterval {
-        return self.duration * T.progression(start: self.start, progress: self.progress, end: self.end)
+        guard let startTimeStamp = self.startTimeStamp,
+            let updatedTimeStamp = self.updatedTimeStamp
+            else { return 0 }
+        
+        return updatedTimeStamp - startTimeStamp
     }
     
     public func hasStarted(_ timeStamp: TimeInterval) -> Bool {

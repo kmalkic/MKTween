@@ -62,6 +62,7 @@ public class Tween: NSObject {
     }
     
     public init( _ timerStyle: TimerStyle = .default, frameInterval: Int? = nil, timerInterval: TimeInterval? = nil) {
+        
         super.init()
         self.timerStyle = timerStyle
         self.frameInterval = frameInterval ?? self.frameInterval
@@ -90,6 +91,8 @@ public class Tween: NSObject {
                 return op == operation as? Operation<Float>
             case let .double(op):
                 return op == operation as? Operation<Double>
+            case let .cgrect(op):
+                return op == operation as? Operation<CGRect>
             }
         })
             else { return false }
@@ -110,6 +113,8 @@ public class Tween: NSObject {
             case let .float(operation) where operation.name == name:
                 return removeTweenOperation(operation)
             case let .double(operation) where operation.name == name:
+                return removeTweenOperation(operation)
+            case let .cgrect(operation) where operation.name == name:
                 return removeTweenOperation(operation)
             default:
                 break
@@ -215,6 +220,10 @@ public class Tween: NSObject {
                 if progressOperation(timeStamp, operation: operation) {
                     remove(operation)
                 }
+            case let .cgrect(operation):
+                if progressOperation(timeStamp, operation: operation) {
+                    remove(operation)
+                }
             }
         }
     }
@@ -307,15 +316,17 @@ public class Tween: NSObject {
                 pause(operation, time: diff)
             case let .double(operation):
                 pause(operation, time: diff)
+            case let .cgrect(operation):
+                pause(operation, time: diff)
             }
         }
     }
     
     //Convience functions
     
-    public func value<T: BinaryFloatingPoint>(duration: TimeInterval, start: T = 0, end: T = 1) -> Operation<T> {
+    public func value<T: Tweenable>(start: T, end: T, duration: TimeInterval = 1) -> Operation<T> {
         
-        let period = Period(duration: duration, delay: 0, start: start, end: end)
+        let period = Period(start: start, end: end, duration: duration, delay: 0)
         let operation = Operation(period: period)
         addTweenOperation(operation)
         return operation

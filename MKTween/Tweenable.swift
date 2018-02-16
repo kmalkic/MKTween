@@ -3,13 +3,13 @@ enum TweenableOperation {
     case cgfloat(Operation<CGFloat>)
     case float(Operation<Float>)
     case double(Operation<Double>)
+    case cgrect(Operation<CGRect>)
 }
 
 public protocol Tweenable {
     
     static var defaultValue: Self { get }
     static func evaluate(start: Self, end: Self, time: TimeInterval, duration: TimeInterval, timingFunction: TimingFunction) -> Self
-    static func progression(start: Self, progress: Self, end: Self) -> Double
 }
 
 class TweenableMapper {
@@ -22,10 +22,14 @@ class TweenableMapper {
             return .cgfloat(operation)
         } else if let operation = operation as? Operation<Float> {
             return .float(operation)
+        } else if let operation = operation as? Operation<CGRect> {
+            return .cgrect(operation)
         }
+        print("Tweenable not mapped yet")
         return nil
     }
 }
+
 
 extension Double: Tweenable {
     
@@ -35,10 +39,6 @@ extension Double: Tweenable {
     
     public static func evaluate(start: Double, end: Double, time: TimeInterval, duration: TimeInterval, timingFunction: TimingFunction) -> Double {
         return timingFunction(time, start, end - start, duration)
-    }
-
-    public static func progression(start: Double, progress: Double, end: Double) -> Double {
-        return progress / (end - start)
     }
 }
 
@@ -51,10 +51,6 @@ extension Float: Tweenable {
     public static func evaluate(start: Float, end: Float, time: TimeInterval, duration: TimeInterval, timingFunction: TimingFunction) -> Float {
         return Float(timingFunction(time, Double(start), Double(end - start), duration))
     }
-    
-    public static func progression(start: Float, progress: Float, end: Float) -> Double {
-        return Double(progress / (end - start))
-    }
 }
 
 extension CGFloat: Tweenable {
@@ -66,8 +62,19 @@ extension CGFloat: Tweenable {
     public static func evaluate(start: CGFloat, end: CGFloat, time: TimeInterval, duration: TimeInterval, timingFunction: TimingFunction) -> CGFloat {
         return CGFloat(timingFunction(time, Double(start), Double(end - start), duration))
     }
+}
+
+extension CGRect: Tweenable {
     
-    public static func progression(start: CGFloat, progress: CGFloat, end: CGFloat) -> Double {
-        return Double(progress / (end - start))
+    public static var defaultValue: CGRect {
+        return .zero
+    }
+    
+    public static func evaluate(start: CGRect, end: CGRect, time: TimeInterval, duration: TimeInterval, timingFunction: TimingFunction) -> CGRect {
+        return CGRect(x: CGFloat(timingFunction(time, Double(start.origin.x), Double(end.origin.x - start.origin.x), duration)),
+                      y: CGFloat(timingFunction(time, Double(start.origin.y), Double(end.origin.y - start.origin.y), duration)),
+                      width: CGFloat(timingFunction(time, Double(start.size.width), Double(end.size.width - start.size.width), duration)),
+                      height: CGFloat(timingFunction(time, Double(start.size.height), Double(end.size.height - start.size.height), duration)))
     }
 }
+

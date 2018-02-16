@@ -97,7 +97,7 @@ extension ViewController : UITableViewDelegate {
             
             _ = Tween.shared.removeTweenOperationByName(tweenName)
 
-            _ = Tween.shared.value(duration: 2, start: 0, end: 1).set(update: { (period) in
+            _ = Tween.shared.value(start: 0, end: 1, duration: 2).set(update: { (period) in
                 
                 self.headerView.circleView.center = CGPoint(x: newRect.origin.x + (newRect.width * period.progress), y: (headerHeight/2))
                 
