@@ -9,10 +9,10 @@
 /* Begin PBXBuildFile section */
 		0A48A1211FE2C3EF007A610E /* BinaryFloatingPointExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A48A1201FE2C3EF007A610E /* BinaryFloatingPointExtension.swift */; };
 		491C31C71C56D66100910389 /* MKTween.h in Headers */ = {isa = PBXBuildFile; fileRef = 491C31C61C56D66100910389 /* MKTween.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		491C31D11C56D67100910389 /* MKTween.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491C31CE1C56D67100910389 /* MKTween.swift */; };
-		491C31D21C56D67100910389 /* MKTweenPeriod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491C31CF1C56D67100910389 /* MKTweenPeriod.swift */; };
-		491C31D31C56D67100910389 /* MKTweenTimingFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491C31D01C56D67100910389 /* MKTweenTimingFunctions.swift */; };
-		491C31D51C56D7B600910389 /* MKTweenOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491C31D41C56D7B600910389 /* MKTweenOperation.swift */; };
+		491C31D11C56D67100910389 /* Tween.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491C31CE1C56D67100910389 /* Tween.swift */; };
+		491C31D21C56D67100910389 /* Period.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491C31CF1C56D67100910389 /* Period.swift */; };
+		491C31D31C56D67100910389 /* TimingFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491C31D01C56D67100910389 /* TimingFunctions.swift */; };
+		491C31D51C56D7B600910389 /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491C31D41C56D7B600910389 /* Operation.swift */; };
 		491C31D71C56E59000910389 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491C31D61C56E59000910389 /* ArrayExtension.swift */; };
 /* End PBXBuildFile section */
 
@@ -21,10 +21,10 @@
 		491C31C31C56D66100910389 /* MKTween.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MKTween.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		491C31C61C56D66100910389 /* MKTween.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MKTween.h; sourceTree = "<group>"; };
 		491C31C81C56D66100910389 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		491C31CE1C56D67100910389 /* MKTween.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKTween.swift; sourceTree = "<group>"; };
-		491C31CF1C56D67100910389 /* MKTweenPeriod.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKTweenPeriod.swift; sourceTree = "<group>"; };
-		491C31D01C56D67100910389 /* MKTweenTimingFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKTweenTimingFunctions.swift; sourceTree = "<group>"; };
-		491C31D41C56D7B600910389 /* MKTweenOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKTweenOperation.swift; sourceTree = "<group>"; };
+		491C31CE1C56D67100910389 /* Tween.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tween.swift; sourceTree = "<group>"; };
+		491C31CF1C56D67100910389 /* Period.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Period.swift; sourceTree = "<group>"; };
+		491C31D01C56D67100910389 /* TimingFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimingFunctions.swift; sourceTree = "<group>"; };
+		491C31D41C56D7B600910389 /* Operation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
 		491C31D61C56E59000910389 /* ArrayExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -59,10 +59,10 @@
 			isa = PBXGroup;
 			children = (
 				491C31C61C56D66100910389 /* MKTween.h */,
-				491C31CE1C56D67100910389 /* MKTween.swift */,
-				491C31CF1C56D67100910389 /* MKTweenPeriod.swift */,
-				491C31D41C56D7B600910389 /* MKTweenOperation.swift */,
-				491C31D01C56D67100910389 /* MKTweenTimingFunctions.swift */,
+				491C31CE1C56D67100910389 /* Tween.swift */,
+				491C31CF1C56D67100910389 /* Period.swift */,
+				491C31D41C56D7B600910389 /* Operation.swift */,
+				491C31D01C56D67100910389 /* TimingFunctions.swift */,
 				491C31D61C56E59000910389 /* ArrayExtension.swift */,
 				0A48A1201FE2C3EF007A610E /* BinaryFloatingPointExtension.swift */,
 				491C31C81C56D66100910389 /* Info.plist */,
@@ -150,11 +150,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				491C31D71C56E59000910389 /* ArrayExtension.swift in Sources */,
-				491C31D21C56D67100910389 /* MKTweenPeriod.swift in Sources */,
-				491C31D51C56D7B600910389 /* MKTweenOperation.swift in Sources */,
+				491C31D21C56D67100910389 /* Period.swift in Sources */,
+				491C31D51C56D7B600910389 /* Operation.swift in Sources */,
 				0A48A1211FE2C3EF007A610E /* BinaryFloatingPointExtension.swift in Sources */,
-				491C31D31C56D67100910389 /* MKTweenTimingFunctions.swift in Sources */,
-				491C31D11C56D67100910389 /* MKTween.swift in Sources */,
+				491C31D31C56D67100910389 /* TimingFunctions.swift in Sources */,
+				491C31D11C56D67100910389 /* Tween.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

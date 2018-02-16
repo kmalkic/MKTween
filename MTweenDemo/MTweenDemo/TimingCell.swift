@@ -11,7 +11,7 @@ import MKTween
 
 class TimingCell: UITableViewCell {
 	
-	let tween = MKTween(.none)
+	let tween = Tween(.none)
 	
 	lazy var titleLabel : UILabel = {
 		
@@ -24,7 +24,7 @@ class TimingCell: UITableViewCell {
 		return label
 	}()
 	
-	var timingFunction = MKTweenTiming.Linear {
+	var timingFunction = Timing.Linear {
 		
 		didSet {
 			
@@ -48,9 +48,9 @@ class TimingCell: UITableViewCell {
 		UIColor.white.setFill()
 		UIRectFill(rect)
 		
-		let period = MKTweenPeriod<CGFloat>(duration:1.0)
+		let period = Period<CGFloat>(duration:1.0)
 		
-		let operation = MKTweenOperation(period: period, timingFunction: self.timingFunction).setName("cell curve drawing")
+		let operation = Operation(period: period, timingFunction: self.timingFunction).setName("cell curve drawing")
         
 		UIColor(red: 230/255, green: 230/255, blue: 230/255, alpha: 1).setStroke()
 		

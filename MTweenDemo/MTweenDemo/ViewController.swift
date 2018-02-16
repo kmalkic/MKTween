@@ -21,7 +21,7 @@ class ViewController: UIViewController {
 	
 	let headerView = HeaderView()
 	
-	var timingFunctions = [MKTweenTimingFunction]()
+	var timingFunctions = [TimingFunction]()
 	var timingFunctionTitles = [String]()
 	
 	override func loadView() {
@@ -44,37 +44,37 @@ class ViewController: UIViewController {
 	
 	func constructArray() {
 	
-		timingFunctions.append(MKTweenTiming.Linear); self.timingFunctionTitles.append("Linear")
-		timingFunctions.append(MKTweenTiming.BackOut); self.timingFunctionTitles.append("BackOut")
-		timingFunctions.append(MKTweenTiming.BackIn); self.timingFunctionTitles.append("BackIn")
-		timingFunctions.append(MKTweenTiming.BackInOut); self.timingFunctionTitles.append("BackInOut")
-		timingFunctions.append(MKTweenTiming.BounceOut); self.timingFunctionTitles.append("BounceOut")
-		timingFunctions.append(MKTweenTiming.BounceIn); self.timingFunctionTitles.append("BounceIn")
-		timingFunctions.append(MKTweenTiming.BounceInOut); self.timingFunctionTitles.append("BounceInOut")
-		timingFunctions.append(MKTweenTiming.CircleOut); self.timingFunctionTitles.append("CircleOut")
-		timingFunctions.append(MKTweenTiming.CircleIn); self.timingFunctionTitles.append("CircleIn")
-		timingFunctions.append(MKTweenTiming.CircleInOut); self.timingFunctionTitles.append("CircleInOut")
-		timingFunctions.append(MKTweenTiming.CubicOut); self.timingFunctionTitles.append("CubicOut")
-		timingFunctions.append(MKTweenTiming.CubicIn); self.timingFunctionTitles.append("CubicIn")
-		timingFunctions.append(MKTweenTiming.CubicInOut); self.timingFunctionTitles.append("CubicInOut")
-		timingFunctions.append(MKTweenTiming.ElasticOut); self.timingFunctionTitles.append("ElasticOut")
-		timingFunctions.append(MKTweenTiming.ElasticIn); self.timingFunctionTitles.append("ElasticIn")
-		timingFunctions.append(MKTweenTiming.ElasticInOut); self.timingFunctionTitles.append("ElasticInOut")
-		timingFunctions.append(MKTweenTiming.ExpoOut); self.timingFunctionTitles.append("ExpoOut")
-		timingFunctions.append(MKTweenTiming.ExpoIn); self.timingFunctionTitles.append("ExpoIn")
-		timingFunctions.append(MKTweenTiming.ExpoInOut); self.timingFunctionTitles.append("ExpoInOut")
-		timingFunctions.append(MKTweenTiming.QuadOut); self.timingFunctionTitles.append("QuadOut")
-		timingFunctions.append(MKTweenTiming.QuadIn); self.timingFunctionTitles.append("QuadIn")
-		timingFunctions.append(MKTweenTiming.QuadInOut); self.timingFunctionTitles.append("QuadInOut")
-		timingFunctions.append(MKTweenTiming.QuartOut); self.timingFunctionTitles.append("QuartOut")
-		timingFunctions.append(MKTweenTiming.QuartIn); self.timingFunctionTitles.append("QuartIn")
-		timingFunctions.append(MKTweenTiming.QuartInOut); self.timingFunctionTitles.append("QuartInOut")
-		timingFunctions.append(MKTweenTiming.QuintOut); self.timingFunctionTitles.append("QuintOut")
-		timingFunctions.append(MKTweenTiming.QuintIn); self.timingFunctionTitles.append("QuintIn")
-		timingFunctions.append(MKTweenTiming.QuintInOut); self.timingFunctionTitles.append("QuintInOut")
-		timingFunctions.append(MKTweenTiming.SineOut); self.timingFunctionTitles.append("SineOut")
-		timingFunctions.append(MKTweenTiming.SineIn); self.timingFunctionTitles.append("SineIn")
-		timingFunctions.append(MKTweenTiming.SineInOut); self.timingFunctionTitles.append("SineInOut")
+		timingFunctions.append(Timing.Linear); self.timingFunctionTitles.append("Linear")
+		timingFunctions.append(Timing.BackOut); self.timingFunctionTitles.append("BackOut")
+		timingFunctions.append(Timing.BackIn); self.timingFunctionTitles.append("BackIn")
+		timingFunctions.append(Timing.BackInOut); self.timingFunctionTitles.append("BackInOut")
+		timingFunctions.append(Timing.BounceOut); self.timingFunctionTitles.append("BounceOut")
+		timingFunctions.append(Timing.BounceIn); self.timingFunctionTitles.append("BounceIn")
+		timingFunctions.append(Timing.BounceInOut); self.timingFunctionTitles.append("BounceInOut")
+		timingFunctions.append(Timing.CircleOut); self.timingFunctionTitles.append("CircleOut")
+		timingFunctions.append(Timing.CircleIn); self.timingFunctionTitles.append("CircleIn")
+		timingFunctions.append(Timing.CircleInOut); self.timingFunctionTitles.append("CircleInOut")
+		timingFunctions.append(Timing.CubicOut); self.timingFunctionTitles.append("CubicOut")
+		timingFunctions.append(Timing.CubicIn); self.timingFunctionTitles.append("CubicIn")
+		timingFunctions.append(Timing.CubicInOut); self.timingFunctionTitles.append("CubicInOut")
+		timingFunctions.append(Timing.ElasticOut); self.timingFunctionTitles.append("ElasticOut")
+		timingFunctions.append(Timing.ElasticIn); self.timingFunctionTitles.append("ElasticIn")
+		timingFunctions.append(Timing.ElasticInOut); self.timingFunctionTitles.append("ElasticInOut")
+		timingFunctions.append(Timing.ExpoOut); self.timingFunctionTitles.append("ExpoOut")
+		timingFunctions.append(Timing.ExpoIn); self.timingFunctionTitles.append("ExpoIn")
+		timingFunctions.append(Timing.ExpoInOut); self.timingFunctionTitles.append("ExpoInOut")
+		timingFunctions.append(Timing.QuadOut); self.timingFunctionTitles.append("QuadOut")
+		timingFunctions.append(Timing.QuadIn); self.timingFunctionTitles.append("QuadIn")
+		timingFunctions.append(Timing.QuadInOut); self.timingFunctionTitles.append("QuadInOut")
+		timingFunctions.append(Timing.QuartOut); self.timingFunctionTitles.append("QuartOut")
+		timingFunctions.append(Timing.QuartIn); self.timingFunctionTitles.append("QuartIn")
+		timingFunctions.append(Timing.QuartInOut); self.timingFunctionTitles.append("QuartInOut")
+		timingFunctions.append(Timing.QuintOut); self.timingFunctionTitles.append("QuintOut")
+		timingFunctions.append(Timing.QuintIn); self.timingFunctionTitles.append("QuintIn")
+		timingFunctions.append(Timing.QuintInOut); self.timingFunctionTitles.append("QuintInOut")
+		timingFunctions.append(Timing.SineOut); self.timingFunctionTitles.append("SineOut")
+		timingFunctions.append(Timing.SineIn); self.timingFunctionTitles.append("SineIn")
+		timingFunctions.append(Timing.SineInOut); self.timingFunctionTitles.append("SineInOut")
 	}
 }
 
@@ -95,9 +95,9 @@ extension ViewController : UITableViewDelegate {
 
             let tweenName = "tween action"
             
-            _ = MKTween.shared.removeTweenOperationByName(tweenName)
+            _ = Tween.shared.removeTweenOperationByName(tweenName)
 
-            _ = MKTween.shared.value(duration: 2, startValue: 0, endValue: 1).setUpdateBlock({ (period) in
+            _ = Tween.shared.value(duration: 2, startValue: 0, endValue: 1).setUpdateBlock({ (period) in
                 
                 self.headerView.circleView.center = CGPoint(x: newRect.origin.x + (newRect.width * period.progress), y: (headerHeight/2))
                 

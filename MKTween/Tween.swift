@@ -1,5 +1,5 @@
 //
-//  MKTween.swift
+//  Tween.swift
 //  MKTween
 //
 //  Created by Kevin Malkic on 25/01/2016.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum MKTweenTimerStyle : Int {
+public enum TimerStyle : Int {
     
     case `default` //DisplayLink
     case displayLink
@@ -16,9 +16,7 @@ public enum MKTweenTimerStyle : Int {
     case none
 }
 
-
-
-open class MKTween: NSObject {
+open class Tween: NSObject {
     
     fileprivate var tweenOperations = [Any]()
     fileprivate var expiredTweenOperations = [Any]()
@@ -27,7 +25,7 @@ open class MKTween: NSObject {
     fileprivate var timer: Timer?
     fileprivate var busy = false
     
-    open var timerStyle: MKTweenTimerStyle = .default {
+    open var timerStyle: TimerStyle = .default {
         
         didSet {
             
@@ -76,16 +74,16 @@ open class MKTween: NSObject {
         stop()
     }
     
-    open static let shared = MKTween(.default)
+    open static let shared = Tween(.default)
     
-    open class func shared(_ timerStyle: MKTweenTimerStyle = .default, frameInterval: Int? = nil, timerInterval: TimeInterval? = nil) -> MKTween {
+    open class func shared(_ timerStyle: TimerStyle = .default, frameInterval: Int? = nil, timerInterval: TimeInterval? = nil) -> Tween {
         
-        let instance = MKTween(timerStyle, frameInterval: frameInterval, timerInterval: timerInterval)
+        let instance = Tween(timerStyle, frameInterval: frameInterval, timerInterval: timerInterval)
         
         return instance
     }
     
-    public init( _ timerStyle: MKTweenTimerStyle = .default, frameInterval: Int? = nil, timerInterval: TimeInterval? = nil) {
+    public init( _ timerStyle: TimerStyle = .default, frameInterval: Int? = nil, timerInterval: TimeInterval? = nil) {
         
         super.init()
         
@@ -94,7 +92,7 @@ open class MKTween: NSObject {
         self.timerInterval = timerInterval ?? self.timerInterval
     }
     
-    open func addTweenOperation<T>(_ operation: MKTweenOperation<T>) {
+    open func addTweenOperation<T>(_ operation: Operation<T>) {
         
         if operation.period.duration > 0 {
             
@@ -108,7 +106,7 @@ open class MKTween: NSObject {
         }
     }
     
-    open func removeTweenOperation<T>(_ operation: MKTweenOperation<T>) {
+    open func removeTweenOperation<T>(_ operation: Operation<T>) {
         
         _ = self.tweenOperations.removeOperation(operation)
     }
@@ -119,19 +117,19 @@ open class MKTween: NSObject {
                 
         for operation in copy {
             
-            if let operation = operation as? MKTweenOperation<Double>, operation.name == name {
+            if let operation = operation as? Operation<Double>, operation.name == name {
                 
                 removeTweenOperation(operation)
                 
                 return true
                 
-            } else if let operation = operation as? MKTweenOperation<CGFloat>, operation.name == name {
+            } else if let operation = operation as? Operation<CGFloat>, operation.name == name {
                 
                 removeTweenOperation(operation)
                 
                 return true
                 
-            } else if let operation = operation as? MKTweenOperation<Float>, operation.name == name {
+            } else if let operation = operation as? Operation<Float>, operation.name == name {
                 
                 removeTweenOperation(operation)
                 
@@ -152,7 +150,7 @@ open class MKTween: NSObject {
         return self.tweenOperations.count > 0
     }
     
-    fileprivate func progressOperation<T>(_ timeStamp: TimeInterval, operation: MKTweenOperation<T>) {
+    fileprivate func progressOperation<T>(_ timeStamp: TimeInterval, operation: Operation<T>) {
         
         let period = operation.period
         
@@ -197,7 +195,7 @@ open class MKTween: NSObject {
         }
     }
     
-    fileprivate func expiryOperation<T>(_ operation: MKTweenOperation<T>) -> MKTweenOperation<T> {
+    fileprivate func expiryOperation<T>(_ operation: Operation<T>) -> Operation<T> {
         
         if let completeBlock = operation.completeBlock {
             
@@ -230,15 +228,15 @@ open class MKTween: NSObject {
         
         for operation in copy {
             
-            if let operation = operation as? MKTweenOperation<Double> {
+            if let operation = operation as? Operation<Double> {
                 
                 progressOperation(timeStamp, operation: operation)
                 
-            } else if let operation = operation as? MKTweenOperation<CGFloat> {
+            } else if let operation = operation as? Operation<CGFloat> {
                 
                 progressOperation(timeStamp, operation: operation)
                 
-            } else if let operation = operation as? MKTweenOperation<Float> {
+            } else if let operation = operation as? Operation<Float> {
                 
                 progressOperation(timeStamp, operation: operation)
             }
@@ -248,15 +246,15 @@ open class MKTween: NSObject {
         
         for operation in expiredCopy {
             
-            if let operation = operation as? MKTweenOperation<Double> {
+            if let operation = operation as? Operation<Double> {
                 
                  _ = self.expiredTweenOperations.removeOperation(expiryOperation(operation))
                 
-            } else if let operation = operation as? MKTweenOperation<CGFloat> {
+            } else if let operation = operation as? Operation<CGFloat> {
                 
                 _ = self.expiredTweenOperations.removeOperation(expiryOperation(operation))
                 
-            } else if let operation = operation as? MKTweenOperation<Float> {
+            } else if let operation = operation as? Operation<Float> {
                 
                 _ = self.expiredTweenOperations.removeOperation(expiryOperation(operation))
             }
@@ -296,13 +294,13 @@ open class MKTween: NSObject {
         
         if self.displayLink == nil && (self.timerStyle == .default || self.timerStyle == .displayLink) {
             
-            self.displayLink = UIScreen.main.displayLink(withTarget: self, selector: #selector(MKTween.handleDisplayLink(_:)))
+            self.displayLink = UIScreen.main.displayLink(withTarget: self, selector: #selector(Tween.handleDisplayLink(_:)))
             self.displayLink!.frameInterval = self.frameInterval
             self.displayLink!.add(to: RunLoop.main, forMode: RunLoopMode.commonModes)
             
         } else if timer == nil && timerStyle == .timer {
             
-            self.timer = Timer.scheduledTimer(timeInterval: self.timerInterval, target: self, selector: #selector(MKTween.handleTimer(_:)), userInfo: nil, repeats: true)
+            self.timer = Timer.scheduledTimer(timeInterval: self.timerInterval, target: self, selector: #selector(Tween.handleTimer(_:)), userInfo: nil, repeats: true)
             self.timer!.fire()
         }
     }
@@ -339,15 +337,15 @@ open class MKTween: NSObject {
                 
                 for operation in self.tweenOperations {
                     
-                    if let operation = operation as? MKTweenOperation<Double>, let startTimeStamp = operation.period.startTimeStamp {
+                    if let operation = operation as? Operation<Double>, let startTimeStamp = operation.period.startTimeStamp {
                         
                         operation.period.setStartTimeStamp(startTimeStamp + diff)
                      
-                    } else if let operation = operation as? MKTweenOperation<CGFloat>, let startTimeStamp = operation.period.startTimeStamp {
+                    } else if let operation = operation as? Operation<CGFloat>, let startTimeStamp = operation.period.startTimeStamp {
                         
                         operation.period.setStartTimeStamp(startTimeStamp + diff)
                         
-                    } else if let operation = operation as? MKTweenOperation<Float>, let startTimeStamp = operation.period.startTimeStamp {
+                    } else if let operation = operation as? Operation<Float>, let startTimeStamp = operation.period.startTimeStamp {
                         
                         operation.period.setStartTimeStamp(startTimeStamp + diff)
                     }
@@ -362,11 +360,11 @@ open class MKTween: NSObject {
     
     //Convience functions
     
-    public func value<T: BinaryFloatingPoint>(duration: TimeInterval, startValue: T = 0, endValue: T = 1) -> MKTweenOperation<T> {
+    public func value<T: BinaryFloatingPoint>(duration: TimeInterval, startValue: T = 0, endValue: T = 1) -> Operation<T> {
     
-        let period = MKTweenPeriod(duration: duration, delay: 0, startValue: startValue, endValue: endValue)
+        let period = Period(duration: duration, delay: 0, startValue: startValue, endValue: endValue)
         
-        let operation = MKTweenOperation(period: period)
+        let operation = Operation(period: period)
         
         addTweenOperation(operation)
         

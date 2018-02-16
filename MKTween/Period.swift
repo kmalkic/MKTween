@@ -1,12 +1,12 @@
 //
-//  MKTweenPeriod.swift
+//  Period.swift
 //  MKTween
 //
 //  Created by Kevin Malkic on 25/01/2016.
 //  Copyright © 2016 Malkic Kevin. All rights reserved.
 //
 
-open class MKTweenPeriod<T: BinaryFloatingPoint> {
+open class Period<T: BinaryFloatingPoint> {
 	
 	open let duration: TimeInterval
 	private(set) open var delay: TimeInterval

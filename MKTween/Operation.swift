@@ -1,26 +1,26 @@
 //
-//  MKTweenOperation.swift
+//  Operation.swift
 //  MKTween
 //
 //  Created by Kevin Malkic on 25/01/2016.
 //  Copyright © 2016 Kevin Malkic. All rights reserved.
 //
 
-open class MKTweenOperation<T>: Equatable where T: BinaryFloatingPoint {
+open class Operation<T>: Equatable where T: BinaryFloatingPoint {
     
-    public typealias MKTweenUpdateBlock = (_ period: MKTweenPeriod<T>) -> ()
-    public typealias MKTweenCompleteBlock = () -> ()
+    public typealias UpdateBlock = (_ period: Period<T>) -> ()
+    public typealias CompleteBlock = () -> ()
     
-	private(set) public var period: MKTweenPeriod<T>
-	private(set) public var timingFunction: MKTweenTimingFunction
-	private(set) public var updateBlock: MKTweenUpdateBlock?
-	private(set) public var completeBlock: MKTweenCompleteBlock?
+	private(set) public var period: Period<T>
+	private(set) public var timingFunction: TimingFunction
+	private(set) public var updateBlock: UpdateBlock?
+	private(set) public var completeBlock: CompleteBlock?
 
 	private(set) public var name: String?
 
 	private(set) public var dispatchQueue: DispatchQueue?
     
-	public init(name: String? = nil, period: MKTweenPeriod<T>, updateBlock: MKTweenUpdateBlock? = nil, completeBlock: MKTweenCompleteBlock? = nil, timingFunction: @escaping MKTweenTimingFunction = MKTweenTiming.Linear, dispatchQueue: DispatchQueue? = DispatchQueue.main) {
+	public init(name: String? = nil, period: Period<T>, updateBlock: UpdateBlock? = nil, completeBlock: CompleteBlock? = nil, timingFunction: @escaping TimingFunction = Timing.Linear, dispatchQueue: DispatchQueue? = DispatchQueue.main) {
 		
 		self.name = name
 		self.period = period
@@ -64,47 +64,47 @@ open class MKTweenOperation<T>: Equatable where T: BinaryFloatingPoint {
 		return tweenValues
 	}
     
-    public static func == (a: MKTweenOperation<T>, b: MKTweenOperation<T>) -> Bool {
+    public static func == (a: Operation<T>, b: Operation<T>) -> Bool {
         
         return a === b
     }
     
-    public static func != (a: MKTweenOperation<T>, b: MKTweenOperation<T>) -> Bool {
+    public static func != (a: Operation<T>, b: Operation<T>) -> Bool {
         
         return !(a == b)
     }
     
     //Public Setters
     
-    public func setName(_ name: String) -> MKTweenOperation<T> {
+    public func setName(_ name: String) -> Operation<T> {
         
         self.name = name
         
         return self
     }
     
-    public func setDelay(_ delay: TimeInterval) -> MKTweenOperation<T> {
+    public func setDelay(_ delay: TimeInterval) -> Operation<T> {
         
         self.period.setDelay(delay)
         
         return self
     }
     
-    public func setTimingFunction(_ timingFunction: @escaping MKTweenTimingFunction) -> MKTweenOperation<T> {
+    public func setTimingFunction(_ timingFunction: @escaping TimingFunction) -> Operation<T> {
         
         self.timingFunction = timingFunction
         
         return self
     }
     
-    public func setUpdateBlock(_ updateBlock: @escaping MKTweenUpdateBlock) -> MKTweenOperation<T> {
+    public func setUpdateBlock(_ updateBlock: @escaping UpdateBlock) -> Operation<T> {
         
         self.updateBlock = updateBlock
         
         return self
     }
     
-    public func setCompleteBlock(_ completeBlock: @escaping MKTweenCompleteBlock) -> MKTweenOperation<T> {
+    public func setCompleteBlock(_ completeBlock: @escaping CompleteBlock) -> Operation<T> {
         
         self.completeBlock = completeBlock
         
