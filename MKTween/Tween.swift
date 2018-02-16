@@ -1,12 +1,3 @@
-//
-//  Tween.swift
-//  MKTween
-//
-//  Created by Kevin Malkic on 25/01/2016.
-//  Copyright © 2016 Malkic Kevin. All rights reserved.
-//
-
-import Foundation
 
 public enum TimerStyle : Int {
     
@@ -16,19 +7,16 @@ public enum TimerStyle : Int {
     case none
 }
 
-open class Tween: NSObject {
+public class Tween: NSObject {
     
-    fileprivate var tweenOperations = [Any]()
-    fileprivate var expiredTweenOperations = [Any]()
+    fileprivate var tweenOperations = [TweenableOperation]()
     fileprivate var pausedTimeStamp : TimeInterval?
     fileprivate var displayLink : CADisplayLink?
     fileprivate var timer: Timer?
     fileprivate var busy = false
     
-    open var timerStyle: TimerStyle = .default {
-        
+    public var timerStyle: TimerStyle = .default {
         didSet {
-            
             stop()
             start()
         }
@@ -37,10 +25,8 @@ open class Tween: NSObject {
     /* When true the object is prevented from firing. Initial state is
     * false. */
     
-    open var paused: Bool = false {
-        
+    public var paused: Bool = false {
         didSet {
-            
             pause()
         }
     }
@@ -51,101 +37,93 @@ open class Tween: NSObject {
     * will cause the display link to fire every other display frame, and
     * so on. The behavior when using values less than one is undefined. */
     
-    open var frameInterval: Int = 1 {
-        
+    public var frameInterval: Int = 1 {
         didSet {
-            
             stop()
             start()
         }
     }
     
-    open var timerInterval: TimeInterval = 1/60 {
-        
+    public var timerInterval: TimeInterval = 1/60 {
         didSet {
-            
             stop()
             start()
         }
     }
     
     deinit {
-        
         stop()
     }
     
-    open static let shared = Tween(.default)
+    public static let shared = Tween(.default)
     
-    open class func shared(_ timerStyle: TimerStyle = .default, frameInterval: Int? = nil, timerInterval: TimeInterval? = nil) -> Tween {
-        
-        let instance = Tween(timerStyle, frameInterval: frameInterval, timerInterval: timerInterval)
-        
-        return instance
+    public class func shared(_ timerStyle: TimerStyle = .default, frameInterval: Int? = nil, timerInterval: TimeInterval? = nil) -> Tween {
+        return Tween(timerStyle, frameInterval: frameInterval, timerInterval: timerInterval)
     }
     
     public init( _ timerStyle: TimerStyle = .default, frameInterval: Int? = nil, timerInterval: TimeInterval? = nil) {
-        
         super.init()
-        
         self.timerStyle = timerStyle
         self.frameInterval = frameInterval ?? self.frameInterval
         self.timerInterval = timerInterval ?? self.timerInterval
     }
     
-    open func addTweenOperation<T>(_ operation: Operation<T>) {
+    public func addTweenOperation<T>(_ operation: Operation<T>) {
         
-        if operation.period.duration > 0 {
-            
-            self.tweenOperations.append(operation)
-            
-            start()
-            
-        } else {
-            
+        guard let tweenableOperation = TweenableMapper.map(operation),
+            operation.period.duration > 0 else {
             print("please set a duration")
+            return
         }
-    }
-    
-    open func removeTweenOperation<T>(_ operation: Operation<T>) {
         
-        _ = self.tweenOperations.removeOperation(operation)
+        self.tweenOperations.append(tweenableOperation)
+        start()
     }
     
-    open func removeTweenOperationByName(_ name: String) -> Bool {
+    public func removeTweenOperation<T>(_ operation: Operation<T>) -> Bool {
+        
+        guard let index = self.tweenOperations.index(where: {
+            switch $0 {
+            case let .cgfloat(op):
+                return op == operation as? Operation<CGFloat>
+            case let .float(op):
+                return op == operation as? Operation<Float>
+            case let .double(op):
+                return op == operation as? Operation<Double>
+            }
+        })
+            else { return false }
+        
+        self.tweenOperations.remove(at: index)
+        return true
+    }
+    
+    public func removeTweenOperationByName(_ name: String) -> Bool {
         
         let copy = self.tweenOperations
-                
-        for operation in copy {
+        
+        for tweenableOperation in copy {
             
-            if let operation = operation as? Operation<Double>, operation.name == name {
-                
-                removeTweenOperation(operation)
-                
-                return true
-                
-            } else if let operation = operation as? Operation<CGFloat>, operation.name == name {
-                
-                removeTweenOperation(operation)
-                
-                return true
-                
-            } else if let operation = operation as? Operation<Float>, operation.name == name {
-                
-                removeTweenOperation(operation)
-                
-                return true
+            switch tweenableOperation {
+            case let .cgfloat(operation) where operation.name == name:
+                return removeTweenOperation(operation)
+            case let .float(operation) where operation.name == name:
+                return removeTweenOperation(operation)
+            case let .double(operation) where operation.name == name:
+                return removeTweenOperation(operation)
+            default:
+                break
             }
         }
-        
         return false
     }
     
-    open func removeAllOperations() {
+    public func removeAllOperations() {
         
         self.tweenOperations.removeAll()
     }
     
-    open func hasOperations() -> Bool {
+    public func hasOperations() -> Bool {
         
         return self.tweenOperations.count > 0
     }
@@ -154,44 +132,46 @@ open class Tween: NSObject {
         
         let period = operation.period
         
-        if let startTimeStamp = period.startTimeStamp {
+        guard let startTimeStamp = period.startTimeStamp else {
+            period.change(startTimeStamp: timeStamp)
+            return
+        }
             
-            if period.hasStarted(timeStamp) {
-                
-                if !period.hasEnded(timeStamp) {
-                    
-                    let progress = operation.timingFunction(timeStamp - startTimeStamp - period.delay, period.startValue.toDouble(), period.endValue.toDouble() - period.startValue.toDouble(), period.duration)
-                    
-                    period.progress = T(progress)
-                    
-                } else {
-                    
-                    period.progress = period.endValue
-                    self.expiredTweenOperations.append(operation)
-                    removeTweenOperation(operation)
-                }
-                
-                period.updatedTimeStamp = timeStamp
-                
-                if let updateBlock = operation.updateBlock {
-                    
-                    if let dispatchQueue = operation.dispatchQueue {
-                        
-                        dispatchQueue.async(execute: { () -> Void in
-                            
-                            updateBlock(period)
-                        })
-                        
-                    } else {
-                        
-                        updateBlock(period)
-                    }
-                }
-            }
+        guard period.hasStarted(timeStamp)
+            else { return }
+            
+        if !period.hasEnded(timeStamp) {
+            
+            let progress = T.evaluate(start: period.start,
+                                      end: period.end,
+                                      time: timeStamp - startTimeStamp - period.delay,
+                                      duration: period.duration,
+                                      timingFunction: operation.timingFunction)
+            
+            period.progress = progress
             
         } else {
             
-            period.setStartTimeStamp(timeStamp)
+            period.progress = period.end
+            
+            operation.expired = true
+        }
+        
+        period.updatedTimeStamp = timeStamp
+        
+        guard let updateBlock = operation.updateBlock
+            else { return }
+        
+        if let dispatchQueue = operation.dispatchQueue {
+            
+            dispatchQueue.async(execute: { () -> Void in
+                
+                updateBlock(period)
+            })
+            
+        } else {
+            
+            updateBlock(period)
         }
     }
     
@@ -215,48 +195,36 @@ open class Tween: NSObject {
         return operation
     }
     
-    open func update(_ timeStamp: TimeInterval) {
+    public func update(_ timeStamp: TimeInterval) {
         
-        if self.tweenOperations.count == 0 {
-            
+        guard hasOperations() else {
             stop()
-            
             return
         }
-        
-        let copy = self.tweenOperations
-        
-        for operation in copy {
-            
-            if let operation = operation as? Operation<Double> {
-                
+    
+        self.tweenOperations.forEach {
+            switch $0 {
+            case let .cgfloat(operation):
                 progressOperation(timeStamp, operation: operation)
-                
-            } else if let operation = operation as? Operation<CGFloat> {
-                
+            case let .float(operation):
                 progressOperation(timeStamp, operation: operation)
-                
-            } else if let operation = operation as? Operation<Float> {
-                
+            case let .double(operation):
                 progressOperation(timeStamp, operation: operation)
             }
         }
         
-        let expiredCopy = self.expiredTweenOperations
+        let copy = self.tweenOperations
         
-        for operation in expiredCopy {
-            
-            if let operation = operation as? Operation<Double> {
-                
-                 _ = self.expiredTweenOperations.removeOperation(expiryOperation(operation))
-                
-            } else if let operation = operation as? Operation<CGFloat> {
-                
-                _ = self.expiredTweenOperations.removeOperation(expiryOperation(operation))
-                
-            } else if let operation = operation as? Operation<Float> {
-                
-                _ = self.expiredTweenOperations.removeOperation(expiryOperation(operation))
+        copy.forEach {
+            switch $0 {
+            case let .cgfloat(operation) where operation.expired:
+                _ = removeTweenOperation(operation)
+            case let .float(operation) where operation.expired:
+                _ = removeTweenOperation(operation)
+            case let .double(operation) where operation.expired:
+                _ = removeTweenOperation(operation)
+            default:
+                break
             }
         }
     }
@@ -326,43 +294,47 @@ open class Tween: NSObject {
         if self.paused && (self.timer != nil || self.displayLink != nil) {
             
             self.pausedTimeStamp = CACurrentMediaTime()
-            
             stop()
-            
-        } else if self.timer == nil && self.displayLink == nil {
-            
-            if let pausedTimeStamp = self.pausedTimeStamp {
-                
-                let diff = CACurrentMediaTime() - pausedTimeStamp
-                
-                for operation in self.tweenOperations {
-                    
-                    if let operation = operation as? Operation<Double>, let startTimeStamp = operation.period.startTimeStamp {
-                        
-                        operation.period.setStartTimeStamp(startTimeStamp + diff)
-                     
-                    } else if let operation = operation as? Operation<CGFloat>, let startTimeStamp = operation.period.startTimeStamp {
-                        
-                        operation.period.setStartTimeStamp(startTimeStamp + diff)
-                        
-                    } else if let operation = operation as? Operation<Float>, let startTimeStamp = operation.period.startTimeStamp {
-                        
-                        operation.period.setStartTimeStamp(startTimeStamp + diff)
-                    }
-                }
-            }
+            return
+        }
+        
+        guard self.timer == nil && self.displayLink == nil
+            else { return }
+        
+        guard let pausedTimeStamp = self.pausedTimeStamp else {
             
             self.pausedTimeStamp = nil
-            
             start()
+            return
+        }
+        
+        let diff = CACurrentMediaTime() - pausedTimeStamp
+        
+        func pause<T>(_ operation: Operation<T>, time: TimeInterval) {
+            
+            if let startTimeStamp = operation.period.startTimeStamp {
+                
+                operation.period.change(startTimeStamp: startTimeStamp + time)
+            }
+        }
+        
+        self.tweenOperations.forEach {
+            switch $0 {
+            case let .cgfloat(operation):
+                pause(operation, time: diff)
+            case let .float(operation):
+                pause(operation, time: diff)
+            case let .double(operation):
+                pause(operation, time: diff)
+            }
         }
     }
     
     //Convience functions
     
-    public func value<T: BinaryFloatingPoint>(duration: TimeInterval, startValue: T = 0, endValue: T = 1) -> Operation<T> {
+    public func value<T: BinaryFloatingPoint>(duration: TimeInterval, start: T = 0, end: T = 1) -> Operation<T> {
     
-        let period = Period(duration: duration, delay: 0, startValue: startValue, endValue: endValue)
+        let period = Period(duration: duration, delay: 0, start: start, end: end)
         
         let operation = Operation(period: period)
         

@@ -1,48 +1,41 @@
-//
-//  Period.swift
-//  MKTween
-//
-//  Created by Kevin Malkic on 25/01/2016.
-//  Copyright © 2016 Malkic Kevin. All rights reserved.
-//
 
-open class Period<T: BinaryFloatingPoint> {
+public class Period<T> where T: Tweenable {
 	
-	open let duration: TimeInterval
-	private(set) open var delay: TimeInterval
-	private(set) open var startValue: T
-	private(set) open var endValue: T
-	internal(set) open var progress: T = 0
+	public let duration: TimeInterval
+	private(set) public var delay: TimeInterval
+	private(set) public var start: T
+	private(set) public var end: T
+	internal(set) public var progress: T = T.defaultValue
 	
 	private(set) var startTimeStamp: TimeInterval?
 	internal var updatedTimeStamp: TimeInterval?
 	
-    public init(duration: TimeInterval, delay: TimeInterval = 0.0, startValue: T = 0, endValue: T = 1) {
+    public init(duration: TimeInterval, delay: TimeInterval = 0.0, start: T, end: T) {
 		
 		self.duration = duration
 		self.delay = delay
-		self.startValue = startValue
-		self.endValue = endValue
+		self.start = start
+		self.end = end
 	}
     
-    public func setStartTimeStamp(_ startTimeStamp: TimeInterval) {
-        
+    internal func change(startTimeStamp: TimeInterval) {
         self.startTimeStamp = startTimeStamp
     }
     
-    public func setStartValue(_ startValue: T) {
-        
-        self.startValue = startValue
+    public func change(start: T) {
+        self.start = start
     }
     
-    public func setEndValue(_ endValue: T) {
-        
-        self.endValue = endValue
+    public func change(end: T) {
+        self.end = end
     }
     
-    public func setDelay(_ delay: TimeInterval) {
-        
+    public func change(delay: TimeInterval) {
         self.delay = delay
+    }
+    
+    public func timePassed() -> TimeInterval {
+        return self.duration * T.progression(start: self.start, progress: self.progress, end: self.end)
     }
     
     public func hasStarted(_ timeStamp: TimeInterval) -> Bool {
@@ -50,10 +43,8 @@ open class Period<T: BinaryFloatingPoint> {
         if let startTimeStamp = self.startTimeStamp {
             
             let timeToStart = startTimeStamp + self.delay
-            
             return timeStamp >= timeToStart
         }
-        
         return false
     }
     
@@ -62,10 +53,8 @@ open class Period<T: BinaryFloatingPoint> {
         if let startTimeStamp = self.startTimeStamp {
             
             let timeToEnd = startTimeStamp + self.delay + self.duration
-            
             return timeStamp >= timeToEnd
         }
-        
         return false
     }
 }

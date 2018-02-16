@@ -1,10 +1,3 @@
-//
-//  TimingFunctions.swift
-//  MKTween
-//
-//  Created by Kevin Malkic on 25 / 01 / 2016.
-//  Copyright © 2016 Malkic Kevin. All rights reserved.
-//
 
 public typealias TimingFunction = (_ time: Double, _ begin: Double, _ difference: Double, _ duration: Double) -> Double
 
@@ -43,27 +36,16 @@ public struct Timing {
 	static public var BounceOut: TimingFunction = { (time: Double, b: Double, c: Double, d: Double) -> Double in
 		
 		var t = time / d
-		
 		if (t < (1 / 2.75)) {
-			
 			return c * (7.5625 * t * t) + b
-			
 		} else if (t < (2 / 2.75)) {
-			
 			t -= (1.5 / 2.75)
-			
 			return c * (7.5625 * t * t + 0.75) + b
-			
 		} else if (t < (2.5 / 2.75)) {
-			
 			t -= (2.25 / 2.75)
-			
 			return c * (7.5625 * t * t + 0.9375) + b
-			
 		} else {
-			
 			t -= (2.625 / 2.75)
-			
 			return c * (7.5625 * t * t + 0.984375) + b
 		}
 	}

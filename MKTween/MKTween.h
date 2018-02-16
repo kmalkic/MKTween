@@ -1,10 +1,3 @@
-//
-//  MKTween.h
-//  MKTween
-//
-//  Created by Kevin Malkic on 25/01/2016.
-//  Copyright © 2016 Kevin Malkic. All rights reserved.
-//
 
 #import <UIKit/UIKit.h>
 
