@@ -128,17 +128,17 @@ public class Tween: NSObject {
         return self.tweenOperations.count > 0
     }
     
-    fileprivate func progressOperation<T>(_ timeStamp: TimeInterval, operation: Operation<T>) {
+    fileprivate func progressOperation<T>(_ timeStamp: TimeInterval, operation: Operation<T>) -> Bool {
         
         let period = operation.period
         
         guard let startTimeStamp = period.startTimeStamp else {
             period.set(startTimeStamp: timeStamp)
-            return
+            return false
         }
         
         guard period.hasStarted(timeStamp)
-            else { return }
+            else { return false }
         
         if !period.hasEnded(timeStamp) {
             
@@ -156,16 +156,18 @@ public class Tween: NSObject {
         period.updatedTimeStamp = timeStamp
         
         guard let updateBlock = operation.updateBlock
-            else { return }
+            else { return operation.expired }
         
         guard let dispatchQueue = operation.dispatchQueue else {
             updateBlock(period)
-            return
+            return operation.expired
         }
         
         dispatchQueue.async { () -> Void in
             updateBlock(period)
         }
+        
+        return operation.expired
     }
     
     fileprivate func expiry<T>(_ operation: Operation<T>) {
@@ -190,35 +192,29 @@ public class Tween: NSObject {
             return
         }
         
-        self.tweenOperations.forEach {
-            switch $0 {
-            case let .cgfloat(operation):
-                progressOperation(timeStamp, operation: operation)
-            case let .float(operation):
-                progressOperation(timeStamp, operation: operation)
-            case let .double(operation):
-                progressOperation(timeStamp, operation: operation)
+        func remove<T>(_ operation: Operation<T>) {
+            if removeTweenOperation(operation) {
+                expiry(operation)
             }
         }
         
         let copy = self.tweenOperations
         
         copy.forEach {
+            
             switch $0 {
-            case let .cgfloat(operation) where operation.expired:
-                if removeTweenOperation(operation) {
-                    expiry(operation)
+            case let .cgfloat(operation):
+                if progressOperation(timeStamp, operation: operation) {
+                    remove(operation)
                 }
-            case let .float(operation) where operation.expired:
-                if removeTweenOperation(operation) {
-                    expiry(operation)
+            case let .float(operation):
+                if progressOperation(timeStamp, operation: operation) {
+                    remove(operation)
                 }
-            case let .double(operation) where operation.expired:
-                if removeTweenOperation(operation) {
-                    expiry(operation)
+            case let .double(operation):
+                if progressOperation(timeStamp, operation: operation) {
+                    remove(operation)
                 }
-            default:
-                break
             }
         }
     }
@@ -297,14 +293,13 @@ public class Tween: NSObject {
         let diff = CACurrentMediaTime() - pausedTimeStamp
         
         func pause<T>(_ operation: Operation<T>, time: TimeInterval) {
-            
             if let startTimeStamp = operation.period.startTimeStamp {
-                
                 operation.period.set(startTimeStamp: startTimeStamp + time)
             }
         }
         
         self.tweenOperations.forEach {
+            
             switch $0 {
             case let .cgfloat(operation):
                 pause(operation, time: diff)
