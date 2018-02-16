@@ -61,12 +61,10 @@ public class Operation<T>: Equatable where T: Tweenable {
 	}
     
     public static func == (a: Operation<T>, b: Operation<T>) -> Bool {
-        
         return a === b
     }
     
     public static func != (a: Operation<T>, b: Operation<T>) -> Bool {
-        
         return !(a == b)
     }
     
@@ -75,35 +73,30 @@ public class Operation<T>: Equatable where T: Tweenable {
     public func set(name: String) -> Operation<T> {
         
         self.name = name
-        
         return self
     }
     
     public func set(delay: TimeInterval) -> Operation<T> {
         
         self.period.set(delay: delay)
-        
         return self
     }
     
     public func set(timingFunction: @escaping TimingFunction) -> Operation<T> {
         
         self.timingFunction = timingFunction
-        
         return self
     }
     
     public func set(update block: @escaping UpdateBlock) -> Operation<T> {
         
         self.updateBlock = block
-        
         return self
     }
     
     public func set(complete block: @escaping CompleteBlock) -> Operation<T> {
         
         self.completeBlock = block
-        
         return self
     }
 }

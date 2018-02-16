@@ -23,7 +23,7 @@ public class Tween: NSObject {
     }
     
     /* When true the object is prevented from firing. Initial state is
-    * false. */
+     * false. */
     
     public var paused: Bool = false {
         didSet {
@@ -32,10 +32,10 @@ public class Tween: NSObject {
     }
     
     /* Defines how many display frames must pass between each time the
-    * display link fires. Default value is one, which means the display
-    * link will fire for every display frame. Setting the interval to two
-    * will cause the display link to fire every other display frame, and
-    * so on. The behavior when using values less than one is undefined. */
+     * display link fires. Default value is one, which means the display
+     * link will fire for every display frame. Setting the interval to two
+     * will cause the display link to fire every other display frame, and
+     * so on. The behavior when using values less than one is undefined. */
     
     public var frameInterval: Int = 1 {
         didSet {
@@ -72,8 +72,8 @@ public class Tween: NSObject {
         
         guard let tweenableOperation = TweenableMapper.map(operation),
             operation.period.duration > 0 else {
-            print("please set a duration")
-            return
+                print("please set a duration")
+                return
         }
         
         self.tweenOperations.append(tweenableOperation)
@@ -136,24 +136,20 @@ public class Tween: NSObject {
             period.set(startTimeStamp: timeStamp)
             return
         }
-            
+        
         guard period.hasStarted(timeStamp)
             else { return }
-            
+        
         if !period.hasEnded(timeStamp) {
             
-            let progress = T.evaluate(start: period.start,
-                                      end: period.end,
-                                      time: timeStamp - startTimeStamp - period.delay,
-                                      duration: period.duration,
-                                      timingFunction: operation.timingFunction)
-            
-            period.progress = progress
-            
+            period.progress = T.evaluate(start: period.start,
+                                         end: period.end,
+                                         time: timeStamp - startTimeStamp - period.delay,
+                                         duration: period.duration,
+                                         timingFunction: operation.timingFunction)
         } else {
             
             period.progress = period.end
-            
             operation.expired = true
         }
         
@@ -162,37 +158,29 @@ public class Tween: NSObject {
         guard let updateBlock = operation.updateBlock
             else { return }
         
-        if let dispatchQueue = operation.dispatchQueue {
-            
-            dispatchQueue.async(execute: { () -> Void in
-                
-                updateBlock(period)
-            })
-            
-        } else {
-            
+        guard let dispatchQueue = operation.dispatchQueue else {
+            updateBlock(period)
+            return
+        }
+        
+        dispatchQueue.async { () -> Void in
             updateBlock(period)
         }
     }
     
-    fileprivate func expiryOperation<T>(_ operation: Operation<T>) -> Operation<T> {
+    fileprivate func expiry<T>(_ operation: Operation<T>) {
         
-        if let completeBlock = operation.completeBlock {
+        guard let completeBlock = operation.completeBlock
+            else { return }
             
-            if let dispatchQueue = operation.dispatchQueue {
-                
-                dispatchQueue.async(execute: { () -> Void in
-                    
-                    completeBlock()
-                })
-                
-            } else {
-                
-                completeBlock()
-            }
+        guard let dispatchQueue = operation.dispatchQueue else {
+            completeBlock()
+            return
         }
         
-        return operation
+        dispatchQueue.async { () -> Void in
+            completeBlock()
+        }
     }
     
     public func update(_ timeStamp: TimeInterval) {
@@ -201,7 +189,7 @@ public class Tween: NSObject {
             stop()
             return
         }
-    
+        
         self.tweenOperations.forEach {
             switch $0 {
             case let .cgfloat(operation):
@@ -218,11 +206,17 @@ public class Tween: NSObject {
         copy.forEach {
             switch $0 {
             case let .cgfloat(operation) where operation.expired:
-                _ = removeTweenOperation(operation)
+                if removeTweenOperation(operation) {
+                    expiry(operation)
+                }
             case let .float(operation) where operation.expired:
-                _ = removeTweenOperation(operation)
+                if removeTweenOperation(operation) {
+                    expiry(operation)
+                }
             case let .double(operation) where operation.expired:
-                _ = removeTweenOperation(operation)
+                if removeTweenOperation(operation) {
+                    expiry(operation)
+                }
             default:
                 break
             }
@@ -230,35 +224,27 @@ public class Tween: NSObject {
     }
     
     @objc func handleDisplayLink(_ sender: CADisplayLink) {
-        
         handleTick(sender.timestamp)
     }
     
     @objc func handleTimer(_ sender: Timer) {
-        
         handleTick(CACurrentMediaTime())
     }
     
     fileprivate func handleTick(_ timeStamp: TimeInterval) {
         
-        if self.busy {
-            
-            return
-        }
+        guard !self.busy
+            else { return }
         
         self.busy = true
-        
         update(timeStamp)
-        
         self.busy = false
     }
     
     fileprivate func start() {
         
-        if self.tweenOperations.count == 0 || self.paused {
-            
-            return
-        }
+        guard hasOperations() && !self.paused
+            else { return }
         
         if self.displayLink == nil && (self.timerStyle == .default || self.timerStyle == .displayLink) {
             
@@ -333,13 +319,11 @@ public class Tween: NSObject {
     //Convience functions
     
     public func value<T: BinaryFloatingPoint>(duration: TimeInterval, start: T = 0, end: T = 1) -> Operation<T> {
-    
+        
         let period = Period(duration: duration, delay: 0, start: start, end: end)
-        
         let operation = Operation(period: period)
-        
         addTweenOperation(operation)
-        
         return operation
     }
 }
+
