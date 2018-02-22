@@ -12,20 +12,16 @@ import MKTween
 class ViewController: UIViewController {
 	
 	var myView : View! {
-		
 		get {
-			
 			return self.view as! View
 		}
 	}
 	
 	let headerView = HeaderView()
-	
 	var timingFunctions = [TimingFunction]()
 	var timingFunctionTitles = [String]()
 	
 	override func loadView() {
-		
 		view = View()
 	}
 	
@@ -124,32 +120,26 @@ extension ViewController : UITableViewDataSource {
 	}
 	
 	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-		
 		return headerHeight
 	}
 	
 	func numberOfSections(in tableView: UITableView) -> Int {
-		
 		return 1
 	}
 	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		
 		return self.timingFunctions.count
 	}
 	
 	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-		
 		return cellHeight
 	}
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		
 		let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for:indexPath) as! TimingCell
-		
 		cell.titleLabel.text = self.timingFunctionTitles[indexPath.row]
 		cell.timingFunction = self.timingFunctions[indexPath.row]
-		
 		return cell
 	}
 }

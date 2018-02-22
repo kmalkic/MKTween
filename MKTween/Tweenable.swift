@@ -1,8 +1,10 @@
 
 enum TweenableOperation {
-    case cgfloat(Operation<CGFloat>)
-    case float(Operation<Float>)
     case double(Operation<Double>)
+    case float(Operation<Float>)
+    case cgfloat(Operation<CGFloat>)
+    case cgsize(Operation<CGSize>)
+    case cgpoint(Operation<CGPoint>)
     case cgrect(Operation<CGRect>)
 }
 
@@ -18,10 +20,14 @@ class TweenableMapper {
         
         if let operation = operation as? Operation<Double> {
             return .double(operation)
-        } else if let operation = operation as? Operation<CGFloat> {
-            return .cgfloat(operation)
         } else if let operation = operation as? Operation<Float> {
             return .float(operation)
+        } else if let operation = operation as? Operation<CGFloat> {
+            return .cgfloat(operation)
+        } else if let operation = operation as? Operation<CGSize> {
+            return .cgsize(operation)
+        } else if let operation = operation as? Operation<CGPoint> {
+            return .cgpoint(operation)
         } else if let operation = operation as? Operation<CGRect> {
             return .cgrect(operation)
         }
@@ -43,7 +49,7 @@ extension Double: Tweenable {
 }
 
 extension Float: Tweenable {
-
+    
     public static var defaultValue: Float {
         return 0.0
     }
@@ -54,13 +60,37 @@ extension Float: Tweenable {
 }
 
 extension CGFloat: Tweenable {
-
+    
     public static var defaultValue: CGFloat {
         return 0.0
     }
     
     public static func evaluate(start: CGFloat, end: CGFloat, time: TimeInterval, duration: TimeInterval, timingFunction: TimingFunction) -> CGFloat {
         return CGFloat(timingFunction(time, Double(start), Double(end - start), duration))
+    }
+}
+
+extension CGSize: Tweenable {
+    
+    public static var defaultValue: CGSize {
+        return .zero
+    }
+    
+    public static func evaluate(start: CGSize, end: CGSize, time: TimeInterval, duration: TimeInterval, timingFunction: TimingFunction) -> CGSize {
+        return CGSize(width: CGFloat.evaluate(start: start.width, end: end.width, time: time, duration: duration, timingFunction: timingFunction),
+                      height: CGFloat.evaluate(start: start.height, end: end.height, time: time, duration: duration, timingFunction: timingFunction))
+    }
+}
+
+extension CGPoint: Tweenable {
+    
+    public static var defaultValue: CGPoint {
+        return .zero
+    }
+    
+    public static func evaluate(start: CGPoint, end: CGPoint, time: TimeInterval, duration: TimeInterval, timingFunction: TimingFunction) -> CGPoint {
+        return CGPoint(x: CGFloat.evaluate(start: start.x, end: end.x, time: time, duration: duration, timingFunction: timingFunction),
+                       y: CGFloat.evaluate(start: start.y, end: end.y, time: time, duration: duration, timingFunction: timingFunction))
     }
 }
 
@@ -71,10 +101,8 @@ extension CGRect: Tweenable {
     }
     
     public static func evaluate(start: CGRect, end: CGRect, time: TimeInterval, duration: TimeInterval, timingFunction: TimingFunction) -> CGRect {
-        return CGRect(x: CGFloat(timingFunction(time, Double(start.origin.x), Double(end.origin.x - start.origin.x), duration)),
-                      y: CGFloat(timingFunction(time, Double(start.origin.y), Double(end.origin.y - start.origin.y), duration)),
-                      width: CGFloat(timingFunction(time, Double(start.size.width), Double(end.size.width - start.size.width), duration)),
-                      height: CGFloat(timingFunction(time, Double(start.size.height), Double(end.size.height - start.size.height), duration)))
+        return CGRect(origin: CGPoint.evaluate(start: start.origin, end: end.origin, time: time, duration: duration, timingFunction: timingFunction),
+                      size: CGSize.evaluate(start: start.size, end: end.size, time: time, duration: duration, timingFunction: timingFunction))
     }
 }
 

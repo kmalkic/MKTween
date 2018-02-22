@@ -14,7 +14,12 @@ public class Operation<T>: Equatable where T: Tweenable {
 
 	private(set) public var dispatchQueue: DispatchQueue?
     
-	public init(name: String? = nil, period: Period<T>, updateBlock: UpdateBlock? = nil, completeBlock: CompleteBlock? = nil, timingFunction: @escaping TimingFunction = Timing.Linear, dispatchQueue: DispatchQueue? = DispatchQueue.main) {
+	public init(name: String? = nil,
+                period: Period<T>,
+                updateBlock: UpdateBlock? = nil,
+                completeBlock: CompleteBlock? = nil,
+                timingFunction: @escaping TimingFunction = Timing.Linear,
+                dispatchQueue: DispatchQueue? = DispatchQueue.main) {
 		
 		self.name = name
 		self.period = period
@@ -63,11 +68,7 @@ public class Operation<T>: Equatable where T: Tweenable {
     public static func == (a: Operation<T>, b: Operation<T>) -> Bool {
         return a === b
     }
-    
-    public static func != (a: Operation<T>, b: Operation<T>) -> Bool {
-        return !(a == b)
-    }
-    
+        
     //Public Setters
     
     public func set(name: String) -> Operation<T> {

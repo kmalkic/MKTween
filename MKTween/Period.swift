@@ -44,21 +44,19 @@ public class Period<T> where T: Tweenable {
     
     public func hasStarted(_ timeStamp: TimeInterval) -> Bool {
         
-        if let startTimeStamp = self.startTimeStamp {
-            
-            let timeToStart = startTimeStamp + self.delay
-            return timeStamp >= timeToStart
-        }
-        return false
+        guard let startTimeStamp = self.startTimeStamp
+            else { return false }
+        
+        let timeToStart = startTimeStamp + self.delay
+        return timeStamp >= timeToStart
     }
     
     public func hasEnded(_ timeStamp: TimeInterval) -> Bool {
         
-        if let startTimeStamp = self.startTimeStamp {
+        guard let startTimeStamp = self.startTimeStamp
+            else { return false }
             
-            let timeToEnd = startTimeStamp + self.delay + self.duration
-            return timeStamp >= timeToEnd
-        }
-        return false
+        let timeToEnd = startTimeStamp + self.delay + self.duration
+        return timeStamp >= timeToEnd
     }
 }

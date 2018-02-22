@@ -85,12 +85,16 @@ public class Tween: NSObject {
         
         guard let index = self.tweenOperations.index(where: {
             switch $0 {
-            case let .cgfloat(op):
-                return op == operation as? Operation<CGFloat>
-            case let .float(op):
-                return op == operation as? Operation<Float>
             case let .double(op):
                 return op == operation as? Operation<Double>
+            case let .float(op):
+                return op == operation as? Operation<Float>
+            case let .cgfloat(op):
+                return op == operation as? Operation<CGFloat>
+            case let .cgsize(op):
+                return op == operation as? Operation<CGSize>
+            case let .cgpoint(op):
+                return op == operation as? Operation<CGPoint>
             case let .cgrect(op):
                 return op == operation as? Operation<CGRect>
             }
@@ -108,11 +112,15 @@ public class Tween: NSObject {
         for tweenableOperation in copy {
             
             switch tweenableOperation {
-            case let .cgfloat(operation) where operation.name == name:
+            case let .double(operation) where operation.name == name:
                 return removeTweenOperation(operation)
             case let .float(operation) where operation.name == name:
                 return removeTweenOperation(operation)
-            case let .double(operation) where operation.name == name:
+            case let .cgfloat(operation) where operation.name == name:
+                return removeTweenOperation(operation)
+            case let .cgsize(operation) where operation.name == name:
+                return removeTweenOperation(operation)
+            case let .cgpoint(operation) where operation.name == name:
                 return removeTweenOperation(operation)
             case let .cgrect(operation) where operation.name == name:
                 return removeTweenOperation(operation)
@@ -208,7 +216,7 @@ public class Tween: NSObject {
         copy.forEach {
             
             switch $0 {
-            case let .cgfloat(operation):
+            case let .double(operation):
                 if progressOperation(timeStamp, operation: operation) {
                     remove(operation)
                 }
@@ -216,7 +224,15 @@ public class Tween: NSObject {
                 if progressOperation(timeStamp, operation: operation) {
                     remove(operation)
                 }
-            case let .double(operation):
+            case let .cgfloat(operation):
+                if progressOperation(timeStamp, operation: operation) {
+                    remove(operation)
+                }
+            case let .cgsize(operation):
+                if progressOperation(timeStamp, operation: operation) {
+                    remove(operation)
+                }
+            case let .cgpoint(operation):
                 if progressOperation(timeStamp, operation: operation) {
                     remove(operation)
                 }
@@ -310,11 +326,15 @@ public class Tween: NSObject {
         self.tweenOperations.forEach {
             
             switch $0 {
-            case let .cgfloat(operation):
+            case let .double(operation):
                 pause(operation, time: diff)
             case let .float(operation):
                 pause(operation, time: diff)
-            case let .double(operation):
+            case let .cgfloat(operation):
+                pause(operation, time: diff)
+            case let .cgsize(operation):
+                pause(operation, time: diff)
+            case let .cgpoint(operation):
                 pause(operation, time: diff)
             case let .cgrect(operation):
                 pause(operation, time: diff)

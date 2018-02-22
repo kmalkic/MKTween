@@ -25,9 +25,7 @@ class TimingCell: UITableViewCell {
 	}()
 	
 	var timingFunction = Timing.Linear {
-		
 		didSet {
-			
 			setNeedsDisplay()
 		}
 	}
