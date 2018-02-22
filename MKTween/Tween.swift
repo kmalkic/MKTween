@@ -85,20 +85,13 @@ public class Tween: NSObject {
         
         guard let index = self.tweenOperations.index(where: {
             switch $0 {
-            case let .double(op):
-                return op == operation as? Operation<Double>
-            case let .float(op):
-                return op == operation as? Operation<Float>
-            case let .cgfloat(op):
-                return op == operation as? Operation<CGFloat>
-            case let .cgsize(op):
-                return op == operation as? Operation<CGSize>
-            case let .cgpoint(op):
-                return op == operation as? Operation<CGPoint>
-            case let .cgrect(op):
-                return op == operation as? Operation<CGRect>
-            case let .uicolor(op):
-                return op == operation as? Operation<UIColor>
+            case let .double(op):   return op == operation as? Operation<Double>
+            case let .float(op):    return op == operation as? Operation<Float>
+            case let .cgfloat(op):  return op == operation as? Operation<CGFloat>
+            case let .cgsize(op):   return op == operation as? Operation<CGSize>
+            case let .cgpoint(op):  return op == operation as? Operation<CGPoint>
+            case let .cgrect(op):   return op == operation as? Operation<CGRect>
+            case let .uicolor(op):  return op == operation as? Operation<UIColor>
             }
         })
             else { return false }
@@ -114,20 +107,13 @@ public class Tween: NSObject {
         for tweenableOperation in copy {
             
             switch tweenableOperation {
-            case let .double(operation) where operation.name == name:
-                return removeTweenOperation(operation)
-            case let .float(operation) where operation.name == name:
-                return removeTweenOperation(operation)
-            case let .cgfloat(operation) where operation.name == name:
-                return removeTweenOperation(operation)
-            case let .cgsize(operation) where operation.name == name:
-                return removeTweenOperation(operation)
-            case let .cgpoint(operation) where operation.name == name:
-                return removeTweenOperation(operation)
-            case let .cgrect(operation) where operation.name == name:
-                return removeTweenOperation(operation)
-            case let .uicolor(operation) where operation.name == name:
-                return removeTweenOperation(operation)
+            case let .double(operation) where operation.name == name:   return removeTweenOperation(operation)
+            case let .float(operation) where operation.name == name:    return removeTweenOperation(operation)
+            case let .cgfloat(operation) where operation.name == name:  return removeTweenOperation(operation)
+            case let .cgsize(operation) where operation.name == name:   return removeTweenOperation(operation)
+            case let .cgpoint(operation) where operation.name == name:  return removeTweenOperation(operation)
+            case let .cgrect(operation) where operation.name == name:   return removeTweenOperation(operation)
+            case let .uicolor(operation) where operation.name == name:  return removeTweenOperation(operation)
             default:
                 break
             }
@@ -136,12 +122,10 @@ public class Tween: NSObject {
     }
     
     public func removeAllOperations() {
-        
         self.tweenOperations.removeAll()
     }
     
     public func hasOperations() -> Bool {
-        
         return self.tweenOperations.count > 0
     }
     
@@ -151,11 +135,11 @@ public class Tween: NSObject {
         
         guard let startTimeStamp = period.startTimeStamp else {
             period.set(startTimeStamp: timeStamp)
-            return false
+            return operation.expired
         }
         
-        guard period.hasStarted(timeStamp)
-            else { return false }
+        guard period.hasStarted(timeStamp), !operation.expired
+            else { return operation.expired }
         
         if !period.hasEnded(timeStamp) {
             
@@ -183,7 +167,6 @@ public class Tween: NSObject {
         dispatchQueue.async { () -> Void in
             updateBlock(period)
         }
-        
         return operation.expired
     }
     
@@ -191,7 +174,7 @@ public class Tween: NSObject {
         
         guard let completeBlock = operation.completeBlock
             else { return }
-            
+        
         guard let dispatchQueue = operation.dispatchQueue else {
             completeBlock()
             return
