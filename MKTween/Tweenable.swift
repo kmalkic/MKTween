@@ -6,11 +6,12 @@ enum TweenableOperation {
     case cgsize(Operation<CGSize>)
     case cgpoint(Operation<CGPoint>)
     case cgrect(Operation<CGRect>)
+    case uicolor(Operation<UIColor>)
 }
 
 public protocol Tweenable {
     
-    static var defaultValue: Self { get }
+    static func defaultValue() -> Self
     static func evaluate(start: Self, end: Self, time: TimeInterval, duration: TimeInterval, timingFunction: TimingFunction) -> Self
 }
 
@@ -30,6 +31,8 @@ class TweenableMapper {
             return .cgpoint(operation)
         } else if let operation = operation as? Operation<CGRect> {
             return .cgrect(operation)
+        } else if let operation = operation as? Operation<UIColor> {
+            return .uicolor(operation)
         }
         print("Tweenable not mapped yet")
         return nil
@@ -39,7 +42,7 @@ class TweenableMapper {
 
 extension Double: Tweenable {
     
-    public static var defaultValue: Double {
+    public static func defaultValue() -> Double {
         return 0.0
     }
     
@@ -50,7 +53,7 @@ extension Double: Tweenable {
 
 extension Float: Tweenable {
     
-    public static var defaultValue: Float {
+    public static func defaultValue() -> Float {
         return 0.0
     }
     
@@ -61,7 +64,7 @@ extension Float: Tweenable {
 
 extension CGFloat: Tweenable {
     
-    public static var defaultValue: CGFloat {
+    public static func defaultValue() -> CGFloat {
         return 0.0
     }
     
@@ -72,7 +75,7 @@ extension CGFloat: Tweenable {
 
 extension CGSize: Tweenable {
     
-    public static var defaultValue: CGSize {
+    public static func defaultValue() -> CGSize {
         return .zero
     }
     
@@ -84,7 +87,7 @@ extension CGSize: Tweenable {
 
 extension CGPoint: Tweenable {
     
-    public static var defaultValue: CGPoint {
+    public static func defaultValue() -> CGPoint {
         return .zero
     }
     
@@ -96,13 +99,46 @@ extension CGPoint: Tweenable {
 
 extension CGRect: Tweenable {
     
-    public static var defaultValue: CGRect {
+    public static func defaultValue() -> CGRect {
         return .zero
     }
     
     public static func evaluate(start: CGRect, end: CGRect, time: TimeInterval, duration: TimeInterval, timingFunction: TimingFunction) -> CGRect {
         return CGRect(origin: CGPoint.evaluate(start: start.origin, end: end.origin, time: time, duration: duration, timingFunction: timingFunction),
                       size: CGSize.evaluate(start: start.size, end: end.size, time: time, duration: duration, timingFunction: timingFunction))
+    }
+}
+
+extension UIColor {
+    var colorComponents: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat)? {
+        guard let components = self.cgColor.components else { return nil }
+        
+        return (
+            red: components[0],
+            green: components[1],
+            blue: components[2],
+            alpha: components[3]
+        )
+    }
+}
+
+extension UIColor: Tweenable {
+    
+    public static func defaultValue() -> Self {
+        return self.init()
+    }
+    
+    public class func evaluate(start: UIColor, end: UIColor, time: TimeInterval, duration: TimeInterval, timingFunction: TimingFunction) -> Self {
+        
+        guard let startColor = start.colorComponents,
+            let endColor = end.colorComponents else {
+                return self.init()
+        }
+        
+        return self.init(red: CGFloat.evaluate(start: startColor.red, end: endColor.red, time: time, duration: duration, timingFunction: timingFunction),
+                       green: CGFloat.evaluate(start: startColor.green, end: endColor.green, time: time, duration: duration, timingFunction: timingFunction),
+                       blue: CGFloat.evaluate(start: startColor.blue, end: endColor.blue, time: time, duration: duration, timingFunction: timingFunction),
+                       alpha: CGFloat.evaluate(start: startColor.alpha, end: endColor.alpha, time: time, duration: duration, timingFunction: timingFunction))
     }
 }
 

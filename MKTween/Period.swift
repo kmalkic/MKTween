@@ -5,7 +5,7 @@ public class Period<T> where T: Tweenable {
 	private(set) public var delay: TimeInterval
 	private(set) public var start: T
 	private(set) public var end: T
-	internal(set) public var progress: T = T.defaultValue
+	internal(set) public var progress: T = T.defaultValue()
 	
 	private(set) var startTimeStamp: TimeInterval?
 	internal var updatedTimeStamp: TimeInterval?

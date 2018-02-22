@@ -97,6 +97,8 @@ public class Tween: NSObject {
                 return op == operation as? Operation<CGPoint>
             case let .cgrect(op):
                 return op == operation as? Operation<CGRect>
+            case let .uicolor(op):
+                return op == operation as? Operation<UIColor>
             }
         })
             else { return false }
@@ -123,6 +125,8 @@ public class Tween: NSObject {
             case let .cgpoint(operation) where operation.name == name:
                 return removeTweenOperation(operation)
             case let .cgrect(operation) where operation.name == name:
+                return removeTweenOperation(operation)
+            case let .uicolor(operation) where operation.name == name:
                 return removeTweenOperation(operation)
             default:
                 break
@@ -213,33 +217,22 @@ public class Tween: NSObject {
         
         let copy = self.tweenOperations
         
+        func progress<T>(timeStamp: TimeInterval, operation: Operation<T>) {
+            if progressOperation(timeStamp, operation: operation) {
+                remove(operation)
+            }
+        }
+        
         copy.forEach {
             
             switch $0 {
-            case let .double(operation):
-                if progressOperation(timeStamp, operation: operation) {
-                    remove(operation)
-                }
-            case let .float(operation):
-                if progressOperation(timeStamp, operation: operation) {
-                    remove(operation)
-                }
-            case let .cgfloat(operation):
-                if progressOperation(timeStamp, operation: operation) {
-                    remove(operation)
-                }
-            case let .cgsize(operation):
-                if progressOperation(timeStamp, operation: operation) {
-                    remove(operation)
-                }
-            case let .cgpoint(operation):
-                if progressOperation(timeStamp, operation: operation) {
-                    remove(operation)
-                }
-            case let .cgrect(operation):
-                if progressOperation(timeStamp, operation: operation) {
-                    remove(operation)
-                }
+            case let .double(operation):    progress(timeStamp: timeStamp, operation: operation)
+            case let .float(operation):     progress(timeStamp: timeStamp, operation: operation)
+            case let .cgfloat(operation):   progress(timeStamp: timeStamp, operation: operation)
+            case let .cgsize(operation):    progress(timeStamp: timeStamp, operation: operation)
+            case let .cgpoint(operation):   progress(timeStamp: timeStamp, operation: operation)
+            case let .cgrect(operation):    progress(timeStamp: timeStamp, operation: operation)
+            case let .uicolor(operation):   progress(timeStamp: timeStamp, operation: operation)
             }
         }
     }
@@ -326,18 +319,13 @@ public class Tween: NSObject {
         self.tweenOperations.forEach {
             
             switch $0 {
-            case let .double(operation):
-                pause(operation, time: diff)
-            case let .float(operation):
-                pause(operation, time: diff)
-            case let .cgfloat(operation):
-                pause(operation, time: diff)
-            case let .cgsize(operation):
-                pause(operation, time: diff)
-            case let .cgpoint(operation):
-                pause(operation, time: diff)
-            case let .cgrect(operation):
-                pause(operation, time: diff)
+            case let .double(operation):    pause(operation, time: diff)
+            case let .float(operation):     pause(operation, time: diff)
+            case let .cgfloat(operation):   pause(operation, time: diff)
+            case let .cgsize(operation):    pause(operation, time: diff)
+            case let .cgpoint(operation):   pause(operation, time: diff)
+            case let .cgrect(operation):    pause(operation, time: diff)
+            case let .uicolor(operation):   pause(operation, time: diff)
             }
         }
     }
