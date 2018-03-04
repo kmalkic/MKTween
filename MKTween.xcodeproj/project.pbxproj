@@ -12,7 +12,7 @@
 		491C31D11C56D67100910389 /* Tween.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491C31CE1C56D67100910389 /* Tween.swift */; };
 		491C31D21C56D67100910389 /* Period.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491C31CF1C56D67100910389 /* Period.swift */; };
 		491C31D31C56D67100910389 /* TimingFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491C31D01C56D67100910389 /* TimingFunctions.swift */; };
-		491C31D51C56D7B600910389 /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491C31D41C56D7B600910389 /* Operation.swift */; };
+		491C31D51C56D7B600910389 /* TwOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491C31D41C56D7B600910389 /* TwOperation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,7 +23,7 @@
 		491C31CE1C56D67100910389 /* Tween.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tween.swift; sourceTree = "<group>"; };
 		491C31CF1C56D67100910389 /* Period.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Period.swift; sourceTree = "<group>"; };
 		491C31D01C56D67100910389 /* TimingFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimingFunctions.swift; sourceTree = "<group>"; };
-		491C31D41C56D7B600910389 /* Operation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
+		491C31D41C56D7B600910389 /* TwOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwOperation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,7 +60,7 @@
 				0A054DDF2037010800C0B6FB /* Tweenable.swift */,
 				491C31CE1C56D67100910389 /* Tween.swift */,
 				491C31CF1C56D67100910389 /* Period.swift */,
-				491C31D41C56D7B600910389 /* Operation.swift */,
+				491C31D41C56D7B600910389 /* TwOperation.swift */,
 				491C31D01C56D67100910389 /* TimingFunctions.swift */,
 				491C31C81C56D66100910389 /* Info.plist */,
 			);
@@ -147,7 +147,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				491C31D21C56D67100910389 /* Period.swift in Sources */,
-				491C31D51C56D7B600910389 /* Operation.swift in Sources */,
+				491C31D51C56D7B600910389 /* TwOperation.swift in Sources */,
 				491C31D31C56D67100910389 /* TimingFunctions.swift in Sources */,
 				491C31D11C56D67100910389 /* Tween.swift in Sources */,
 				0A054DE02037010800C0B6FB /* Tweenable.swift in Sources */,

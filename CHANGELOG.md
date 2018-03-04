@@ -1,3 +1,8 @@
+## 3.0 (March 4, 2018)
+
+- Full refactor to be more swifty.
+- Now supports CGPoint, CGSize, CGRect and UIColor.
+
 ## 2.3.1 (February 9, 2018)
 
 - Removed Float80

@@ -1,5 +1,5 @@
 
-public class Operation<T>: Equatable where T: Tweenable {
+public class TwOperation<T>: Equatable where T: Tweenable {
     
     public typealias UpdateBlock = (_ period: Period<T>) -> ()
     public typealias CompleteBlock = () -> ()
@@ -58,37 +58,37 @@ public class Operation<T>: Equatable where T: Tweenable {
 		return tweenValues
 	}
     
-    public static func == (a: Operation<T>, b: Operation<T>) -> Bool {
+    public static func == (a: TwOperation<T>, b: TwOperation<T>) -> Bool {
         return a === b
     }
         
     //Public Setters
     
-    public func set(name: String) -> Operation<T> {
+    public func set(name: String) -> TwOperation<T> {
         
         self.name = name
         return self
     }
     
-    public func set(delay: TimeInterval) -> Operation<T> {
+    public func set(delay: TimeInterval) -> TwOperation<T> {
         
         self.period.set(delay: delay)
         return self
     }
     
-    public func set(timingFunction: @escaping TimingFunction) -> Operation<T> {
+    public func set(timingFunction: @escaping TimingFunction) -> TwOperation<T> {
         
         self.timingFunction = timingFunction
         return self
     }
     
-    public func set(update block: @escaping UpdateBlock) -> Operation<T> {
+    public func set(update block: @escaping UpdateBlock) -> TwOperation<T> {
         
         self.updateBlock = block
         return self
     }
     
-    public func set(complete block: @escaping CompleteBlock) -> Operation<T> {
+    public func set(complete block: @escaping CompleteBlock) -> TwOperation<T> {
         
         self.completeBlock = block
         return self

@@ -48,7 +48,7 @@ class TimingCell: UITableViewCell {
 		
         let period = Period<CGFloat>(start: 0, end: 1)
 		
-        let operation = Operation(period: period, timingFunction: self.timingFunction).set(name: "cell curve drawing")
+        let operation = TwOperation(period: period, timingFunction: self.timingFunction).set(name: "cell curve drawing")
         
 		UIColor(red: 230/255, green: 230/255, blue: 230/255, alpha: 1).setStroke()
 		

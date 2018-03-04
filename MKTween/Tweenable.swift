@@ -1,12 +1,12 @@
 
 enum TweenableOperation {
-    case double(Operation<Double>)
-    case float(Operation<Float>)
-    case cgfloat(Operation<CGFloat>)
-    case cgsize(Operation<CGSize>)
-    case cgpoint(Operation<CGPoint>)
-    case cgrect(Operation<CGRect>)
-    case uicolor(Operation<UIColor>)
+    case double(TwOperation<Double>)
+    case float(TwOperation<Float>)
+    case cgfloat(TwOperation<CGFloat>)
+    case cgsize(TwOperation<CGSize>)
+    case cgpoint(TwOperation<CGPoint>)
+    case cgrect(TwOperation<CGRect>)
+    case uicolor(TwOperation<UIColor>)
 }
 
 public protocol Tweenable {
@@ -17,21 +17,21 @@ public protocol Tweenable {
 
 class TweenableMapper {
     
-    static func map<T>(_ operation: Operation<T>) -> TweenableOperation? {
+    static func map<T>(_ operation: TwOperation<T>) -> TweenableOperation? {
         
-        if let operation = operation as? Operation<Double> {
+        if let operation = operation as? TwOperation<Double> {
             return .double(operation)
-        } else if let operation = operation as? Operation<Float> {
+        } else if let operation = operation as? TwOperation<Float> {
             return .float(operation)
-        } else if let operation = operation as? Operation<CGFloat> {
+        } else if let operation = operation as? TwOperation<CGFloat> {
             return .cgfloat(operation)
-        } else if let operation = operation as? Operation<CGSize> {
+        } else if let operation = operation as? TwOperation<CGSize> {
             return .cgsize(operation)
-        } else if let operation = operation as? Operation<CGPoint> {
+        } else if let operation = operation as? TwOperation<CGPoint> {
             return .cgpoint(operation)
-        } else if let operation = operation as? Operation<CGRect> {
+        } else if let operation = operation as? TwOperation<CGRect> {
             return .cgrect(operation)
-        } else if let operation = operation as? Operation<UIColor> {
+        } else if let operation = operation as? TwOperation<UIColor> {
             return .uicolor(operation)
         }
         print("Tweenable not mapped yet")

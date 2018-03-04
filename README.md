@@ -13,44 +13,44 @@ Uses CADisplayLink or NSTimer with time interval parameters.
 ### Tween timing functions:
 
 ```swift
-MKTweenTiming.Linear
-MKTweenTiming.BackOut
-MKTweenTiming.BackIn
-MKTweenTiming.BackInOut
-MKTweenTiming.BounceOut
-MKTweenTiming.BounceIn
-MKTweenTiming.BounceInOut
-MKTweenTiming.CircleOut
-MKTweenTiming.CircleIn
-MKTweenTiming.CircleInOut
-MKTweenTiming.CubicOut
-MKTweenTiming.CubicIn
-MKTweenTiming.CubicInOut
-MKTweenTiming.ElasticOut
-MKTweenTiming.ElasticIn
-MKTweenTiming.ElasticInOut
-MKTweenTiming.ExpoOut
-MKTweenTiming.ExpoIn
-MKTweenTiming.ExpoInOut
-MKTweenTiming.QuadOut
-MKTweenTiming.QuadIn
-MKTweenTiming.QuadInOut
-MKTweenTiming.QuartOut
-MKTweenTiming.QuartIn
-MKTweenTiming.QuartInOut
-MKTweenTiming.QuintOut
-MKTweenTiming.QuintIn
-MKTweenTiming.QuintInOut
-MKTweenTiming.SineOut
-MKTweenTiming.SineIn
-MKTweenTiming.SineInOut
+Timing.Linear
+Timing.BackOut
+Timing.BackIn
+Timing.BackInOut
+Timing.BounceOut
+Timing.BounceIn
+Timing.BounceInOut
+Timing.CircleOut
+Timing.CircleIn
+Timing.CircleInOut
+Timing.CubicOut
+Timing.CubicIn
+Timing.CubicInOut
+Timing.ElasticOut
+Timing.ElasticIn
+Timing.ElasticInOut
+Timing.ExpoOut
+Timing.ExpoIn
+Timing.ExpoInOut
+Timing.QuadOut
+Timing.QuadIn
+Timing.QuadInOut
+Timing.QuartOut
+Timing.QuartIn
+Timing.QuartInOut
+Timing.QuintOut
+Timing.QuintIn
+Timing.QuintInOut
+Timing.SineOut
+Timing.SineIn
+Timing.SineInOut
 ```
 
 ### Example of use:
 ```swift
-let period = MKTweenPeriod<CGFloat>(duration: 2.0, delay: 0.0, startValue: 0.0, endValue: 1.0)
+let period = Period<CGFloat>(start: 0.0, end: 1.0, duration: 2.0, delay: 0.0)
 
-let operation = MKTweenOperation(period: period, updateBlock: { (period) -> () in
+let operation = TwOperation(period: period, updateBlock: { (period) -> () in
     
         print(period.progress)
     
@@ -58,27 +58,45 @@ let operation = MKTweenOperation(period: period, updateBlock: { (period) -> () i
         
         print("complete")
         
-    }, timingFunction: MKTweenTiming.ElasticInOut)
+    }, timingFunction: Timing.ElasticInOut)
 
-MKTween.shared.addTweenOperation(operation)
+Tween.shared.addTweenOperation(operation)
+```
+
+Now supports CGPoint, CGSize, CGRect and UIColor.
+
+```swift
+let period = Period<CGRect>(start: .zero, end: CGRect(x: 10, y: 10, width: 100, height: 200), duration: 2.0, delay: 0.0)
+
+let operation = TwOperation(period: period, updateBlock: { (period) -> () in
+
+    print(period.progress)
+
+}, completeBlock: { () -> () in
+
+    print("complete")
+
+}, timingFunction: Timing.ElasticInOut)
+
+Tween.shared.addTweenOperation(operation)
 ```
 
 ### MKTween instances
 Many times I have seen unique way of using tweens to be init in only one way and removes the ability of using multiple instances. So you can be sure to not forget variables to setup.
 Here ways you can allocate:
 ```swift
-let tween = MKTween.shared
-let tween = MKTween.shared()
-let tween = MKTween.shared(.Default) // Use CADisplayLink 
-let tween = MKTween.shared(.DisplayLink) // Use CADisplayLink 
-let tween = MKTween.shared(.Timer) // Use NSTimer 
-let tween = MKTween.shared(.None) // If you don't want any tick system to use your own, calling update(timeStamp:) yourself
+let tween = Tween.shared
+let tween = Tween.shared()
+let tween = Tween.shared(.Default) // Use CADisplayLink 
+let tween = Tween.shared(.DisplayLink) // Use CADisplayLink 
+let tween = Tween.shared(.Timer) // Use NSTimer 
+let tween = Tween.shared(.None) // If you don't want any tick system to use your own, calling update(timeStamp:) yourself
 
-let tween = MKTween()
-let tween = MKTween(.Default)
-let tween = MKTween(.DisplayLink)
-let tween = MKTween(.Timer)
-let tween = MKTween(.None)
+let tween = Tween()
+let tween = Tween(.Default)
+let tween = Tween(.DisplayLink)
+let tween = Tween(.Timer)
+let tween = Tween(.None)
 ```
 
 ### Technics
@@ -88,10 +106,10 @@ public var frameInterval: Int = 1 // Used for CADisplayLink. Defines how many di
 public var timerInterval: NSTimeInterval = 1.0/60.0 // Base on a 60 fps rate by default.
 ```
 
-**Get tween values without using ticks or MKTween**
+**Get tween values without using ticks or **
 ```swift
-let period = MKTweenPeriod<CGFloat>(duration:1) // will default to startValue 0 and endValue to 1
-let operation = MKTweenOperation(period: period, timingFunction: MKTweenTiming.BackInOut)
+let period = Period<CGFloat>(duration:1) // will default to startValue 0 and endValue to 1
+let operation = TwOperation(period: period, timingFunction: Timing.BackInOut)
 let tweenValues = operation.tweenValues(UInt(count))
 
 for progress in tweenValues {
@@ -133,7 +151,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '9.0'
 use_frameworks!
 
-pod 'MKTween', '~> 2.3.1'
+pod 'MKTween', '~> 3.0'
 ```
 
 Then, run the following command:
