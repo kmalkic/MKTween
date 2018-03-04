@@ -35,7 +35,8 @@ public class Operation<T>: Equatable where T: Tweenable {
 		let end = self.period.end
 		
 		let timePassed = self.period.timePassed()
-		
+
+        self.expired = false
 		self.period.set(end: end)
 		self.period.set(start: start)
 		
@@ -46,22 +47,14 @@ public class Operation<T>: Equatable where T: Tweenable {
 	}
 	
 	public func tweenValues(_ numberOfIntervals: UInt) -> [T] {
-		
-		var tweenValues = [T]()
-		
-		for i in 1...Int(numberOfIntervals) {
-			
-			let time = TimeInterval(i) / TimeInterval(numberOfIntervals)
-			
-            let progress = T.evaluate(start: self.period.start,
-                                      end: self.period.end,
-                                      time: time,
-                                      duration: self.period.duration,
-                                      timingFunction: self.timingFunction)
-            
-            tweenValues.append(progress)
-		}
-		
+
+        let tweenValues = stride(from: 1, through: Int(numberOfIntervals), by: 1).map { (i) -> T in
+            T.evaluate(start: self.period.start,
+                       end: self.period.end,
+                       time: TimeInterval(i) / TimeInterval(numberOfIntervals),
+                       duration: self.period.duration,
+                       timingFunction: self.timingFunction)
+        }
 		return tweenValues
 	}
     

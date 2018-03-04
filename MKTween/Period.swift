@@ -35,6 +35,7 @@ public class Period<T> where T: Tweenable {
     }
     
     public func timePassed() -> TimeInterval {
+        
         guard let startTimeStamp = self.startTimeStamp,
             let updatedTimeStamp = self.updatedTimeStamp
             else { return 0 }
