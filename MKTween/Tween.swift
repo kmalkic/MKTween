@@ -69,7 +69,7 @@ public class Tween: NSObject {
         self.timerInterval = timerInterval ?? self.timerInterval
     }
     
-    public func addTweenOperation<T>(_ operation: TwOperation<T>) {
+    public func addTweenOperation<T>(_ operation: OperationTween<T>) {
         
         guard let tweenableOperation = TweenableMapper.map(operation),
             operation.period.duration > 0 else {
@@ -81,17 +81,17 @@ public class Tween: NSObject {
         start()
     }
     
-    public func removeTweenOperation<T>(_ operation: TwOperation<T>) -> Bool {
+    public func removeTweenOperation<T>(_ operation: OperationTween<T>) -> Bool {
         
         guard let index = self.tweenOperations.index(where: {
             switch $0 {
-            case let .double(op):   return op == operation as? TwOperation<Double>
-            case let .float(op):    return op == operation as? TwOperation<Float>
-            case let .cgfloat(op):  return op == operation as? TwOperation<CGFloat>
-            case let .cgsize(op):   return op == operation as? TwOperation<CGSize>
-            case let .cgpoint(op):  return op == operation as? TwOperation<CGPoint>
-            case let .cgrect(op):   return op == operation as? TwOperation<CGRect>
-            case let .uicolor(op):  return op == operation as? TwOperation<UIColor>
+            case let .double(op):   return op == operation as? OperationTween<Double>
+            case let .float(op):    return op == operation as? OperationTween<Float>
+            case let .cgfloat(op):  return op == operation as? OperationTween<CGFloat>
+            case let .cgsize(op):   return op == operation as? OperationTween<CGSize>
+            case let .cgpoint(op):  return op == operation as? OperationTween<CGPoint>
+            case let .cgrect(op):   return op == operation as? OperationTween<CGRect>
+            case let .uicolor(op):  return op == operation as? OperationTween<UIColor>
             }
         })
             else { return false }
@@ -129,7 +129,7 @@ public class Tween: NSObject {
         return self.tweenOperations.count > 0
     }
     
-    fileprivate func progressOperation<T>(_ timeStamp: TimeInterval, operation: TwOperation<T>) -> Bool {
+    fileprivate func progressOperation<T>(_ timeStamp: TimeInterval, operation: OperationTween<T>) -> Bool {
         
         let period = operation.period
         
@@ -147,7 +147,7 @@ public class Tween: NSObject {
                                          end: period.end,
                                          time: timeStamp - startTimeStamp - period.delay,
                                          duration: period.duration,
-                                         timingFunction: operation.timingFunction)
+                                         timingFunction: operation.timingMode.timingFunction())
         } else {
             
             period.progress = period.end
@@ -170,7 +170,7 @@ public class Tween: NSObject {
         return operation.expired
     }
     
-    fileprivate func expiry<T>(_ operation: TwOperation<T>) {
+    fileprivate func expiry<T>(_ operation: OperationTween<T>) {
         
         guard let completeBlock = operation.completeBlock
             else { return }
@@ -192,7 +192,7 @@ public class Tween: NSObject {
             return
         }
         
-        func remove<T>(_ operation: TwOperation<T>) {
+        func remove<T>(_ operation: OperationTween<T>) {
             if removeTweenOperation(operation) {
                 expiry(operation)
             }
@@ -200,7 +200,7 @@ public class Tween: NSObject {
         
         let copy = self.tweenOperations
         
-        func progress<T>(timeStamp: TimeInterval, operation: TwOperation<T>) {
+        func progress<T>(timeStamp: TimeInterval, operation: OperationTween<T>) {
             if progressOperation(timeStamp, operation: operation) {
                 remove(operation)
             }
@@ -293,7 +293,7 @@ public class Tween: NSObject {
         
         let diff = CACurrentMediaTime() - pausedTimeStamp
         
-        func pause<T>(_ operation: TwOperation<T>, time: TimeInterval) {
+        func pause<T>(_ operation: OperationTween<T>, time: TimeInterval) {
             if let startTimeStamp = operation.period.startTimeStamp {
                 operation.period.set(startTimeStamp: startTimeStamp + time)
             }
@@ -315,10 +315,10 @@ public class Tween: NSObject {
     
     //Convience functions
     
-    public func value<T: Tweenable>(start: T, end: T, duration: TimeInterval = 1) -> TwOperation<T> {
+    public func value<T: Tweenable>(start: T, end: T, duration: TimeInterval = 1) -> OperationTween<T> {
         
         let period = Period(start: start, end: end, duration: duration, delay: 0)
-        let operation = TwOperation(period: period)
+        let operation = OperationTween(period: period)
         addTweenOperation(operation)
         return operation
     }

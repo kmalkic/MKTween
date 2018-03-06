@@ -24,7 +24,7 @@ class TimingCell: UITableViewCell {
 		return label
 	}()
 	
-	var timingFunction = Timing.Linear {
+	var timingMode = Timing.linear {
 		didSet {
 			setNeedsDisplay()
 		}
@@ -48,7 +48,7 @@ class TimingCell: UITableViewCell {
 		
         let period = Period<CGFloat>(start: 0, end: 1)
 		
-        let operation = TwOperation(period: period, timingFunction: self.timingFunction).set(name: "cell curve drawing")
+        let operation = OperationTween(period: period, timingMode: timingMode).set(name: "cell curve drawing")
         
 		UIColor(red: 230/255, green: 230/255, blue: 230/255, alpha: 1).setStroke()
 		
@@ -90,7 +90,5 @@ class TimingCell: UITableViewCell {
 		
 		UIColor(red: 255/255, green: 127/255, blue: 127/255, alpha: 1).setStroke()
 		path.stroke()
-        
-
 	}
 }

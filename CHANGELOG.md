@@ -1,3 +1,8 @@
+## 3.1 (March 6, 2018)
+
+- Timing to be enums
+- Renamed TwOperation to OperationTween
+
 ## 3.0 (March 4, 2018)
 
 - Full refactor to be more swifty.

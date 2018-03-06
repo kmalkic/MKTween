@@ -1,12 +1,12 @@
 
 enum TweenableOperation {
-    case double(TwOperation<Double>)
-    case float(TwOperation<Float>)
-    case cgfloat(TwOperation<CGFloat>)
-    case cgsize(TwOperation<CGSize>)
-    case cgpoint(TwOperation<CGPoint>)
-    case cgrect(TwOperation<CGRect>)
-    case uicolor(TwOperation<UIColor>)
+    case double(OperationTween<Double>)
+    case float(OperationTween<Float>)
+    case cgfloat(OperationTween<CGFloat>)
+    case cgsize(OperationTween<CGSize>)
+    case cgpoint(OperationTween<CGPoint>)
+    case cgrect(OperationTween<CGRect>)
+    case uicolor(OperationTween<UIColor>)
 }
 
 public protocol Tweenable {
@@ -17,21 +17,21 @@ public protocol Tweenable {
 
 class TweenableMapper {
     
-    static func map<T>(_ operation: TwOperation<T>) -> TweenableOperation? {
+    static func map<T>(_ operation: OperationTween<T>) -> TweenableOperation? {
         
-        if let operation = operation as? TwOperation<Double> {
+        if let operation = operation as? OperationTween<Double> {
             return .double(operation)
-        } else if let operation = operation as? TwOperation<Float> {
+        } else if let operation = operation as? OperationTween<Float> {
             return .float(operation)
-        } else if let operation = operation as? TwOperation<CGFloat> {
+        } else if let operation = operation as? OperationTween<CGFloat> {
             return .cgfloat(operation)
-        } else if let operation = operation as? TwOperation<CGSize> {
+        } else if let operation = operation as? OperationTween<CGSize> {
             return .cgsize(operation)
-        } else if let operation = operation as? TwOperation<CGPoint> {
+        } else if let operation = operation as? OperationTween<CGPoint> {
             return .cgpoint(operation)
-        } else if let operation = operation as? TwOperation<CGRect> {
+        } else if let operation = operation as? OperationTween<CGRect> {
             return .cgrect(operation)
-        } else if let operation = operation as? TwOperation<UIColor> {
+        } else if let operation = operation as? OperationTween<UIColor> {
             return .uicolor(operation)
         }
         print("Tweenable not mapped yet")

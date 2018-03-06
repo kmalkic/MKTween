@@ -1,12 +1,12 @@
 
-public class TwOperation<T>: Equatable where T: Tweenable {
+public class OperationTween<T>: Equatable where T: Tweenable {
     
     public typealias UpdateBlock = (_ period: Period<T>) -> ()
     public typealias CompleteBlock = () -> ()
     
     internal(set) public var expired: Bool = false
 	private(set) public var period: Period<T>
-	private(set) public var timingFunction: TimingFunction
+	private(set) public var timingMode: Timing
 	private(set) public var updateBlock: UpdateBlock?
 	private(set) public var completeBlock: CompleteBlock?
 
@@ -18,12 +18,12 @@ public class TwOperation<T>: Equatable where T: Tweenable {
                 period: Period<T>,
                 updateBlock: UpdateBlock? = nil,
                 completeBlock: CompleteBlock? = nil,
-                timingFunction: @escaping TimingFunction = Timing.Linear,
+                timingMode: Timing = .linear,
                 dispatchQueue: DispatchQueue? = DispatchQueue.main) {
 		
 		self.name = name
 		self.period = period
-		self.timingFunction = timingFunction
+		self.timingMode = timingMode
 		self.updateBlock = updateBlock
 		self.completeBlock = completeBlock
 		self.dispatchQueue = dispatchQueue
@@ -53,42 +53,42 @@ public class TwOperation<T>: Equatable where T: Tweenable {
                        end: self.period.end,
                        time: TimeInterval(i) / TimeInterval(numberOfIntervals),
                        duration: self.period.duration,
-                       timingFunction: self.timingFunction)
+                       timingFunction: self.timingMode.timingFunction())
         }
 		return tweenValues
 	}
     
-    public static func == (a: TwOperation<T>, b: TwOperation<T>) -> Bool {
+    public static func == (a: OperationTween<T>, b: OperationTween<T>) -> Bool {
         return a === b
     }
         
     //Public Setters
     
-    public func set(name: String) -> TwOperation<T> {
+    public func set(name: String) -> OperationTween<T> {
         
         self.name = name
         return self
     }
     
-    public func set(delay: TimeInterval) -> TwOperation<T> {
+    public func set(delay: TimeInterval) -> OperationTween<T> {
         
         self.period.set(delay: delay)
         return self
     }
     
-    public func set(timingFunction: @escaping TimingFunction) -> TwOperation<T> {
+    public func set(timingMode: Timing) -> OperationTween<T> {
         
-        self.timingFunction = timingFunction
+        self.timingMode = timingMode
         return self
     }
     
-    public func set(update block: @escaping UpdateBlock) -> TwOperation<T> {
+    public func set(update block: @escaping UpdateBlock) -> OperationTween<T> {
         
         self.updateBlock = block
         return self
     }
     
-    public func set(complete block: @escaping CompleteBlock) -> TwOperation<T> {
+    public func set(complete block: @escaping CompleteBlock) -> OperationTween<T> {
         
         self.completeBlock = block
         return self

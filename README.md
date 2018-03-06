@@ -50,7 +50,7 @@ Timing.SineInOut
 ```swift
 let period = Period<CGFloat>(start: 0.0, end: 1.0, duration: 2.0, delay: 0.0)
 
-let operation = TwOperation(period: period, updateBlock: { (period) -> () in
+let operation = OperationTween(period: period, updateBlock: { (period) -> () in
     
         print(period.progress)
     
@@ -68,7 +68,7 @@ Now supports CGPoint, CGSize, CGRect and UIColor.
 ```swift
 let period = Period<CGRect>(start: .zero, end: CGRect(x: 10, y: 10, width: 100, height: 200), duration: 2.0, delay: 0.0)
 
-let operation = TwOperation(period: period, updateBlock: { (period) -> () in
+let operation = OperationTween(period: period, updateBlock: { (period) -> () in
 
     print(period.progress)
 
@@ -109,7 +109,7 @@ public var timerInterval: NSTimeInterval = 1.0/60.0 // Base on a 60 fps rate by 
 **Get tween values without using ticks or **
 ```swift
 let period = Period<CGFloat>(duration:1) // will default to startValue 0 and endValue to 1
-let operation = TwOperation(period: period, timingFunction: Timing.BackInOut)
+let operation = OperationTween(period: period, timingFunction: Timing.BackInOut)
 let tweenValues = operation.tweenValues(UInt(count))
 
 for progress in tweenValues {
@@ -151,7 +151,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '9.0'
 use_frameworks!
 
-pod 'MKTween', '~> 3.0'
+pod 'MKTween', '~> 3.1'
 ```
 
 Then, run the following command:

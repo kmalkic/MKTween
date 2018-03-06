@@ -33,5 +33,4 @@ class View: UIView {
 		tableView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
 		addSubview(tableView)
 	}
-	
 }

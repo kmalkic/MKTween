@@ -18,9 +18,8 @@ class ViewController: UIViewController {
 	}
 	
 	let headerView = HeaderView()
-	var timingFunctions = [TimingFunction]()
-	var timingFunctionTitles = [String]()
-	
+	var timingModes = [Timing]()
+
 	override func loadView() {
 		view = View()
 	}
@@ -40,37 +39,37 @@ class ViewController: UIViewController {
 	
 	func constructArray() {
 	
-		timingFunctions.append(Timing.Linear); self.timingFunctionTitles.append("Linear")
-		timingFunctions.append(Timing.BackOut); self.timingFunctionTitles.append("BackOut")
-		timingFunctions.append(Timing.BackIn); self.timingFunctionTitles.append("BackIn")
-		timingFunctions.append(Timing.BackInOut); self.timingFunctionTitles.append("BackInOut")
-		timingFunctions.append(Timing.BounceOut); self.timingFunctionTitles.append("BounceOut")
-		timingFunctions.append(Timing.BounceIn); self.timingFunctionTitles.append("BounceIn")
-		timingFunctions.append(Timing.BounceInOut); self.timingFunctionTitles.append("BounceInOut")
-		timingFunctions.append(Timing.CircleOut); self.timingFunctionTitles.append("CircleOut")
-		timingFunctions.append(Timing.CircleIn); self.timingFunctionTitles.append("CircleIn")
-		timingFunctions.append(Timing.CircleInOut); self.timingFunctionTitles.append("CircleInOut")
-		timingFunctions.append(Timing.CubicOut); self.timingFunctionTitles.append("CubicOut")
-		timingFunctions.append(Timing.CubicIn); self.timingFunctionTitles.append("CubicIn")
-		timingFunctions.append(Timing.CubicInOut); self.timingFunctionTitles.append("CubicInOut")
-		timingFunctions.append(Timing.ElasticOut); self.timingFunctionTitles.append("ElasticOut")
-		timingFunctions.append(Timing.ElasticIn); self.timingFunctionTitles.append("ElasticIn")
-		timingFunctions.append(Timing.ElasticInOut); self.timingFunctionTitles.append("ElasticInOut")
-		timingFunctions.append(Timing.ExpoOut); self.timingFunctionTitles.append("ExpoOut")
-		timingFunctions.append(Timing.ExpoIn); self.timingFunctionTitles.append("ExpoIn")
-		timingFunctions.append(Timing.ExpoInOut); self.timingFunctionTitles.append("ExpoInOut")
-		timingFunctions.append(Timing.QuadOut); self.timingFunctionTitles.append("QuadOut")
-		timingFunctions.append(Timing.QuadIn); self.timingFunctionTitles.append("QuadIn")
-		timingFunctions.append(Timing.QuadInOut); self.timingFunctionTitles.append("QuadInOut")
-		timingFunctions.append(Timing.QuartOut); self.timingFunctionTitles.append("QuartOut")
-		timingFunctions.append(Timing.QuartIn); self.timingFunctionTitles.append("QuartIn")
-		timingFunctions.append(Timing.QuartInOut); self.timingFunctionTitles.append("QuartInOut")
-		timingFunctions.append(Timing.QuintOut); self.timingFunctionTitles.append("QuintOut")
-		timingFunctions.append(Timing.QuintIn); self.timingFunctionTitles.append("QuintIn")
-		timingFunctions.append(Timing.QuintInOut); self.timingFunctionTitles.append("QuintInOut")
-		timingFunctions.append(Timing.SineOut); self.timingFunctionTitles.append("SineOut")
-		timingFunctions.append(Timing.SineIn); self.timingFunctionTitles.append("SineIn")
-		timingFunctions.append(Timing.SineInOut); self.timingFunctionTitles.append("SineInOut")
+        timingModes.append(.linear)
+        timingModes.append(.backOut)
+        timingModes.append(.backIn)
+        timingModes.append(.backInOut)
+        timingModes.append(.bounceOut)
+        timingModes.append(.bounceIn)
+        timingModes.append(.bounceInOut)
+        timingModes.append(.circleOut)
+        timingModes.append(.circleIn)
+        timingModes.append(.circleInOut)
+        timingModes.append(.cubicOut)
+        timingModes.append(.cubicIn)
+        timingModes.append(.cubicInOut)
+        timingModes.append(.elasticOut)
+        timingModes.append(.elasticIn)
+        timingModes.append(.elasticInOut)
+        timingModes.append(.expoOut)
+        timingModes.append(.expoIn)
+        timingModes.append(.expoInOut)
+        timingModes.append(.quadOut)
+        timingModes.append(.quadIn)
+        timingModes.append(.quadInOut)
+        timingModes.append(.quartOut)
+        timingModes.append(.quartIn)
+        timingModes.append(.quartInOut)
+        timingModes.append(.quintOut)
+        timingModes.append(.quintIn)
+        timingModes.append(.quintInOut)
+        timingModes.append(.sineOut)
+        timingModes.append(.sineIn)
+        timingModes.append(.sineInOut)
 	}
 }
 
@@ -85,7 +84,7 @@ extension ViewController : UITableViewDelegate {
 		
 		self.headerView.circleView.center = CGPoint(x: newRect.origin.x, y: (headerHeight/2))
         
-        let timingFunction = self.timingFunctions[indexPath.row]
+        let timingMode = self.timingModes[indexPath.row]
         
         DispatchQueue.main.async(execute: { () -> Void in
 
@@ -97,7 +96,7 @@ extension ViewController : UITableViewDelegate {
                 
                 self.headerView.circleView.center = CGPoint(x: newRect.origin.x + (newRect.width * period.progress), y: (headerHeight/2))
                 
-            }).set(timingFunction: timingFunction).set(name: tweenName)
+            }).set(timingMode: timingMode).set(name: tweenName)
         })
 	}
 }
@@ -128,7 +127,7 @@ extension ViewController : UITableViewDataSource {
 	}
 	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return self.timingFunctions.count
+		return self.timingModes.count
 	}
 	
 	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -138,8 +137,8 @@ extension ViewController : UITableViewDataSource {
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		
 		let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for:indexPath) as! TimingCell
-		cell.titleLabel.text = self.timingFunctionTitles[indexPath.row]
-		cell.timingFunction = self.timingFunctions[indexPath.row]
+		cell.timingMode = self.timingModes[indexPath.row]
+        cell.titleLabel.text = cell.timingMode.name()
 		return cell
 	}
 }
