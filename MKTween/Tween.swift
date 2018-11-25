@@ -247,7 +247,7 @@ public class Tween: NSObject {
             
             self.displayLink = UIScreen.main.displayLink(withTarget: self, selector: #selector(Tween.handleDisplayLink(_:)))
             self.displayLink!.frameInterval = self.frameInterval
-            self.displayLink!.add(to: RunLoop.main, forMode: RunLoopMode.commonModes)
+            self.displayLink!.add(to: RunLoop.main, forMode: RunLoop.Mode.common)
             
         } else if timer == nil && timerStyle == .timer {
             
@@ -261,7 +261,7 @@ public class Tween: NSObject {
         if self.displayLink != nil {
             
             self.displayLink!.isPaused = true
-            self.displayLink!.remove(from: RunLoop.main, forMode: RunLoopMode.commonModes)
+            self.displayLink!.remove(from: RunLoop.main, forMode: RunLoop.Mode.common)
             self.displayLink = nil
         }
         
