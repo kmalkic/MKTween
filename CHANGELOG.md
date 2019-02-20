@@ -1,3 +1,7 @@
+## 3.2 (February 20, 2019)
+
+- Swift 4.2 fixes
+
 ## 3.1 (March 6, 2018)
 
 - Timing to be enums
