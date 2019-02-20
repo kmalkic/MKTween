@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
                    DESC
   s.homepage = 'https://github.com/kmalkic/MKTween'
   s.authors = { 'Kevin Malkic' => 'k_malkic@yahoo.fr' }
-  s.source = { :git => 'https://github.com/kmalkic/MKTween.git', :tag => s.version.to_s }
+  s.source = { :git => 'git@github.com:kmalkic/MKTween.git', :tag => s.version.to_s }
   s.platform = :ios, '9.0'
   s.pod_target_xcconfig = { 'SWIFT_VERSION' => '4.2' }
   s.source_files = 'MKTween/*.swift'
