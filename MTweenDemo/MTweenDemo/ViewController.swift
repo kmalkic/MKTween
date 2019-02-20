@@ -11,9 +11,9 @@ import MKTween
 
 class ViewController: UIViewController {
 	
-	var myView : View! {
+	var myView : View? {
 		get {
-			return self.view as! View
+			return self.view as? View
 		}
 	}
 	
@@ -30,11 +30,11 @@ class ViewController: UIViewController {
 		
 		constructArray()
 		
-		self.myView.tableView.register(TimingCell.self, forCellReuseIdentifier: "cell")
-		self.myView.tableView.separatorStyle = .none
+		myView?.tableView.register(TimingCell.self, forCellReuseIdentifier: "cell")
+		myView?.tableView.separatorStyle = .none
 		
-		self.myView.tableView.delegate = self
-		self.myView.tableView.dataSource = self
+		myView?.tableView.delegate = self
+		myView?.tableView.dataSource = self
     }
 	
 	func constructArray() {
