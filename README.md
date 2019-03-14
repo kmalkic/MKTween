@@ -1,6 +1,6 @@
 # MKTween
 
-Very simple and lightweight tween framework in Swift 4.0.
+Very simple and lightweight tween framework in Swift 4.2.
 No objects/views bindings for a more flexible use.
 Uses CADisplayLink or NSTimer with time interval parameters.
 
