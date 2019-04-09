@@ -1,44 +1,22 @@
-
-enum TweenableOperation {
-    case double(OperationTween<Double>)
-    case float(OperationTween<Float>)
-    case cgfloat(OperationTween<CGFloat>)
-    case cgsize(OperationTween<CGSize>)
-    case cgpoint(OperationTween<CGPoint>)
-    case cgrect(OperationTween<CGRect>)
-    case uicolor(OperationTween<UIColor>)
-}
+//
+//  Tweenable.swift
+//  MKTween
+//
+//  Created by Kevin Malkic on 08/04/2019.
+//  Copyright © 2019 Kevin Malkic. All rights reserved.
+//
 
 public protocol Tweenable {
-    
     static func defaultValue() -> Self
     static func evaluate(start: Self, end: Self, time: TimeInterval, duration: TimeInterval, timingFunction: TimingFunction) -> Self
 }
 
-class TweenableMapper {
+extension TimeInterval {
     
-    static func map<T>(_ operation: OperationTween<T>) -> TweenableOperation? {
-        
-        if let operation = operation as? OperationTween<Double> {
-            return .double(operation)
-        } else if let operation = operation as? OperationTween<Float> {
-            return .float(operation)
-        } else if let operation = operation as? OperationTween<CGFloat> {
-            return .cgfloat(operation)
-        } else if let operation = operation as? OperationTween<CGSize> {
-            return .cgsize(operation)
-        } else if let operation = operation as? OperationTween<CGPoint> {
-            return .cgpoint(operation)
-        } else if let operation = operation as? OperationTween<CGRect> {
-            return .cgrect(operation)
-        } else if let operation = operation as? OperationTween<UIColor> {
-            return .uicolor(operation)
-        }
-        print("Tweenable not mapped yet")
-        return nil
+    internal func deltaTime(from: TimeInterval) -> TimeInterval {
+        return from - self
     }
 }
-
 
 extension Double: Tweenable {
     

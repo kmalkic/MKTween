@@ -8,22 +8,29 @@
 
 /* Begin PBXBuildFile section */
 		0A054DE02037010800C0B6FB /* Tweenable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A054DDF2037010800C0B6FB /* Tweenable.swift */; };
+		4911DDEB225BE23C004866CD /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4911DDEA225BE23C004866CD /* Group.swift */; };
+		4911DDED225BE247004866CD /* Sequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4911DDEC225BE247004866CD /* Sequence.swift */; };
+		4911DDEF225BE2EA004866CD /* BasePeriod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4911DDEE225BE2EA004866CD /* BasePeriod.swift */; };
+		4911DDF1225BE2F6004866CD /* BasePeriods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4911DDF0225BE2F6004866CD /* BasePeriods.swift */; };
 		491C31C71C56D66100910389 /* MKTween.h in Headers */ = {isa = PBXBuildFile; fileRef = 491C31C61C56D66100910389 /* MKTween.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		491C31D11C56D67100910389 /* Tween.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491C31CE1C56D67100910389 /* Tween.swift */; };
 		491C31D21C56D67100910389 /* Period.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491C31CF1C56D67100910389 /* Period.swift */; };
 		491C31D31C56D67100910389 /* TimingFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491C31D01C56D67100910389 /* TimingFunctions.swift */; };
-		491C31D51C56D7B600910389 /* OperationTween.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491C31D41C56D7B600910389 /* OperationTween.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0A054DDF2037010800C0B6FB /* Tweenable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tweenable.swift; sourceTree = "<group>"; };
+		302D0371212E4B5B0A0D6728 /* Pods_MKTween.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MKTween.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4911DDEA225BE23C004866CD /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
+		4911DDEC225BE247004866CD /* Sequence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sequence.swift; sourceTree = "<group>"; };
+		4911DDEE225BE2EA004866CD /* BasePeriod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePeriod.swift; sourceTree = "<group>"; };
+		4911DDF0225BE2F6004866CD /* BasePeriods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePeriods.swift; sourceTree = "<group>"; };
 		491C31C31C56D66100910389 /* MKTween.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MKTween.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		491C31C61C56D66100910389 /* MKTween.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MKTween.h; sourceTree = "<group>"; };
 		491C31C81C56D66100910389 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		491C31CE1C56D67100910389 /* Tween.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tween.swift; sourceTree = "<group>"; };
 		491C31CF1C56D67100910389 /* Period.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Period.swift; sourceTree = "<group>"; };
 		491C31D01C56D67100910389 /* TimingFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimingFunctions.swift; sourceTree = "<group>"; };
-		491C31D41C56D7B600910389 /* OperationTween.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationTween.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,11 +44,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		31BABC6284C0F769E41BAC0A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				302D0371212E4B5B0A0D6728 /* Pods_MKTween.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		491C31B91C56D66100910389 = {
 			isa = PBXGroup;
 			children = (
 				491C31C51C56D66100910389 /* MKTween */,
 				491C31C41C56D66100910389 /* Products */,
+				31BABC6284C0F769E41BAC0A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -60,7 +76,10 @@
 				0A054DDF2037010800C0B6FB /* Tweenable.swift */,
 				491C31CE1C56D67100910389 /* Tween.swift */,
 				491C31CF1C56D67100910389 /* Period.swift */,
-				491C31D41C56D7B600910389 /* OperationTween.swift */,
+				4911DDEA225BE23C004866CD /* Group.swift */,
+				4911DDEC225BE247004866CD /* Sequence.swift */,
+				4911DDEE225BE2EA004866CD /* BasePeriod.swift */,
+				4911DDF0225BE2F6004866CD /* BasePeriods.swift */,
 				491C31D01C56D67100910389 /* TimingFunctions.swift */,
 				491C31C81C56D66100910389 /* Info.plist */,
 			);
@@ -147,8 +166,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				491C31D21C56D67100910389 /* Period.swift in Sources */,
-				491C31D51C56D7B600910389 /* OperationTween.swift in Sources */,
+				4911DDEF225BE2EA004866CD /* BasePeriod.swift in Sources */,
+				4911DDED225BE247004866CD /* Sequence.swift in Sources */,
+				4911DDF1225BE2F6004866CD /* BasePeriods.swift in Sources */,
 				491C31D31C56D67100910389 /* TimingFunctions.swift in Sources */,
+				4911DDEB225BE23C004866CD /* Group.swift in Sources */,
 				491C31D11C56D67100910389 /* Tween.swift in Sources */,
 				0A054DE02037010800C0B6FB /* Tweenable.swift in Sources */,
 			);
