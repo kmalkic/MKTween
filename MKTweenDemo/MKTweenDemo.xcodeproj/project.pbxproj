@@ -77,6 +77,19 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		4911DE1E225CEE55004866CD /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				4911DE18225CCD97004866CD /* Menu.ViewController.swift */,
+				4911DE1A225CE16F004866CD /* Menu.Group.ViewController.swift */,
+				4911DE1C225CEA7A004866CD /* Menu.Sequence.ViewController.swift */,
+				491C31E61C56E69F00910389 /* Menu.Timing.ViewController.swift */,
+				0A2AE2A61C57AFA7007525C3 /* Menu.Timing.Cell.swift */,
+				0A2AE2AA1C57C827007525C3 /* HeaderView.swift */,
+			);
+			path = Menu;
+			sourceTree = "<group>";
+		};
 		491C31D81C56E69F00910389 = {
 			isa = PBXGroup;
 			children = (
@@ -101,12 +114,7 @@
 			children = (
 				4911DE16225CCC7F004866CD /* Subviewable.swift */,
 				491C31E41C56E69F00910389 /* AppDelegate.swift */,
-				4911DE18225CCD97004866CD /* Menu.ViewController.swift */,
-				4911DE1A225CE16F004866CD /* Menu.Group.ViewController.swift */,
-				4911DE1C225CEA7A004866CD /* Menu.Sequence.ViewController.swift */,
-				491C31E61C56E69F00910389 /* Menu.Timing.ViewController.swift */,
-				0A2AE2A61C57AFA7007525C3 /* Menu.Timing.Cell.swift */,
-				0A2AE2AA1C57C827007525C3 /* HeaderView.swift */,
+				4911DE1E225CEE55004866CD /* Menu */,
 				491C31EB1C56E69F00910389 /* Assets.xcassets */,
 				491C31ED1C56E69F00910389 /* LaunchScreen.storyboard */,
 				491C31F01C56E69F00910389 /* Info.plist */,
