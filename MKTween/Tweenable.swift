@@ -11,6 +11,13 @@ public protocol Tweenable {
     static func evaluate(start: Self, end: Self, time: TimeInterval, duration: TimeInterval, timingFunction: TimingFunction) -> Self
 }
 
+extension Comparable {
+    
+    public func clamped(to limits: ClosedRange<Self>) -> Self {
+        return min(max(self, limits.lowerBound), limits.upperBound)
+    }
+}
+
 extension TimeInterval {
     
     internal func deltaTime(from: TimeInterval) -> TimeInterval {

@@ -32,6 +32,12 @@ extension Menu.Timing {
             }
         }
         
+        var progressTime: CGFloat = 0 {
+            didSet {
+                setNeedsDisplay()
+            }
+        }
+        
         override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
             
             super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -47,9 +53,7 @@ extension Menu.Timing {
             
             UIColor.white.setFill()
             UIRectFill(rect)
-            
-            let period = Period<CGFloat>(start: 0, end: 1, duration: 1, timingMode: timingMode).set(name: "cell curve drawing")
-            
+
             UIColor(red: 230/255, green: 230/255, blue: 230/255, alpha: 1).setStroke()
             
             let topMargins: CGFloat = 25
@@ -77,15 +81,22 @@ extension Menu.Timing {
             
             let count = width/2
             
+            let period = Period<CGFloat>(start: 0, end: 1, duration: 1, timingMode: timingMode).set(name: "cell curve drawing")
             let tweenValues = period.tweenValues(UInt(count))
             
-            for i in 0..<tweenValues.count {
+            let progressIndex = Int(round(CGFloat(tweenValues.count - 1) * progressTime))
+            
+            tweenValues.enumerated().forEach { index, progress in
                 
-                let xPos = ((newRect.width * CGFloat(i+1)) / count) + newRect.origin.x
+                let xPos = ((newRect.width * CGFloat(index+1)) / count) + newRect.origin.x
                 
-                let progress = tweenValues[i]
+                let point = CGPoint( x: xPos, y: newRect.origin.y + (newRect.height - (progress * newRect.height)))
+                path.addLine(to: point)
                 
-                path.addLine(to: CGPoint( x: xPos, y: newRect.origin.y + ( newRect.height - ( progress * newRect.height ) ) ) )
+                if index == progressIndex {
+                    UIColor(red: 255/255, green: 127/255, blue: 127/255, alpha: 1).setFill()
+                    UIBezierPath(arcCenter: point, radius: 3, startAngle: 0, endAngle: .pi * 2, clockwise: true).fill()
+                }
             }
             
             UIColor(red: 255/255, green: 127/255, blue: 127/255, alpha: 1).setStroke()

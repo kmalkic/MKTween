@@ -50,7 +50,7 @@ public final class Period<T> : BasePeriod where T: Tweenable {
     
 	private(set) public var startTimestamp: TimeInterval
     private(set) public var lastTimestamp: TimeInterval
-    private var timePassed: TimeInterval = 0
+    private(set) public var timePassed: TimeInterval = 0
     private(set) public var paused: Bool = false
     
     internal(set) public var progress: T = T.defaultValue()
@@ -86,7 +86,8 @@ public final class Period<T> : BasePeriod where T: Tweenable {
         if delay <= 0 && !paused {
             dt = dt * direction.value
             timePassed += dt
-
+            timePassed = timePassed.clamped(to: 0...duration)
+            
             progress = T.evaluate(start: start,
                                    end: end,
                                    time: timePassed,

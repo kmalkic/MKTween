@@ -8,40 +8,40 @@
 
 import UIKit
 import MKTween
-
-enum Menu {
-    enum Timing { }
-}
+import Cartography
 
 extension Menu.Timing {
     
-    class ViewController: UIViewController {
+    class ViewController: UIViewController, Menuable {
+        
+        static let title = "Timing"
         
         let cellHeight : CGFloat = 100
-        let headerHeight : CGFloat = 200
-        
-        var myView : View? {
-            get {
-                return self.view as? View
-            }
-        }
+        let headerHeight : CGFloat = 100
         
         let headerView = HeaderView()
         let timingModes = Timing.all
+        let tableView = UITableView()
         
-        override func loadView() {
-            view = View()
+        required init() {
+            super.init(nibName: nil, bundle: nil)
+            setup()
+        }
+        
+        required init?(coder aDecoder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
         }
         
         override func viewDidLoad() {
             
             super.viewDidLoad()
             
-            myView?.tableView.register(Cell.self, forCellReuseIdentifier: "cell")
-            myView?.tableView.separatorStyle = .none
+            title = ViewController.title
+            tableView.register(Cell.self, forCellReuseIdentifier: "cell")
+            tableView.separatorStyle = .none
             
-            myView?.tableView.delegate = self
-            myView?.tableView.dataSource = self
+            tableView.delegate = self
+            tableView.dataSource = self
         }
     }
 }
@@ -59,6 +59,7 @@ extension Menu.Timing.ViewController : UITableViewDelegate {
         let timingMode = self.timingModes[indexPath.row]
         
         let tweenName = timingMode.name()
+        let selectedCell = tableView.cellForRow(at: indexPath) as? Menu.Timing.Cell
         
         if !Tween.shared.removePeriod(by: tweenName) {
             Tween.shared.removeAll()
@@ -68,9 +69,12 @@ extension Menu.Timing.ViewController : UITableViewDelegate {
                 _ = Tween.shared.value(start: CGFloat(0), end: 1, duration: 2).set(updateBlock: { [weak self] period in
                     
                     self?.headerView.circleView.center = CGPoint(x: newRect.origin.x + (newRect.width * period.progress), y: (headerHeight/2))
+                    selectedCell?.progressTime = CGFloat(period.timePassed / period.duration)
                     
                 }).set(timingMode: timingMode).set(name: tweenName).set(repeatType: .foreverPingPong)
             })
+        } else {
+            selectedCell?.progressTime = 0
         }
     }
 }
@@ -109,7 +113,28 @@ extension Menu.Timing.ViewController : UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for:indexPath) as? Menu.Timing.Cell else { return UITableViewCell() }
         cell.timingMode = self.timingModes[indexPath.row]
         cell.titleLabel.text = cell.timingMode.name()
+        cell.progressTime = 0
         return cell
     }
 }
 
+extension Menu.Timing.ViewController : Subviewable {
+    
+    func setupSubviews() {
+        
+    }
+    
+    func setupStyles() {
+        
+    }
+    
+    func setupHierarchy() {
+        view.addSubview(tableView)
+    }
+    
+    func setupAutoLayout() {
+        constrain(tableView, view) { tableView, view in
+            tableView.edges == view.edges
+        }
+    }
+}
