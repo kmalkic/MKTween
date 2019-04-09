@@ -1,6 +1,6 @@
 //
 //  Menu.ViewController.swift
-//  MTweenDemo
+//  MKTweenDemo
 //
 //  Created by Kevin Malkic on 08/04/2019.
 //  Copyright © 2019 Kevin Malkic. All rights reserved.
@@ -16,6 +16,8 @@ protocol Menuable {
 
 enum Menu {
     enum Timing { }
+    enum Group { }
+    enum Sequence { }
 }
 
 extension Menu {
@@ -23,7 +25,9 @@ extension Menu {
     class ViewController: UIViewController {
         
         let tableView = UITableView()
-        let data: [(Menuable & UIViewController).Type] = [Menu.Timing.ViewController.self]
+        let data: [(Menuable & UIViewController).Type] = [Menu.Timing.ViewController.self,
+                                                          Menu.Group.ViewController.self,
+                                                          Menu.Sequence.ViewController.self]
         
         init() {
             super.init(nibName: nil, bundle: nil)

@@ -220,7 +220,7 @@ public class Tween: NSObject {
     
     //Convience functions
     
-    public func value<T: Tweenable>(start: T, end: T, duration: TimeInterval = 1) -> Period<T> {
+    @discardableResult public func value<T: Tweenable>(start: T, end: T, duration: TimeInterval = 1) -> Period<T> {
         let period = Period(start: start, end: end, duration: duration, delay: 0)
         add(period: period)
         return period

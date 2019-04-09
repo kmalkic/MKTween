@@ -1,9 +1,9 @@
 //
 //  Menu.Timing.Cell.swift
-//  MTweenDemo
+//  MKTweenDemo
 //
-//  Created by Kevin Malkic on 26/01/2016.
-//  Copyright © 2016 Kevin Malkic. All rights reserved.
+//  Created by Kevin Malkic on 09/04/2019.
+//  Copyright © 2019 Kevin Malkic. All rights reserved.
 //
 
 import UIKit
@@ -16,11 +16,10 @@ extension Menu.Timing {
         let tween = Tween(.none)
         
         lazy var titleLabel : UILabel = {
-            
             let label = UILabel()
             label.textColor = UIColor.black
             label.autoresizingMask = [.flexibleWidth, .flexibleBottomMargin]
-            label.font = UIFont.systemFont(ofSize: 11)
+            label.font = UIFont(name: "HelveticaNeue-Light", size: 12)
             self.addSubview(label)
             
             return label

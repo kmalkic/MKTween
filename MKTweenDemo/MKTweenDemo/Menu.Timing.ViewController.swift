@@ -1,9 +1,9 @@
 //
 //  Menu.Timing.ViewController.swift
-//  MTweenDemo
+//  MKTweenDemo
 //
-//  Created by Kevin Malkic on 25/01/2016.
-//  Copyright © 2016 Kevin Malkic. All rights reserved.
+//  Created by Kevin Malkic on 09/04/2019.
+//  Copyright © 2019 Kevin Malkic. All rights reserved.
 //
 
 import UIKit
@@ -43,6 +43,11 @@ extension Menu.Timing {
             tableView.delegate = self
             tableView.dataSource = self
         }
+        
+        override func viewDidDisappear(_ animated: Bool) {
+            super.viewDidDisappear(animated)
+            Tween.shared.removeAll()
+        }
     }
 }
 
@@ -65,14 +70,13 @@ extension Menu.Timing.ViewController : UITableViewDelegate {
             Tween.shared.removeAll()
             let headerHeight = self.headerHeight
             
-            DispatchQueue.main.async(execute: { () -> Void in
-                _ = Tween.shared.value(start: CGFloat(0), end: 1, duration: 2).set(updateBlock: { [weak self] period in
-                    
-                    self?.headerView.circleView.center = CGPoint(x: newRect.origin.x + (newRect.width * period.progress), y: (headerHeight/2))
-                    selectedCell?.progressTime = CGFloat(period.timePassed / period.duration)
-                    
-                }).set(timingMode: timingMode).set(name: tweenName).set(repeatType: .foreverPingPong)
-            })
+            Tween.shared.value(start: CGFloat(0), end: 1, duration: 2).set(updateBlock: { [weak self] period in
+                
+                self?.headerView.circleView.center = CGPoint(x: newRect.origin.x + (newRect.width * period.progress), y: (headerHeight/2))
+                selectedCell?.progressTime = CGFloat(period.timePassed / period.duration)
+                
+            }).set(timingMode: timingMode).set(name: tweenName).set(repeatType: .foreverPingPong)
+            
         } else {
             selectedCell?.progressTime = 0
         }

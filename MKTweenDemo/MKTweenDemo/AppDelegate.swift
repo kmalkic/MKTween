@@ -1,9 +1,9 @@
 //
 //  AppDelegate.swift
-//  MTweenDemo
+//  MKTweenDemo
 //
-//  Created by Kevin Malkic on 25/01/2016.
-//  Copyright © 2016 Kevin Malkic. All rights reserved.
+//  Created by Kevin Malkic on 09/04/2019.
+//  Copyright © 2019 Kevin Malkic. All rights reserved.
 //
 
 import UIKit
@@ -44,7 +44,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
-
 }
 
