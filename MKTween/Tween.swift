@@ -311,6 +311,8 @@ public class Tween: NSObject {
             case let .uicolor(operation):   pause(operation, time: diff)
             }
         }
+        
+        start()
     }
     
     //Convience functions

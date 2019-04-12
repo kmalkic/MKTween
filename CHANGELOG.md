@@ -1,3 +1,7 @@
+## 3.2.1 (April 12, 2019)
+
+- Bug fix
+
 ## 3.2 (February 20, 2019)
 
 - Swift 4.2 fixes
