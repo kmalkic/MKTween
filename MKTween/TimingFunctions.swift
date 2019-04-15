@@ -1,3 +1,10 @@
+//
+//  Timing.swift
+//  MKTween
+//
+//  Created by Kevin Malkic on 08/04/2019.
+//  Copyright © 2019 Kevin Malkic. All rights reserved.
+//
 
 public typealias TimingFunction = (_ time: Double, _ begin: Double, _ difference: Double, _ duration: Double) -> Double
 
@@ -36,6 +43,8 @@ public enum Timing {
     case sineInOut
     case custom(TimingFunction)
 
+    public static let all: [Timing] = [linear, backOut, backIn, backInOut, bounceOut, bounceIn, bounceInOut, circleOut, circleIn, circleInOut, cubicOut, cubicIn, cubicInOut, elasticOut, elasticIn, elasticInOut, expoOut, expoIn, expoInOut, quadOut, quadIn, quadInOut, quartOut, quartIn, quartInOut, quintOut, quintIn, quintInOut, sineOut, sineIn, sineInOut]
+    
     public func timingFunction() -> TimingFunction {
 
         switch self {
