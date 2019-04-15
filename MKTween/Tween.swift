@@ -216,6 +216,8 @@ public class Tween: NSObject {
         self.periods.forEach { period in
             period.set(startTimestamp: period.startTimestamp + diff)
         }
+        
+        start()
     }
     
     //Convience functions
