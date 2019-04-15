@@ -37,8 +37,8 @@ public final class Period<T> : BasePeriod where T: Tweenable {
     public typealias UpdateBlock = (_ period: Period<T>) -> ()
     public typealias CompletionBlock = () -> ()
     
-    private(set) public var updateBlock: UpdateBlock?
-    private(set) public var completionBlock: CompletionBlock?
+    private(set) public var update: UpdateBlock?
+    private(set) public var completion: CompletionBlock?
     
     private(set) public var name: String = UUID().uuidString
     
@@ -142,11 +142,11 @@ public final class Period<T> : BasePeriod where T: Tweenable {
     }
 
     public func callUpdateBlock() {
-        updateBlock?(self)
+        update?(self)
     }
     
     public func callCompletionBlock() {
-        completionBlock?()
+        completion?()
     }
     
     public func pause() {
@@ -167,9 +167,9 @@ public final class Period<T> : BasePeriod where T: Tweenable {
         return self
     }
     
-    @discardableResult public func set(updateBlock: UpdateBlock? = nil, completionBlock: CompletionBlock? = nil) -> Period<T> {
-        self.updateBlock = updateBlock
-        self.completionBlock = completionBlock
+    @discardableResult public func set(update: UpdateBlock? = nil, completion: CompletionBlock? = nil) -> Period<T> {
+        self.update = update
+        self.completion = completion
         return self
     }
     

@@ -13,8 +13,8 @@ public final class Group: BasePeriods {
     public typealias UpdateBlock = (_ group: Group) -> ()
     public typealias CompletionBlock = () -> ()
     
-    private(set) public var updateBlock: UpdateBlock?
-    private(set) public var completionBlock: CompletionBlock?
+    private(set) public var update: UpdateBlock?
+    private(set) public var completion: CompletionBlock?
     
     private(set) public var name: String = UUID().uuidString
     private(set) public var periodFinished: [Bool]
@@ -78,17 +78,17 @@ public final class Group: BasePeriods {
     
     public func callUpdateBlock() {
         periods.forEach { $0.callUpdateBlock() }
-        updateBlock?(self)
+        update?(self)
     }
     
     public func callCompletionBlock() {
         periods.forEach { $0.callCompletionBlock() }
-        completionBlock?()
+        completion?()
     }
     
-    @discardableResult public func set(updateBlock: UpdateBlock? = nil, completionBlock: CompletionBlock? = nil) -> Group {
-        self.updateBlock = updateBlock
-        self.completionBlock = completionBlock
+    @discardableResult public func set(update: UpdateBlock? = nil, completion: CompletionBlock? = nil) -> Group {
+        self.update = update
+        self.completion = completion
         return self
     }
 }

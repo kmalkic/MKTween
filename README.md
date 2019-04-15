@@ -4,99 +4,148 @@ Very simple and lightweight tween framework in Swift 4.2.
 No objects/views bindings for a more flexible use.
 Uses CADisplayLink or NSTimer with time interval parameters.
 
+Since 4.0 you can now use Groups and Sequences to chain animations.
+If you used 3.2 and lower, you will have to update your code to use 4.0!
+
+Please share if you have any suggestions or comments.
+Thanks
+
 ## Requirements
-- iOS 9.0+
-- Xcode 9.2+
+- iOS 11.0+
+- Xcode 10.2+
 
 ## Usage
 
 ### Tween timing functions:
 
 ```swift
-Timing.Linear
-Timing.BackOut
-Timing.BackIn
-Timing.BackInOut
-Timing.BounceOut
-Timing.BounceIn
-Timing.BounceInOut
-Timing.CircleOut
-Timing.CircleIn
-Timing.CircleInOut
-Timing.CubicOut
-Timing.CubicIn
-Timing.CubicInOut
-Timing.ElasticOut
-Timing.ElasticIn
-Timing.ElasticInOut
-Timing.ExpoOut
-Timing.ExpoIn
-Timing.ExpoInOut
-Timing.QuadOut
-Timing.QuadIn
-Timing.QuadInOut
-Timing.QuartOut
-Timing.QuartIn
-Timing.QuartInOut
-Timing.QuintOut
-Timing.QuintIn
-Timing.QuintInOut
-Timing.SineOut
-Timing.SineIn
-Timing.SineInOut
+Timing.linear
+Timing.backOut
+Timing.backIn
+Timing.backInOut
+Timing.bounceOut
+Timing.bounceIn
+Timing.bounceInOut
+Timing.circleOut
+Timing.circleIn
+Timing.circleInOut
+Timing.cubicOut
+Timing.cubicIn
+Timing.cubicInOut
+Timing.elasticOut
+Timing.elasticIn
+Timing.elasticInOut
+Timing.expoOut
+Timing.expoIn
+Timing.expoInOut
+Timing.quadOut
+Timing.quadIn
+Timing.quadInOut
+Timing.quartOut
+Timing.quartIn
+Timing.quartInOut
+Timing.quintOut
+Timing.quintIn
+Timing.quintInOut
+Timing.sineOut
+Timing.sineIn
+Timing.sineInOut
+Timing.custom()
 ```
 
-### Example of use:
+### Single Tween:
 ```swift
-let period = Period<CGFloat>(start: 0.0, end: 1.0, duration: 2.0, delay: 0.0)
-
-let operation = OperationTween(period: period, updateBlock: { (period) -> () in
-    
-        print(period.progress)
-    
-    }, completeBlock: { () -> () in
-        
-        print("complete")
-        
-    }, timingFunction: Timing.ElasticInOut)
-
-Tween.shared.addTweenOperation(operation)
+let period = Period<CGFloat>(start: 0, end: 1).set(update: { (period) in
+    print(period.progress)
+}) {
+    print("complete")
+}.set(timingMode: .elasticInOut)
+Tween.shared.add(period: period)
 ```
 
 Now supports CGPoint, CGSize, CGRect and UIColor.
 
 ```swift
-let period = Period<CGRect>(start: .zero, end: CGRect(x: 10, y: 10, width: 100, height: 200), duration: 2.0, delay: 0.0)
-
-let operation = OperationTween(period: period, updateBlock: { (period) -> () in
-
+let period = Period<CGRect>(start: .zero, end: CGRect(x: 10, y: 10, width: 100, height: 200), duration: 2).set(update: { (period) in
     print(period.progress)
-
-}, completeBlock: { () -> () in
-
+}) {
     print("complete")
-
-}, timingFunction: Timing.ElasticInOut)
-
-Tween.shared.addTweenOperation(operation)
+}.set(timingMode: .elasticInOut)
+Tween.shared.add(period: period)
 ```
 
-### MKTween instances
+### Group Tween
+```swift
+let periods: [BasePeriod] = [
+    Period<CGFloat>(start: 0, end: 200, duration: 1).set(update: { [weak self] period in
+        if let circleView = self?.circleView {
+            var origin = circleView.center
+            origin.x = 20 + (period.progress)
+            circleView.center = origin
+        }
+    }).set(timingMode: .linear),
+    Period<CGFloat>(start: 0, end: 200, duration: 1).set(update: { [weak self] period in
+        if let circleView = self?.circleView {
+            var origin = circleView.center
+            origin.y = 160 + (period.progress)
+            circleView.center = origin
+        }
+    }).set(timingMode: .quadInOut)
+]
+let group = Group(periods: periods)
+    .set(update: { group in
+        print("\(group.periodFinished.filter { $0 }.count) finished on \(group.periodFinished.count)")
+    }) {
+        print("complete")
+}
+Tween.shared.add(period: group)
+```
+
+### Sequence Tween
+```swift
+let periods: [BasePeriod] = [
+    Period<CGFloat>(start: 0, end: 200, duration: 1).set(update: { [weak self] period in
+        if let circleView = self?.circleView {
+            var origin = circleView.center
+            origin.x = 20 + (period.progress)
+            circleView.center = origin
+        }
+    }).set(timingMode: .linear),
+    Period<CGFloat>(start: 0, end: 200, duration: 1).set(update: { [weak self] period in
+        if let circleView = self?.circleView {
+            var origin = circleView.center
+            origin.y = 160 + (period.progress)
+            circleView.center = origin
+        }
+    }).set(timingMode: .quadInOut)
+]
+let sequence = MKTween.Sequence(periods: periods)
+    .set(update: { sequence in
+        print("\(sequence.currentPeriodIndex) finished on \(sequence.periods.count)")
+    }) {
+        print("complete")
+}
+Tween.shared.add(period: sequence)
+```
+
+You can also combine Group and Sequence as you want.
+
+### Tween instances
 Many times I have seen unique way of using tweens to be init in only one way and removes the ability of using multiple instances. So you can be sure to not forget variables to setup.
 Here ways you can allocate:
 ```swift
 let tween = Tween.shared
 let tween = Tween.shared()
-let tween = Tween.shared(.Default) // Use CADisplayLink 
-let tween = Tween.shared(.DisplayLink) // Use CADisplayLink 
-let tween = Tween.shared(.Timer) // Use NSTimer 
-let tween = Tween.shared(.None) // If you don't want any tick system to use your own, calling update(timeStamp:) yourself
+let tween = Tween.shared(.default) // Use CADisplayLink 
+let tween = Tween.shared(.displayLink) // Use CADisplayLink 
+let tween = Tween.shared(.timer) // Use NSTimer 
+let tween = Tween.shared(.none) // If you don't want any tick system to use your own, calling update(timeStamp:) yourself
 
 let tween = Tween()
-let tween = Tween(.Default)
-let tween = Tween(.DisplayLink)
-let tween = Tween(.Timer)
-let tween = Tween(.None)
+let tween = Tween(.default)
+let tween = Tween(.displayLink)
+let tween = Tween(.timer)
+let tween = Tween(.none)
 ```
 
 ### Technics
@@ -108,11 +157,10 @@ public var timerInterval: NSTimeInterval = 1.0/60.0 // Base on a 60 fps rate by 
 
 **Get tween values without using ticks or **
 ```swift
-let period = Period<CGFloat>(duration:1) // will default to startValue 0 and endValue to 1
-let operation = OperationTween(period: period, timingFunction: Timing.BackInOut)
-let tweenValues = operation.tweenValues(UInt(count))
+let period = Period<CGFloat>(duration:1).set(timingMode: .backInOut) // will default to startValue 0 and endValue to 1
+let tweenValues = period.tweenValues(UInt(count))
 
-for progress in tweenValues {
+tweenValues.enumerated().forEach { index, progress in
     
     // do something with it
 }
@@ -125,12 +173,12 @@ tween.paused = true
 
 **Reverse a tween while it is running**
 ```swift
-operation.reverse() // This will basically exchange startValue and endValue, but will use the same time already progressed to animated the other side.
+period.reverse() // This will basically exchange startValue and endValue, but will use the same time already progressed to animated the other side.
 ```
 
 ## Installation
 
-> **Embedded frameworks require a minimum deployment target of iOS 9.**
+> **Embedded frameworks require a minimum deployment target of iOS 11.**
 
 ### CocoaPods
 
@@ -140,7 +188,7 @@ operation.reverse() // This will basically exchange startValue and endValue, but
 $ gem install cocoapods
 ```
 
-> CocoaPods 0.39.0+ is required to build MKTween 2.0+.
+> CocoaPods 1.6.1+ is required to build MKTween 4.0+.
 
 To integrate MKTween into your Xcode project using CocoaPods, specify it in your `Podfile`:
 
@@ -148,10 +196,10 @@ To integrate MKTween into your Xcode project using CocoaPods, specify it in your
 
 ```ruby
 source 'https://github.com/CocoaPods/Specs.git'
-platform :ios, '9.0'
+platform :ios, '11.0'
 use_frameworks!
 
-pod 'MKTween', '~> 3.2.1'
+pod 'MKTween', '~> 4.0'
 ```
 
 Then, run the following command:

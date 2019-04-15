@@ -50,14 +50,14 @@ extension Menu.Sequence {
             Tween.shared.removeAll()
             // Define Periods
             let periods: [BasePeriod] = [
-                Period<CGFloat>(start: 0, end: 200, duration: 1).set(updateBlock: { [weak self] period in
+                Period<CGFloat>(start: 0, end: 200, duration: 1).set(update: { [weak self] period in
                     if let circleView = self?.circleView {
                         var origin = circleView.center
                         origin.x = 20 + (period.progress)
                         circleView.center = origin
                     }
                 }).set(timingMode: .linear),
-                Period<CGFloat>(start: 0, end: 200, duration: 10).set(updateBlock: { [weak self] period in
+                Period<CGFloat>(start: 0, end: 200, duration: 1).set(update: { [weak self] period in
                     if let circleView = self?.circleView {
                         var origin = circleView.center
                         origin.y = 160 + (period.progress)
@@ -66,12 +66,11 @@ extension Menu.Sequence {
                 }).set(timingMode: .quadInOut)
             ]
             let sequence = MKTween.Sequence(periods: periods)
-                .set(updateBlock: { sequence in
+                .set(update: { sequence in
                     print("\(sequence.currentPeriodIndex) finished on \(sequence.periods.count)")
                 }) {
                     print("complete")
             }
-            print(sequence.duration)
             Tween.shared.add(period: sequence)
         }
     }

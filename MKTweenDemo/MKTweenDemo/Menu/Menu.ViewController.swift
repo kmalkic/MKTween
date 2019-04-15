@@ -55,7 +55,7 @@ extension Menu.ViewController: Subviewable {
     }
     
     func setupStyles() {
-        
+
     }
     
     func setupHierarchy() {

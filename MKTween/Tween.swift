@@ -45,7 +45,7 @@ public class Tween: NSObject {
      * will cause the display link to fire every other display frame, and
      * so on. The behavior when using values less than one is undefined. */
     
-    public var frameInterval: Int = 1 {
+    public var preferredFramesPerSecond: Int = 60 {
         didSet {
             stop()
             start()
@@ -65,15 +65,15 @@ public class Tween: NSObject {
     
     public static let shared = Tween(.default)
     
-    public class func shared(_ timerStyle: TimerStyle = .default, frameInterval: Int? = nil, timerInterval: TimeInterval? = nil, dispatchQueue: DispatchQueue = DispatchQueue.main) -> Tween {
-        return Tween(timerStyle, frameInterval: frameInterval, timerInterval: timerInterval, dispatchQueue: dispatchQueue)
+    public class func shared(_ timerStyle: TimerStyle = .default, preferredFramesPerSecond: Int? = nil, timerInterval: TimeInterval? = nil, dispatchQueue: DispatchQueue = DispatchQueue.main) -> Tween {
+        return Tween(timerStyle, preferredFramesPerSecond: preferredFramesPerSecond, timerInterval: timerInterval, dispatchQueue: dispatchQueue)
     }
     
-    public init( _ timerStyle: TimerStyle = .default, frameInterval: Int? = nil, timerInterval: TimeInterval? = nil, dispatchQueue: DispatchQueue = DispatchQueue.main) {
+    public init( _ timerStyle: TimerStyle = .default, preferredFramesPerSecond: Int? = nil, timerInterval: TimeInterval? = nil, dispatchQueue: DispatchQueue = DispatchQueue.main) {
         self.dispatchQueue = dispatchQueue
         super.init()
         self.timerStyle = timerStyle
-        self.frameInterval = frameInterval ?? self.frameInterval
+        self.preferredFramesPerSecond = preferredFramesPerSecond ?? self.preferredFramesPerSecond
         self.timerInterval = timerInterval ?? self.timerInterval
     }
     
@@ -166,7 +166,7 @@ public class Tween: NSObject {
         if self.displayLink == nil && (self.timerStyle == .default || self.timerStyle == .displayLink) {
             
             self.displayLink = UIScreen.main.displayLink(withTarget: self, selector: #selector(Tween.handleDisplayLink(_:)))
-            self.displayLink!.frameInterval = self.frameInterval
+            self.displayLink!.preferredFramesPerSecond = self.preferredFramesPerSecond
             self.displayLink!.add(to: RunLoop.main, forMode: RunLoop.Mode.common)
             
         } else if timer == nil && timerStyle == .timer {

@@ -70,7 +70,7 @@ extension Menu.Timing.ViewController : UITableViewDelegate {
             Tween.shared.removeAll()
             let headerHeight = self.headerHeight
             
-            Tween.shared.value(start: CGFloat(0), end: 1, duration: 2).set(updateBlock: { [weak self] period in
+            Tween.shared.value(start: CGFloat(0), end: 1, duration: 2).set(update: { [weak self] period in
                 
                 self?.headerView.circleView.center = CGPoint(x: newRect.origin.x + (newRect.width * period.progress), y: (headerHeight/2))
                 selectedCell?.progressTime = CGFloat(period.timePassed / period.duration)

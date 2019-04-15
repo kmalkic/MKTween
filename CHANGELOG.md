@@ -1,3 +1,9 @@
+## 4.0 (April 12, 2019)
+
+- Refactor
+- Added Group Tween
+- Added Sequence Tween
+
 ## 3.2.1 (April 12, 2019)
 
 - Bug fix

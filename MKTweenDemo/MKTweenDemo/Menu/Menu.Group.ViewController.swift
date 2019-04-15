@@ -50,14 +50,14 @@ extension Menu.Group {
             Tween.shared.removeAll()
             // Define Periods
             let periods: [BasePeriod] = [
-                Period<CGFloat>(start: 0, end: 200, duration: 1).set(updateBlock: { [weak self] period in
+                Period<CGFloat>(start: 0, end: 200, duration: 1).set(update: { [weak self] period in
                     if let circleView = self?.circleView {
                         var origin = circleView.center
                         origin.x = 20 + (period.progress)
                         circleView.center = origin
                     }
                 }).set(timingMode: .linear),
-                Period<CGFloat>(start: 0, end: 200, duration: 1).set(updateBlock: { [weak self] period in
+                Period<CGFloat>(start: 0, end: 200, duration: 1).set(update: { [weak self] period in
                     if let circleView = self?.circleView {
                         var origin = circleView.center
                         origin.y = 160 + (period.progress)
@@ -66,7 +66,7 @@ extension Menu.Group {
                 }).set(timingMode: .quadInOut)
             ]
             let group = Group(periods: periods)
-                .set(updateBlock: { group in
+                .set(update: { group in
                     print("\(group.periodFinished.filter { $0 }.count) finished on \(group.periodFinished.count)")
                 }) {
                     print("complete")
