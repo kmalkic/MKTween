@@ -13,20 +13,23 @@ public final class Group: BasePeriods {
     public typealias UpdateBlock = (_ group: Group) -> ()
     public typealias CompletionBlock = () -> ()
     
-    private(set) public var updateBlock: UpdateBlock?
-    private(set) public var completionBlock: CompletionBlock?
+    private(set) public var update: UpdateBlock?
+    private(set) public var completion: CompletionBlock?
     
     private(set) public var name: String = UUID().uuidString
-    private var periodFinished = [Bool]()
+    private(set) public var periodFinished: [Bool]
     public let periods: [BasePeriod]
+    
     public let startTimestamp: TimeInterval
     private(set) public var lastTimestamp: TimeInterval
+    
     public var delay: TimeInterval
     public var duration: TimeInterval {
         return periods.reduce(0) { (prev, period) -> TimeInterval in
             max(prev, period.duration + period.delay)
             } + delay
     }
+    
     public var paused: Bool {
         return periods.reduce(nil, { (prev, period) -> Bool in
             if let prev = prev {
@@ -36,19 +39,16 @@ public final class Group: BasePeriods {
         }) ?? false
     }
     
-    init(periods: [BasePeriod], delay: TimeInterval = 0) {
+    public init(periods: [BasePeriod], delay: TimeInterval = 0) {
         self.delay = delay
         self.periods = periods
         let time = Date().timeIntervalSinceReferenceDate
         self.startTimestamp = time
         self.lastTimestamp = time
+        self.periodFinished = Array(repeating: false, count: periods.count)
     }
     
     public func updateInternal() -> Bool {
-        let newTime = Date().timeIntervalSinceReferenceDate
-        let dt = lastTimestamp.deltaTime(from: newTime)
-        lastTimestamp = newTime
-        
         if delay <= 0 && !paused {
             periods.enumerated().forEach { index, period in
                 if !periodFinished[index] && period.updateInternal() {
@@ -58,9 +58,12 @@ public final class Group: BasePeriods {
             return periodFinished.filter { !$0 }.isEmpty
             
         } else if !paused {
+            let newTime = Date().timeIntervalSinceReferenceDate
+            let dt = lastTimestamp.deltaTime(from: newTime)
+            lastTimestamp = newTime
+            
             delay -= dt
         }
-        
         return false
     }
     
@@ -74,16 +77,18 @@ public final class Group: BasePeriods {
     }
     
     public func callUpdateBlock() {
-        updateBlock?(self)
+        periods.forEach { $0.callUpdateBlock() }
+        update?(self)
     }
     
     public func callCompletionBlock() {
-        completionBlock?()
+        periods.forEach { $0.callCompletionBlock() }
+        completion?()
     }
     
-    @discardableResult public func set(updateBlock: UpdateBlock? = nil, completionBlock: CompletionBlock? = nil) -> Group {
-        self.updateBlock = updateBlock
-        self.completionBlock = completionBlock
+    @discardableResult public func set(update: UpdateBlock? = nil, completion: CompletionBlock? = nil) -> Group {
+        self.update = update
+        self.completion = completion
         return self
     }
 }

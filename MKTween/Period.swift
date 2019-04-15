@@ -37,8 +37,8 @@ public final class Period<T> : BasePeriod where T: Tweenable {
     public typealias UpdateBlock = (_ period: Period<T>) -> ()
     public typealias CompletionBlock = () -> ()
     
-    private(set) public var updateBlock: UpdateBlock?
-    private(set) public var completionBlock: CompletionBlock?
+    private(set) public var update: UpdateBlock?
+    private(set) public var completion: CompletionBlock?
     
     private(set) public var name: String = UUID().uuidString
     
@@ -50,7 +50,7 @@ public final class Period<T> : BasePeriod where T: Tweenable {
     
 	private(set) public var startTimestamp: TimeInterval
     private(set) public var lastTimestamp: TimeInterval
-    private var timePassed: TimeInterval = 0
+    private(set) public var timePassed: TimeInterval = 0
     private(set) public var paused: Bool = false
     
     internal(set) public var progress: T = T.defaultValue()
@@ -86,7 +86,8 @@ public final class Period<T> : BasePeriod where T: Tweenable {
         if delay <= 0 && !paused {
             dt = dt * direction.value
             timePassed += dt
-
+            timePassed = timePassed.clamped(to: 0...duration)
+            
             progress = T.evaluate(start: start,
                                    end: end,
                                    time: timePassed,
@@ -141,11 +142,11 @@ public final class Period<T> : BasePeriod where T: Tweenable {
     }
 
     public func callUpdateBlock() {
-        updateBlock?(self)
+        update?(self)
     }
     
     public func callCompletionBlock() {
-        completionBlock?()
+        completion?()
     }
     
     public func pause() {
@@ -166,9 +167,9 @@ public final class Period<T> : BasePeriod where T: Tweenable {
         return self
     }
     
-    @discardableResult public func set(updateBlock: UpdateBlock? = nil, completionBlock: CompletionBlock? = nil) -> Period<T> {
-        self.updateBlock = updateBlock
-        self.completionBlock = completionBlock
+    @discardableResult public func set(update: UpdateBlock? = nil, completion: CompletionBlock? = nil) -> Period<T> {
+        self.update = update
+        self.completion = completion
         return self
     }
     

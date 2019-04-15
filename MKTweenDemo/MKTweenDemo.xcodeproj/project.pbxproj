@@ -8,10 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		0A2AE2A71C57AFA7007525C3 /* Menu.Timing.Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2AE2A61C57AFA7007525C3 /* Menu.Timing.Cell.swift */; };
-		0A2AE2A91C57C3FD007525C3 /* Menu.Timing.View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2AE2A81C57C3FD007525C3 /* Menu.Timing.View.swift */; };
 		0A2AE2AB1C57C827007525C3 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2AE2AA1C57C827007525C3 /* HeaderView.swift */; };
-		4911DE13225CC19F004866CD /* MKTween.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4911DE11225CC18C004866CD /* MKTween.framework */; };
-		4911DE14225CC19F004866CD /* MKTween.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4911DE11225CC18C004866CD /* MKTween.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4911DE17225CCC7F004866CD /* Subviewable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4911DE16225CCC7F004866CD /* Subviewable.swift */; };
+		4911DE19225CCD97004866CD /* Menu.ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4911DE18225CCD97004866CD /* Menu.ViewController.swift */; };
+		4911DE1B225CE16F004866CD /* Menu.Group.ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4911DE1A225CE16F004866CD /* Menu.Group.ViewController.swift */; };
+		4911DE1D225CEA7A004866CD /* Menu.Sequence.ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4911DE1C225CEA7A004866CD /* Menu.Sequence.ViewController.swift */; };
 		491C31E51C56E69F00910389 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491C31E41C56E69F00910389 /* AppDelegate.swift */; };
 		491C31E71C56E69F00910389 /* Menu.Timing.ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491C31E61C56E69F00910389 /* Menu.Timing.ViewController.swift */; };
 		491C31EC1C56E69F00910389 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 491C31EB1C56E69F00910389 /* Assets.xcassets */; };
@@ -20,13 +21,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		4911DE15225CC19F004866CD /* Embed Frameworks */ = {
+		49D3568E226532D200CC4217 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				4911DE14225CC19F004866CD /* MKTween.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -35,10 +35,13 @@
 
 /* Begin PBXFileReference section */
 		0A2AE2A61C57AFA7007525C3 /* Menu.Timing.Cell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Menu.Timing.Cell.swift; sourceTree = "<group>"; };
-		0A2AE2A81C57C3FD007525C3 /* Menu.Timing.View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Menu.Timing.View.swift; sourceTree = "<group>"; };
 		0A2AE2AA1C57C827007525C3 /* HeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		3745965A0F241E5DDAEAF5E6 /* Pods_MKTweenDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MKTweenDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4911DE11225CC18C004866CD /* MKTween.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MKTween.framework; path = ../Frameworks/MKTween.framework; sourceTree = "<group>"; };
+		4911DE16225CCC7F004866CD /* Subviewable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Subviewable.swift; sourceTree = "<group>"; };
+		4911DE18225CCD97004866CD /* Menu.ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Menu.ViewController.swift; sourceTree = "<group>"; };
+		4911DE1A225CE16F004866CD /* Menu.Group.ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.Group.ViewController.swift; sourceTree = "<group>"; };
+		4911DE1C225CEA7A004866CD /* Menu.Sequence.ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Menu.Sequence.ViewController.swift; sourceTree = "<group>"; };
 		491C31E11C56E69F00910389 /* MKTweenDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MKTweenDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		491C31E41C56E69F00910389 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		491C31E61C56E69F00910389 /* Menu.Timing.ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.Timing.ViewController.swift; sourceTree = "<group>"; };
@@ -54,7 +57,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4911DE13225CC19F004866CD /* MKTween.framework in Frameworks */,
 				B2F9913C415E84824D76EB9F /* Pods_MKTweenDemo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -69,6 +71,19 @@
 				F36467F9FEB857D59B89933D /* Pods-MKTweenDemo.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		4911DE1E225CEE55004866CD /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				4911DE18225CCD97004866CD /* Menu.ViewController.swift */,
+				4911DE1A225CE16F004866CD /* Menu.Group.ViewController.swift */,
+				4911DE1C225CEA7A004866CD /* Menu.Sequence.ViewController.swift */,
+				491C31E61C56E69F00910389 /* Menu.Timing.ViewController.swift */,
+				0A2AE2A61C57AFA7007525C3 /* Menu.Timing.Cell.swift */,
+				0A2AE2AA1C57C827007525C3 /* HeaderView.swift */,
+			);
+			path = Menu;
 			sourceTree = "<group>";
 		};
 		491C31D81C56E69F00910389 = {
@@ -93,14 +108,12 @@
 		491C31E31C56E69F00910389 /* MKTweenDemo */ = {
 			isa = PBXGroup;
 			children = (
+				4911DE16225CCC7F004866CD /* Subviewable.swift */,
 				491C31E41C56E69F00910389 /* AppDelegate.swift */,
-				491C31E61C56E69F00910389 /* Menu.Timing.ViewController.swift */,
-				0A2AE2A81C57C3FD007525C3 /* Menu.Timing.View.swift */,
-				0A2AE2A61C57AFA7007525C3 /* Menu.Timing.Cell.swift */,
+				4911DE1E225CEE55004866CD /* Menu */,
 				491C31EB1C56E69F00910389 /* Assets.xcassets */,
 				491C31ED1C56E69F00910389 /* LaunchScreen.storyboard */,
 				491C31F01C56E69F00910389 /* Info.plist */,
-				0A2AE2AA1C57C827007525C3 /* HeaderView.swift */,
 			);
 			path = MKTweenDemo;
 			sourceTree = "<group>";
@@ -125,7 +138,7 @@
 				491C31DE1C56E69F00910389 /* Frameworks */,
 				491C31DF1C56E69F00910389 /* Resources */,
 				CE54E4EE02D4E7E28E5C8E9F /* [CP] Embed Pods Frameworks */,
-				4911DE15225CC19F004866CD /* Embed Frameworks */,
+				49D3568E226532D200CC4217 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -150,6 +163,7 @@
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = 586B4BE6BL;
 						LastSwiftMigration = 1010;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -236,10 +250,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				0A2AE2AB1C57C827007525C3 /* HeaderView.swift in Sources */,
-				0A2AE2A91C57C3FD007525C3 /* Menu.Timing.View.swift in Sources */,
+				4911DE19225CCD97004866CD /* Menu.ViewController.swift in Sources */,
+				4911DE1B225CE16F004866CD /* Menu.Group.ViewController.swift in Sources */,
 				491C31E71C56E69F00910389 /* Menu.Timing.ViewController.swift in Sources */,
 				491C31E51C56E69F00910389 /* AppDelegate.swift in Sources */,
 				0A2AE2A71C57AFA7007525C3 /* Menu.Timing.Cell.swift in Sources */,
+				4911DE1D225CEA7A004866CD /* Menu.Sequence.ViewController.swift in Sources */,
+				4911DE17225CCC7F004866CD /* Subviewable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -366,6 +383,8 @@
 			baseConfigurationReference = BC0B282E93FF5933ED3EB7F7 /* Pods-MKTweenDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 586B4BE6BL;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				HEADER_SEARCH_PATHS = "$(inherited)";
@@ -374,6 +393,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kevinmalkic.MKTweenDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
@@ -383,6 +403,8 @@
 			baseConfigurationReference = F36467F9FEB857D59B89933D /* Pods-MKTweenDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 586B4BE6BL;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				HEADER_SEARCH_PATHS = "$(inherited)";
@@ -391,6 +413,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kevinmalkic.MKTweenDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
 			};
 			name = Release;

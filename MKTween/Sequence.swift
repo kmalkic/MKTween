@@ -13,14 +13,16 @@ public final class Sequence: BasePeriods {
     public typealias UpdateBlock = (_ group: Sequence) -> ()
     public typealias CompletionBlock = () -> ()
     
-    private(set) public var updateBlock: UpdateBlock?
-    private(set) public var completionBlock: CompletionBlock?
+    private(set) public var update: UpdateBlock?
+    private(set) public var completion: CompletionBlock?
     
     private(set) public var name: String = UUID().uuidString
     public let periods: [BasePeriod]
-    private var currentPeriodIndex: Int = 0
+    private(set) public var currentPeriodIndex: Int = 0
+    
     public let startTimestamp: TimeInterval
     private(set) public var lastTimestamp: TimeInterval
+    
     public var delay: TimeInterval = 0
     public var duration: TimeInterval {
         return periods.reduce(delay, { (prev, period) -> TimeInterval in
@@ -37,7 +39,7 @@ public final class Sequence: BasePeriods {
         }) ?? false
     }
     
-    init(periods: [BasePeriod], delay: TimeInterval = 0) {
+    public init(periods: [BasePeriod], delay: TimeInterval = 0) {
         self.delay = delay
         self.periods = periods
         let time = Date().timeIntervalSinceReferenceDate
@@ -46,30 +48,25 @@ public final class Sequence: BasePeriods {
     }
     
     public func updateInternal() -> Bool {
-        let newTime = Date().timeIntervalSinceReferenceDate
-        let dt = lastTimestamp.deltaTime(from: newTime)
-        lastTimestamp = newTime
-        
         if delay <= 0 && !paused {
             let period = periods[currentPeriodIndex]
             if period.updateInternal() {
                 currentPeriodIndex += 1
-            }
-            if currentPeriodIndex == periods.count {
-                return true
+                if currentPeriodIndex == periods.count {
+                    return true
+                }
+                periods[currentPeriodIndex].set(startTimestamp: Date().timeIntervalSinceReferenceDate)
             }
         } else if !paused {
+            let newTime = Date().timeIntervalSinceReferenceDate
+            let dt = lastTimestamp.deltaTime(from: newTime)
+            lastTimestamp = newTime
+            
             delay -= dt
         }
-        
         return false
     }
-        
-    public func set(delay: TimeInterval) -> Self {
-        self.delay = delay
-        return self
-    }
-    
+
     public func set(startTimestamp time: TimeInterval) {
         periods.forEach { $0.set(startTimestamp: time) }
     }
@@ -80,16 +77,18 @@ public final class Sequence: BasePeriods {
     }
     
     public func callUpdateBlock() {
-        updateBlock?(self)
+        periods.forEach { $0.callUpdateBlock() }
+        update?(self)
     }
     
     public func callCompletionBlock() {
-        completionBlock?()
+        periods.forEach { $0.callCompletionBlock() }
+        completion?()
     }
     
-    @discardableResult public func set(updateBlock: UpdateBlock? = nil, completionBlock: CompletionBlock? = nil) -> Sequence {
-        self.updateBlock = updateBlock
-        self.completionBlock = completionBlock
+    @discardableResult public func set(update: UpdateBlock? = nil, completion: CompletionBlock? = nil) -> Sequence {
+        self.update = update
+        self.completion = completion
         return self
     }
 }

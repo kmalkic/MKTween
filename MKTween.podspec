@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'MKTween'
-  s.version = '3.2.1'
+  s.version = '4.0'
   s.license = 'MIT'
   s.summary = 'Very simple and lightweight tween framework in Swift 4.2'
   s.description  = <<-DESC 
@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
   s.homepage = 'https://github.com/kmalkic/MKTween'
   s.authors = { 'Kevin Malkic' => 'k_malkic@yahoo.fr' }
   s.source = { :git => 'https://github.com/kmalkic/MKTween.git', :tag => s.version.to_s }
-  s.platform = :ios, '9.0'
+  s.platform = :ios, '11.0'
   s.pod_target_xcconfig = { 'SWIFT_VERSION' => '4.2' }
   s.source_files = 'MKTween/*.swift'
   s.requires_arc = true
