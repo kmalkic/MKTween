@@ -1,11 +1,11 @@
 # MKTween
 
-Very simple and lightweight tween framework in Swift 4.2.
+Very simple and lightweight tween framework in Swift 5.0.
 No objects/views bindings for a more flexible use.
 Uses CADisplayLink or NSTimer with time interval parameters.
 
-Since 4.0 you can now use Groups and Sequences to chain animations.
-If you used 3.2 and lower, you will have to update your code to use 4.0!
+Since 4.0+ you can now use Groups and Sequences to chain animations.
+If you used 3.2 and lower, you will have to update your code to use 4.0+!
 
 Please share if you have any suggestions or comments.
 Thanks
@@ -199,7 +199,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '11.0'
 use_frameworks!
 
-pod 'MKTween', '~> 4.0'
+pod 'MKTween', '~> 4.1'
 ```
 
 Then, run the following command:

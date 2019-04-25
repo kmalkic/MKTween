@@ -1,4 +1,8 @@
-## 4.0 (April 12, 2019)
+## 4.1 (April 25, 2019)
+
+- Swift 5.0
+
+## 4.0 (April 15, 2019)
 
 - Refactor
 - Added Group Tween

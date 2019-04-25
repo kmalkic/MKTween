@@ -530,39 +530,6 @@
 			};
 			name = Release;
 		};
-		535F4CA2C583883BAD69E4B62375A824 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8268CC46337EF543DEF7854AAF49E072 /* Cartography.xcconfig */;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/Cartography/Cartography-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/Cartography/Cartography-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/Cartography/Cartography.modulemap";
-				PRODUCT_MODULE_NAME = Cartography;
-				PRODUCT_NAME = Cartography;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
 		6DFA1578582149B7E24AD55CBA30F07A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -627,7 +594,7 @@
 			};
 			name = Debug;
 		};
-		8AFE181E1435B3A22DE9A1F79150B784 /* Debug */ = {
+		89DCBD141FB2BA210913E304513BAE27 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8268CC46337EF543DEF7854AAF49E072 /* Cartography.xcconfig */;
 			buildSettings = {
@@ -652,12 +619,45 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
 			name = Debug;
+		};
+		D49156B2E26956A35AF97D6EB72BA052 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8268CC46337EF543DEF7854AAF49E072 /* Cartography.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/Cartography/Cartography-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/Cartography/Cartography-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/Cartography/Cartography.modulemap";
+				PRODUCT_MODULE_NAME = Cartography;
+				PRODUCT_NAME = Cartography;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
@@ -683,8 +683,8 @@
 		BCF40F2F311C3013CDE15D5CD0F4F0EB /* Build configuration list for PBXNativeTarget "Cartography" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				8AFE181E1435B3A22DE9A1F79150B784 /* Debug */,
-				535F4CA2C583883BAD69E4B62375A824 /* Release */,
+				89DCBD141FB2BA210913E304513BAE27 /* Debug */,
+				D49156B2E26956A35AF97D6EB72BA052 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
