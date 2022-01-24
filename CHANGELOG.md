@@ -1,4 +1,4 @@
-## 4.2 (January 24, 2022)
+## 4.2.1 (January 24, 2022)
 
 - Swift Package Manager
 
