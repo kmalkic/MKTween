@@ -5,6 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "MKTween",
+    platforms: [.iOS("12.0"), .macOS("10.60"), .tvOS("11.0")],
     products: [
         .library(
             name: "MKTween",
@@ -13,8 +14,7 @@ let package = Package(
     targets: [
         .target(
             name: "MKTween",
-            path: "MKTween",
-            exclude: ["Info.plist", "MKTween.h"]
+            path: "MKTween"
         ),
     ]
 )

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 public protocol Tweenable {
     static func defaultValue() -> Self
