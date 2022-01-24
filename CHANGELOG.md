@@ -1,3 +1,7 @@
+## 4.2 (January 24, 2022)
+
+- Swift Package Manager
+
 ## 4.1 (April 25, 2019)
 
 - Swift 5.0
