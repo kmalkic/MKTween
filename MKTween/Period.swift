@@ -6,6 +6,8 @@
 //  Copyright © 2019 Kevin Malkic. All rights reserved.
 //
 
+import Foundation
+
 public enum RepeatType {
     case once
     case pingPong

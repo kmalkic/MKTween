@@ -13,7 +13,8 @@ let package = Package(
     targets: [
         .target(
             name: "MKTween",
-            path: "MKTween"
+            path: "MKTween",
+            exclude: ["Info.plist", "MKTween.h"]
         ),
     ]
 )

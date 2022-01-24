@@ -6,6 +6,8 @@
 //  Copyright © 2019 Kevin Malkic. All rights reserved.
 //
 
+import Foundation
+
 public protocol Tweenable {
     static func defaultValue() -> Self
     static func evaluate(start: Self, end: Self, time: TimeInterval, duration: TimeInterval, timingFunction: TimingFunction) -> Self

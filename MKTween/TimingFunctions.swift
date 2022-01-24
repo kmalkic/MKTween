@@ -6,6 +6,8 @@
 //  Copyright © 2019 Kevin Malkic. All rights reserved.
 //
 
+import Foundation
+
 public typealias TimingFunction = (_ time: Double, _ begin: Double, _ difference: Double, _ duration: Double) -> Double
 
 public enum Timing {
