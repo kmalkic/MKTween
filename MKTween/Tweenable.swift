@@ -99,16 +99,26 @@ extension CGRect: Tweenable {
 
 extension UIColor {
     var colorComponents: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat)? {
+        guard let model = cgColor.colorSpace?.model else { return nil }
         guard let components = self.cgColor.components else { return nil }
-        guard let cgColor = CGColor(colorSpace: CGColorSpaceCreateDeviceRGB(), components: components) else { return nil }
-        let color = UIColor(cgColor: cgColor)
-        guard let components = color.cgColor.components else { return nil }
-        return (
-            red: components[0],
-            green: components[1],
-            blue: components[2],
-            alpha: components[3]
-        )
+        switch model {
+        case .rgb:
+            return (
+                red: components[0],
+                green: components[1],
+                blue: components[2],
+                alpha: components[3]
+            )
+        case .monochrome:
+            return (
+                red: components[0],
+                green: components[0],
+                blue: components[0],
+                alpha: components[1]
+            )
+        default:
+            return nil
+        }
     }
 }
 
