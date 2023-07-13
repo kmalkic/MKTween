@@ -1,3 +1,7 @@
+## 4.2.4 (July 13, 2023)
+
+- Added a cancelled block to be called when perdiod are removed before completion
+
 ## 4.2.1 (January 24, 2022)
 
 - Swift Package Manager

@@ -20,6 +20,7 @@ public protocol BasePeriod {
     
     func callUpdateBlock()
     func callCompletionBlock()
+    func callCancelledBlock()
     
     var delay: TimeInterval { get }
     var duration: TimeInterval { get }

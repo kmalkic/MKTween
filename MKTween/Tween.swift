@@ -96,7 +96,10 @@ public class Tween: NSObject {
         guard let index = periods.firstIndex(where: { findPeriod -> Bool in
             findPeriod.name == period.name
         }) else { return false }
-        
+
+        dispatchQueue.async { () -> Void in
+            period.callCancelledBlock()
+        }
         periods.remove(at: index)
         return true
     }
