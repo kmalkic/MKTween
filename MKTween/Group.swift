@@ -15,6 +15,7 @@ public final class Group: BasePeriods {
     
     private(set) public var update: UpdateBlock?
     private(set) public var completion: CompletionBlock?
+    private(set) public var cancelled: CompletionBlock?
     
     private(set) public var name: String = UUID().uuidString
     private(set) public var periodFinished: [Bool]
@@ -85,10 +86,20 @@ public final class Group: BasePeriods {
         periods.forEach { $0.callCompletionBlock() }
         completion?()
     }
+
+    public func callCancelledBlock() {
+        periods.forEach { $0.callCancelledBlock() }
+        cancelled?()
+    }
     
     @discardableResult public func set(update: UpdateBlock? = nil, completion: CompletionBlock? = nil) -> Group {
         self.update = update
         self.completion = completion
+        return self
+    }
+
+    @discardableResult public func set(cancelled: CompletionBlock? = nil) -> Group {
+        self.cancelled = cancelled
         return self
     }
 }

@@ -35,13 +35,14 @@ public class TweenDirection {
 }
 
 public final class Period<T> : BasePeriod where T: Tweenable {
-    
+
     public typealias UpdateBlock = (_ period: Period<T>) -> ()
     public typealias CompletionBlock = () -> ()
     
     private(set) public var update: UpdateBlock?
     private(set) public var completion: CompletionBlock?
-    
+    private(set) public var cancelled: CompletionBlock?
+
     private(set) public var name: String = UUID().uuidString
     
 	public let duration: TimeInterval
@@ -150,6 +151,10 @@ public final class Period<T> : BasePeriod where T: Tweenable {
     public func callCompletionBlock() {
         completion?()
     }
+
+    public func callCancelledBlock() {
+        cancelled?()
+    }
     
     public func pause() {
         paused = true
@@ -172,6 +177,11 @@ public final class Period<T> : BasePeriod where T: Tweenable {
     @discardableResult public func set(update: UpdateBlock? = nil, completion: CompletionBlock? = nil) -> Period<T> {
         self.update = update
         self.completion = completion
+        return self
+    }
+
+    @discardableResult public func set(cancelled: CompletionBlock? = nil) -> Period<T> {
+        self.cancelled = cancelled
         return self
     }
     
