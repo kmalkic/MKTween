@@ -92,25 +92,24 @@ public class Tween: NSObject {
         start()
     }
     
-    @discardableResult public func remove(period: BasePeriod) -> Bool {
+    @discardableResult public func remove(period: BasePeriod, cancelled: Bool = true) -> Bool {
         guard let index = periods.firstIndex(where: { findPeriod -> Bool in
             findPeriod.name == period.name
         }) else { return false }
-
-        dispatchQueue.async { () -> Void in
-            period.callCancelledBlock()
+        if cancelled {
+            dispatchQueue.async { () -> Void in
+                period.callCancelledBlock()
+            }
         }
         periods.remove(at: index)
         return true
     }
     
-    @discardableResult public func removePeriod(by name: String) -> Bool {
-        
+    @discardableResult public func removePeriod(by name: String, cancelled: Bool = true) -> Bool {
         guard let period = periods.first(where: { period -> Bool in
             period.name == name
         }) else { return false }
-        
-        return remove(period: period)
+        return remove(period: period, cancelled: cancelled)
     }
     
     public func removeAll() {
@@ -143,7 +142,7 @@ public class Tween: NSObject {
             dispatchQueue.async { () -> Void in
                 period.callCompletionBlock()
             }
-            remove(period: period)
+            remove(period: period, cancelled: false)
         }
     }
     
