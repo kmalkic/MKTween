@@ -171,9 +171,13 @@ public class Tween: NSObject {
         
         if self.displayLink == nil && (self.timerStyle == .default || self.timerStyle == .displayLink) {
             
-            self.displayLink = UIScreen.main.displayLink(withTarget: self, selector: #selector(Tween.handleDisplayLink(_:)))
-            self.displayLink!.preferredFramesPerSecond = self.preferredFramesPerSecond
-            self.displayLink!.add(to: RunLoop.main, forMode: RunLoop.Mode.common)
+            let displayLink = CADisplayLink(
+                target: self,
+                selector: #selector(Tween.handleDisplayLink(_:))
+            )
+            displayLink.preferredFramesPerSecond = self.preferredFramesPerSecond
+            displayLink.add(to: .current, forMode: .default)
+            self.displayLink = displayLink
             
         } else if timer == nil && timerStyle == .timer {
             
