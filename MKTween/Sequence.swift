@@ -2,8 +2,8 @@
 //  Sequence.swift
 //  MKTween
 //
-//  Created by Kevin Malkic on 08/04/2019.
-//  Copyright © 2019 Kevin Malkic. All rights reserved.
+//  Created by Kevin Malkic.
+//  Copyright © 2024 Kevin Malkic. All rights reserved.
 //
 
 import Foundation
@@ -32,7 +32,7 @@ public final class Sequence: BasePeriods {
     }
     
     public var paused: Bool {
-        return periods.reduce(nil, { (prev, period) -> Bool in
+        periods.reduce(nil, { (prev, period) -> Bool in
             if let prev = prev {
                 return prev && period.paused
             }
@@ -40,7 +40,10 @@ public final class Sequence: BasePeriods {
         }) ?? false
     }
     
-    public init(periods: [BasePeriod], delay: TimeInterval = 0) {
+    public init(
+        periods: [BasePeriod],
+        delay: TimeInterval = 0
+    ) {
         self.delay = delay
         self.periods = periods
         let time = Date().timeIntervalSinceReferenceDate
@@ -92,7 +95,10 @@ public final class Sequence: BasePeriods {
         cancelled?()
     }
     
-    @discardableResult public func set(update: UpdateBlock? = nil, completion: CompletionBlock? = nil) -> Sequence {
+    @discardableResult public func set(
+        update: UpdateBlock? = nil,
+        completion: CompletionBlock? = nil
+    ) -> Sequence {
         self.update = update
         self.completion = completion
         return self

@@ -2,8 +2,8 @@
 //  Tweenable.swift
 //  MKTween
 //
-//  Created by Kevin Malkic on 08/04/2019.
-//  Copyright © 2019 Kevin Malkic. All rights reserved.
+//  Created by Kevin Malkic.
+//  Copyright © 2024 Kevin Malkic. All rights reserved.
 //
 
 import Foundation
@@ -11,19 +11,35 @@ import UIKit
 
 public protocol Tweenable {
     static func defaultValue() -> Self
-    static func evaluate(start: Self, end: Self, time: TimeInterval, duration: TimeInterval, timingFunction: TimingFunction) -> Self
+    static func evaluate(
+        start: Self,
+        end: Self,
+        time: TimeInterval,
+        duration: TimeInterval,
+        timingFunction: TimingFunction
+    ) -> Self
 }
 
 extension Comparable {
     
-    public func clamped(to limits: ClosedRange<Self>) -> Self {
-        return min(max(self, limits.lowerBound), limits.upperBound)
+    public func clamped(
+        to limits: ClosedRange<Self>
+    ) -> Self {
+        return min(
+            max(
+                self,
+                limits.lowerBound
+            ),
+            limits.upperBound
+        )
     }
 }
 
 extension TimeInterval {
     
-    internal func deltaTime(from: TimeInterval) -> TimeInterval {
+    internal func deltaTime(
+        from: TimeInterval
+    ) -> TimeInterval {
         return from - self
     }
 }
@@ -34,8 +50,19 @@ extension Double: Tweenable {
         return 0.0
     }
     
-    public static func evaluate(start: Double, end: Double, time: TimeInterval, duration: TimeInterval, timingFunction: TimingFunction) -> Double {
-        return timingFunction(time, start, end - start, duration)
+    public static func evaluate(
+        start: Double,
+        end: Double,
+        time: TimeInterval,
+        duration: TimeInterval,
+        timingFunction: TimingFunction
+    ) -> Double {
+        return timingFunction(
+            time,
+            start,
+            end - start,
+            duration
+        )
     }
 }
 
@@ -45,8 +72,25 @@ extension Float: Tweenable {
         return 0.0
     }
     
-    public static func evaluate(start: Float, end: Float, time: TimeInterval, duration: TimeInterval, timingFunction: TimingFunction) -> Float {
-        return Float(timingFunction(time, Double(start), Double(end - start), duration))
+    public static func evaluate(
+        start: Float,
+        end: Float,
+        time: TimeInterval,
+        duration: TimeInterval,
+        timingFunction: TimingFunction
+    ) -> Float {
+        return Float(
+            timingFunction(
+                time,
+                Double(
+                    start
+                ),
+                Double(
+                    end - start
+                ),
+                duration
+            )
+        )
     }
 }
 
@@ -56,8 +100,25 @@ extension CGFloat: Tweenable {
         return 0.0
     }
     
-    public static func evaluate(start: CGFloat, end: CGFloat, time: TimeInterval, duration: TimeInterval, timingFunction: TimingFunction) -> CGFloat {
-        return CGFloat(timingFunction(time, Double(start), Double(end - start), duration))
+    public static func evaluate(
+        start: CGFloat,
+        end: CGFloat,
+        time: TimeInterval,
+        duration: TimeInterval,
+        timingFunction: TimingFunction
+    ) -> CGFloat {
+        return CGFloat(
+            timingFunction(
+                time,
+                Double(
+                    start
+                ),
+                Double(
+                    end - start
+                ),
+                duration
+            )
+        )
     }
 }
 
@@ -67,9 +128,29 @@ extension CGSize: Tweenable {
         return .zero
     }
     
-    public static func evaluate(start: CGSize, end: CGSize, time: TimeInterval, duration: TimeInterval, timingFunction: TimingFunction) -> CGSize {
-        return CGSize(width: CGFloat.evaluate(start: start.width, end: end.width, time: time, duration: duration, timingFunction: timingFunction),
-                      height: CGFloat.evaluate(start: start.height, end: end.height, time: time, duration: duration, timingFunction: timingFunction))
+    public static func evaluate(
+        start: CGSize,
+        end: CGSize,
+        time: TimeInterval,
+        duration: TimeInterval,
+        timingFunction: TimingFunction
+    ) -> CGSize {
+        return CGSize(
+            width: CGFloat.evaluate(
+                start: start.width,
+                end: end.width,
+                time: time,
+                duration: duration,
+                timingFunction: timingFunction
+            ),
+            height: CGFloat.evaluate(
+                start: start.height,
+                end: end.height,
+                time: time,
+                duration: duration,
+                timingFunction: timingFunction
+            )
+        )
     }
 }
 
@@ -79,9 +160,29 @@ extension CGPoint: Tweenable {
         return .zero
     }
     
-    public static func evaluate(start: CGPoint, end: CGPoint, time: TimeInterval, duration: TimeInterval, timingFunction: TimingFunction) -> CGPoint {
-        return CGPoint(x: CGFloat.evaluate(start: start.x, end: end.x, time: time, duration: duration, timingFunction: timingFunction),
-                       y: CGFloat.evaluate(start: start.y, end: end.y, time: time, duration: duration, timingFunction: timingFunction))
+    public static func evaluate(
+        start: CGPoint,
+        end: CGPoint,
+        time: TimeInterval,
+        duration: TimeInterval,
+        timingFunction: TimingFunction
+    ) -> CGPoint {
+        return CGPoint(
+            x: CGFloat.evaluate(
+                start: start.x,
+                end: end.x,
+                time: time,
+                duration: duration,
+                timingFunction: timingFunction
+            ),
+            y: CGFloat.evaluate(
+                start: start.y,
+                end: end.y,
+                time: time,
+                duration: duration,
+                timingFunction: timingFunction
+            )
+        )
     }
 }
 
@@ -91,16 +192,45 @@ extension CGRect: Tweenable {
         return .zero
     }
     
-    public static func evaluate(start: CGRect, end: CGRect, time: TimeInterval, duration: TimeInterval, timingFunction: TimingFunction) -> CGRect {
-        return CGRect(origin: CGPoint.evaluate(start: start.origin, end: end.origin, time: time, duration: duration, timingFunction: timingFunction),
-                      size: CGSize.evaluate(start: start.size, end: end.size, time: time, duration: duration, timingFunction: timingFunction))
+    public static func evaluate(
+        start: CGRect,
+        end: CGRect,
+        time: TimeInterval,
+        duration: TimeInterval,
+        timingFunction: TimingFunction
+    ) -> CGRect {
+        return CGRect(
+            origin: CGPoint.evaluate(
+                start: start.origin,
+                end: end.origin,
+                time: time,
+                duration: duration,
+                timingFunction: timingFunction
+            ),
+            size: CGSize.evaluate(
+                start: start.size,
+                end: end.size,
+                time: time,
+                duration: duration,
+                timingFunction: timingFunction
+            )
+        )
     }
 }
 
 extension UIColor {
-    var colorComponents: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat)? {
-        guard let model = cgColor.colorSpace?.model else { return nil }
-        guard let components = self.cgColor.components else { return nil }
+    var colorComponents: (
+        red: CGFloat,
+        green: CGFloat,
+        blue: CGFloat,
+        alpha: CGFloat
+    )? {
+        guard let model = cgColor.colorSpace?.model else {
+            return nil
+        }
+        guard let components = self.cgColor.components else {
+            return nil
+        }
         switch model {
         case .rgb:
             return (
@@ -128,17 +258,49 @@ extension UIColor: Tweenable {
         return self.init()
     }
     
-    public class func evaluate(start: UIColor, end: UIColor, time: TimeInterval, duration: TimeInterval, timingFunction: TimingFunction) -> Self {
+    public class func evaluate(
+        start: UIColor,
+        end: UIColor,
+        time: TimeInterval,
+        duration: TimeInterval,
+        timingFunction: TimingFunction
+    ) -> Self {
         
         guard let startColor = start.colorComponents,
-            let endColor = end.colorComponents else {
-                return self.init()
+              let endColor = end.colorComponents else {
+            return self.init()
         }
         
-        return self.init(red: CGFloat.evaluate(start: startColor.red, end: endColor.red, time: time, duration: duration, timingFunction: timingFunction),
-                       green: CGFloat.evaluate(start: startColor.green, end: endColor.green, time: time, duration: duration, timingFunction: timingFunction),
-                       blue: CGFloat.evaluate(start: startColor.blue, end: endColor.blue, time: time, duration: duration, timingFunction: timingFunction),
-                       alpha: CGFloat.evaluate(start: startColor.alpha, end: endColor.alpha, time: time, duration: duration, timingFunction: timingFunction))
+        return self.init(
+            red: CGFloat.evaluate(
+                start: startColor.red,
+                end: endColor.red,
+                time: time,
+                duration: duration,
+                timingFunction: timingFunction
+            ),
+            green: CGFloat.evaluate(
+                start: startColor.green,
+                end: endColor.green,
+                time: time,
+                duration: duration,
+                timingFunction: timingFunction
+            ),
+            blue: CGFloat.evaluate(
+                start: startColor.blue,
+                end: endColor.blue,
+                time: time,
+                duration: duration,
+                timingFunction: timingFunction
+            ),
+            alpha: CGFloat.evaluate(
+                start: startColor.alpha,
+                end: endColor.alpha,
+                time: time,
+                duration: duration,
+                timingFunction: timingFunction
+            )
+        )
     }
 }
 

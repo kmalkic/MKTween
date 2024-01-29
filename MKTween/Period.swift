@@ -2,8 +2,8 @@
 //  Period.swift
 //  MKTween
 //
-//  Created by Kevin Malkic on 08/04/2019.
-//  Copyright © 2019 Kevin Malkic. All rights reserved.
+//  Created by Kevin Malkic.
+//  Copyright © 2024 Kevin Malkic. All rights reserved.
 //
 
 import Foundation
@@ -63,7 +63,13 @@ public final class Period<T> : BasePeriod where T: Tweenable {
     private(set) public var repeatType: RepeatType
     private(set) public var repeatCount: Int
     
-    public init(start: T, end: T, duration: TimeInterval = 1, delay: TimeInterval = 0.0, timingMode: Timing = .linear) {
+    public init(
+        start: T,
+        end: T,
+        duration: TimeInterval = 1,
+        delay: TimeInterval = 0.0,
+        timingMode: Timing = .linear
+    ) {
         let time = Date().timeIntervalSinceReferenceDate
         self.startTimestamp = time
         self.lastTimestamp = time
@@ -99,7 +105,7 @@ public final class Period<T> : BasePeriod where T: Tweenable {
 
             didFinish = direction.value == TweenDirection.forward.value ? timePassed >= duration : timePassed <= 0
             
-            if (didFinish) {
+            if didFinish {
                 switch repeatType {
                 case .forever:
                     timePassed = 0
@@ -135,11 +141,13 @@ public final class Period<T> : BasePeriod where T: Tweenable {
     
     public func tweenValues(_ numberOfIntervals: UInt) -> [T] {
         let tweenValues = stride(from: 1, through: Int(numberOfIntervals), by: 1).map { (i) -> T in
-            T.evaluate(start: start,
-                       end: end,
-                       time: TimeInterval(i) / TimeInterval(numberOfIntervals),
-                       duration: duration,
-                       timingFunction: timingMode.timingFunction())
+            T.evaluate(
+                start: start,
+                end: end,
+                time: TimeInterval(i) / TimeInterval(numberOfIntervals),
+                duration: duration,
+                timingFunction: timingMode.timingFunction()
+            )
         }
         return tweenValues
     }

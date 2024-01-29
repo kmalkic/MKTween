@@ -2,8 +2,8 @@
 //  Group.swift
 //  MKTween
 //
-//  Created by Kevin Malkic on 08/04/2019.
-//  Copyright © 2019 Kevin Malkic. All rights reserved.
+//  Created by Kevin Malkic.
+//  Copyright © 2024 Kevin Malkic. All rights reserved.
 //
 
 import Foundation
@@ -40,13 +40,19 @@ public final class Group: BasePeriods {
         }) ?? false
     }
     
-    public init(periods: [BasePeriod], delay: TimeInterval = 0) {
+    public init(
+        periods: [BasePeriod],
+        delay: TimeInterval = 0
+    ) {
         self.delay = delay
         self.periods = periods
         let time = Date().timeIntervalSinceReferenceDate
         self.startTimestamp = time
         self.lastTimestamp = time
-        self.periodFinished = Array(repeating: false, count: periods.count)
+        self.periodFinished = Array(
+            repeating: false,
+            count: periods.count
+        )
     }
     
     public func updateInternal() -> Bool {
@@ -83,16 +89,23 @@ public final class Group: BasePeriods {
     }
     
     public func callCompletionBlock() {
-        periods.forEach { $0.callCompletionBlock() }
+        periods.forEach {
+            $0.callCompletionBlock()
+        }
         completion?()
     }
-
+    
     public func callCancelledBlock() {
-        periods.forEach { $0.callCancelledBlock() }
+        periods.forEach {
+            $0.callCancelledBlock()
+        }
         cancelled?()
     }
     
-    @discardableResult public func set(update: UpdateBlock? = nil, completion: CompletionBlock? = nil) -> Group {
+    @discardableResult public func set(
+        update: UpdateBlock? = nil,
+        completion: CompletionBlock? = nil
+    ) -> Group {
         self.update = update
         self.completion = completion
         return self
