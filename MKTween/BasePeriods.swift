@@ -2,8 +2,8 @@
 //  BasePeriods.swift
 //  MKTween
 //
-//  Created by Kevin Malkic on 08/04/2019.
-//  Copyright © 2019 Kevin Malkic. All rights reserved.
+//  Created by Kevin Malkic.
+//  Copyright © 2024 Kevin Malkic. All rights reserved.
 //
 
 import Foundation
@@ -30,10 +30,14 @@ extension BasePeriods {
     }
     
     public func pause() {
-        periods.forEach { $0.pause() }
+        periods.forEach {
+            $0.pause()
+        }
     }
     
     public func resume() {
-        periods.forEach { $0.resume() }
+        periods.forEach {
+            $0.resume()
+        }
     }
 }

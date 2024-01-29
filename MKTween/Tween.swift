@@ -2,8 +2,8 @@
 //  Tween.swift
 //  MKTween
 //
-//  Created by Kevin Malkic on 08/04/2019.
-//  Copyright © 2019 Kevin Malkic. All rights reserved.
+//  Created by Kevin Malkic.
+//  Copyright © 2024 Kevin Malkic. All rights reserved.
 //
 
 import Foundation
@@ -69,11 +69,26 @@ public class Tween: NSObject {
     
     public static let shared = Tween(.default)
     
-    public class func shared(_ timerStyle: TimerStyle = .default, preferredFramesPerSecond: Int? = nil, timerInterval: TimeInterval? = nil, dispatchQueue: DispatchQueue = DispatchQueue.main) -> Tween {
-        return Tween(timerStyle, preferredFramesPerSecond: preferredFramesPerSecond, timerInterval: timerInterval, dispatchQueue: dispatchQueue)
+    public class func shared(
+        _ timerStyle: TimerStyle = .default,
+        preferredFramesPerSecond: Int? = nil,
+        timerInterval: TimeInterval? = nil,
+        dispatchQueue: DispatchQueue = DispatchQueue.main
+    ) -> Tween {
+        return Tween(
+            timerStyle,
+            preferredFramesPerSecond: preferredFramesPerSecond,
+            timerInterval: timerInterval,
+            dispatchQueue: dispatchQueue
+        )
     }
     
-    public init( _ timerStyle: TimerStyle = .default, preferredFramesPerSecond: Int? = nil, timerInterval: TimeInterval? = nil, dispatchQueue: DispatchQueue = DispatchQueue.main) {
+    public init(
+        _ timerStyle: TimerStyle = .default,
+        preferredFramesPerSecond: Int? = nil,
+        timerInterval: TimeInterval? = nil,
+        dispatchQueue: DispatchQueue = DispatchQueue.main
+    ) {
         self.dispatchQueue = dispatchQueue
         super.init()
         self.timerStyle = timerStyle
@@ -92,7 +107,10 @@ public class Tween: NSObject {
         start()
     }
     
-    @discardableResult public func remove(period: BasePeriod, cancelled: Bool = true) -> Bool {
+    @discardableResult public func remove(
+        period: BasePeriod,
+        cancelled: Bool = true
+    ) -> Bool {
         guard let index = periods.firstIndex(where: { findPeriod -> Bool in
             findPeriod.name == period.name
         }) else { return false }
@@ -105,7 +123,10 @@ public class Tween: NSObject {
         return true
     }
     
-    @discardableResult public func removePeriod(by name: String, cancelled: Bool = true) -> Bool {
+    @discardableResult public func removePeriod(
+        by name: String,
+        cancelled: Bool = true
+    ) -> Bool {
         guard let period = periods.first(where: { period -> Bool in
             period.name == name
         }) else { return false }
@@ -137,7 +158,7 @@ public class Tween: NSObject {
                 period.callUpdateBlock()
             }
         }
-    
+        
         periodFinished.forEach { period in
             dispatchQueue.async { () -> Void in
                 period.callCompletionBlock()
@@ -157,7 +178,7 @@ public class Tween: NSObject {
     fileprivate func handleTick(_ timeStamp: TimeInterval) {
         
         guard !self.busy
-            else { return }
+        else { return }
         
         self.busy = true
         update(timeStamp)
@@ -167,17 +188,27 @@ public class Tween: NSObject {
     fileprivate func start() {
         
         guard hasPeriods() && !self.paused
-            else { return }
+        else { return }
         
         if self.displayLink == nil && (self.timerStyle == .default || self.timerStyle == .displayLink) {
             
-            self.displayLink = UIScreen.main.displayLink(withTarget: self, selector: #selector(Tween.handleDisplayLink(_:)))
-            self.displayLink!.preferredFramesPerSecond = self.preferredFramesPerSecond
-            self.displayLink!.add(to: RunLoop.main, forMode: RunLoop.Mode.common)
+            let displayLink = CADisplayLink(
+                target: self,
+                selector: #selector(Tween.handleDisplayLink(_:))
+            )
+            displayLink.preferredFramesPerSecond = self.preferredFramesPerSecond
+            displayLink.add(to: .current, forMode: .default)
+            self.displayLink = displayLink
             
         } else if timer == nil && timerStyle == .timer {
             
-            self.timer = Timer.scheduledTimer(timeInterval: self.timerInterval, target: self, selector: #selector(Tween.handleTimer(_:)), userInfo: nil, repeats: true)
+            self.timer = Timer.scheduledTimer(
+                timeInterval: self.timerInterval,
+                target: self,
+                selector: #selector(Tween.handleTimer),
+                userInfo: nil,
+                repeats: true
+            )
             self.timer!.fire()
         }
     }
@@ -185,14 +216,12 @@ public class Tween: NSObject {
     fileprivate func stop() {
         
         if self.displayLink != nil {
-            
             self.displayLink!.isPaused = true
             self.displayLink!.remove(from: RunLoop.main, forMode: RunLoop.Mode.common)
             self.displayLink = nil
         }
         
         if self.timer != nil {
-            
             self.timer!.invalidate()
             self.timer = nil
         }
@@ -208,7 +237,7 @@ public class Tween: NSObject {
         }
         
         guard self.timer == nil && self.displayLink == nil
-            else { return }
+        else { return }
         
         guard let pausedTimeStamp = self.pausedTimeStamp else {
             
@@ -218,7 +247,7 @@ public class Tween: NSObject {
         }
         
         let diff = CACurrentMediaTime() - pausedTimeStamp
-    
+        
         self.periods.forEach { period in
             period.set(startTimestamp: period.startTimestamp + diff)
         }
@@ -228,7 +257,11 @@ public class Tween: NSObject {
     
     //Convience functions
     
-    @discardableResult public func value<T: Tweenable>(start: T, end: T, duration: TimeInterval = 1) -> Period<T> {
+    @discardableResult public func value<T: Tweenable>(
+        start: T,
+        end: T,
+        duration: TimeInterval = 1
+    ) -> Period<T> {
         let period = Period(start: start, end: end, duration: duration, delay: 0)
         add(period: period)
         return period

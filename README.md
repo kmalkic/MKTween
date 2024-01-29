@@ -178,7 +178,7 @@ period.reverse() // This will basically exchange startValue and endValue, but wi
 
 ## Installation
 
-> **Embedded frameworks require a minimum deployment target of iOS 11.**
+> **Embedded frameworks require a minimum deployment target of iOS 12.**
 
 ### CocoaPods
 
@@ -196,7 +196,7 @@ To integrate MKTween into your Xcode project using CocoaPods, specify it in your
 
 ```ruby
 source 'https://github.com/CocoaPods/Specs.git'
-platform :ios, '11.0'
+platform :ios, '12.0'
 use_frameworks!
 
 pod 'MKTween'

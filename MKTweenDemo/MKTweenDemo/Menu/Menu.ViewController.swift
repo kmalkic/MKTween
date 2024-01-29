@@ -3,7 +3,7 @@
 //  MKTweenDemo
 //
 //  Created by Kevin Malkic on 08/04/2019.
-//  Copyright © 2019 Kevin Malkic. All rights reserved.
+//  Copyright © 2024 Kevin Malkic. All rights reserved.
 //
 
 import UIKit
